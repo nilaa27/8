@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="description" content="Pilih layout foto favoritmu untuk memulai sesi photobooth online.">
+    <title>Pixlord | Pilih Layout Foto</title>
+    
+    <link rel="canonical" href="https://pict.xlord.web.id/layout.html">
+    <link rel="icon" href="https://via.placeholder.com/32x32/0D9488/FFFFFF?text=P">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+    <style>
+        /* === TEMA NEUMORPHIC (Sama seperti index.html) === */
+        :root {
+            --bg-color: #2c2f36;
+            --shadow-dark: #212429;
+            --shadow-light: #373a43;
+            --text-color: #e0e5ec;
+            --text-light: #97a1b3;
+            --primary: #0D9488;
+            --primary-dark: #0f766e;
+            --transition-smooth: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            --transition-snappy: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            --border-radius-main: 20px;
+            --border-radius-inner: 12px;
+        }
+
+        [data-theme="light"] {
+            --bg-color: #f0f2f5;
+            --shadow-dark: #d9dde2;
+            --shadow-light: #ffffff;
+            --text-color: #333333;
+            --text-light: #666666;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; scroll-behavior: smooth; }
+        html { font-size: 62.5%; }
+        body {
+            font-size: 1.6rem; background: var(--bg-color); color: var(--text-color);
+            line-height: 1.7; transition: background-color 0.5s ease, color 0.5s ease;
+            overflow-x: hidden;
+        }
+        body.sidebar-open { overflow: hidden; }
+        body.sidebar-open::before {
+            content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5); z-index: 998; backdrop-filter: blur(2px);
+        }
+        .container { max-width: 1200px; width: 90%; margin: 0 auto; }
+        
+        /* --- Header & Navigasi (Konsisten) --- */
+        .main-header { position: sticky; top: 15px; z-index: 1000; margin: 0 auto 15px auto; width: 95%; max-width: 980px; left: 50%; transform: translateX(-50%); }
+        .header-container {
+            display: flex; justify-content: space-between; align-items: center; padding: 15px 30px;
+            background: rgba(44, 47, 54, 0.7); backdrop-filter: blur(10px);
+            border-radius: var(--border-radius-main); box-shadow: 10px 10px 25px var(--shadow-dark), -10px -10px 25px var(--shadow-light);
+            border: 1px solid var(--shadow-light);
+        }
+        [data-theme="light"] .header-container { background: rgba(240, 242, 245, 0.7); }
+        .logo { font-size: 2.4rem; font-weight: 700; color: var(--text-color); text-decoration: none;}
+        .logo .highlight { color: var(--primary); }
+        .main-nav { display: flex; align-items: center; gap: 2rem; }
+        .nav-links { list-style: none; display: flex; gap: 2.5rem; font-size: 1.5rem; font-weight: 500; }
+        .nav-links a { color: var(--text-light); transition: color 0.3s ease; text-decoration: none; }
+        .nav-links a:hover { color: var(--primary); }
+        .theme-toggle-btn {
+            background: var(--bg-color); width: 45px; height: 45px; border-radius: 50%; display: flex;
+            align-items: center; justify-content: center; border: none; cursor: pointer;
+            color: var(--text-color); box-shadow: 5px 5px 10px var(--shadow-dark), -5px -5px 10px var(--shadow-light);
+            transition: var(--transition-smooth);
+        }
+        .theme-toggle-btn:hover { color: var(--primary); transform: scale(1.05); }
+        .theme-toggle-btn i.fa-sun { display: none; }
+        [data-theme="light"] .theme-toggle-btn i.fa-moon { display: none; }
+        [data-theme="light"] .theme-toggle-btn i.fa-sun { display: block; }
+        
+        /* --- Hamburger & Sidebar (Konsisten) --- */
+        .hamburger-menu {
+            display: none; cursor: pointer; width: 48px; height: 48px; justify-content: center; align-items: center;
+            position: relative; z-index: 1003; background: var(--bg-color); border: none; border-radius: 50%;
+            box-shadow: 5px 5px 10px var(--shadow-dark), -5px -5px 10px var(--shadow-light);
+        }
+        .hamburger-menu .bar { display: block; width: 22px; height: 3px; background-color: var(--text-color); border-radius: 3px; position: absolute; left: 13px; transition: var(--transition-snappy); }
+        .bar.top { top: 16px; } .bar.middle { top: 22.5px; } .bar.bottom { top: 29px; }
+        body.sidebar-open .bar.top { top: 22.5px; transform: rotate(45deg); }
+        body.sidebar-open .bar.middle { opacity: 0; transform: translateX(10px); }
+        body.sidebar-open .bar.bottom { top: 22.5px; transform: rotate(-45deg); }
+        .sidebar {
+            position: fixed; top: 0; right: -320px; width: 300px; height: 100%;
+            background: var(--bg-color); box-shadow: -10px 0px 30px var(--shadow-dark); z-index: 999;
+            padding: 80px 30px 30px; display: flex; flex-direction: column; gap: 25px;
+            transition: right 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .sidebar.active { right: 0; }
+        .close-sidebar-btn {
+            position: absolute; top: 20px; right: 20px; background: transparent; border: none;
+            color: var(--text-light); cursor: pointer; font-size: 3rem; line-height: 1;
+            transition: var(--transition-smooth);
+        }
+        .close-sidebar-btn:hover { color: var(--primary); transform: rotate(90deg); }
+        .sidebar-nav { display: flex; flex-direction: column; gap: 20px; text-align: center; }
+        .sidebar-nav a { color: var(--text-light); text-decoration: none; font-size: 1.8rem; font-weight: 500; padding: 15px; border-radius: var(--border-radius-inner); transition: var(--transition-smooth); }
+        .sidebar-nav a:hover { color: var(--primary); background: var(--shadow-dark); }
+        
+        /* --- Content Styling --- */
+        .content-section {
+            padding: 5rem 0;
+            text-align: center;
+        }
+        .page-title {
+            font-size: 4rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            color: var(--text-color);
+        }
+        .page-subtitle {
+            font-size: 1.8rem;
+            color: var(--text-light);
+            margin-bottom: 5rem;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        /* --- Layout Grid Styling Neumorphic --- */
+        .layout-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr); /* Diubah menjadi 4 kolom */
+            gap: 3rem; /* Jarak antar kartu */
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .layout-card {
+            background: var(--bg-color);
+            border-radius: var(--border-radius-main);
+            padding: 2.5rem;
+            text-align: center;
+            border: none;
+            cursor: pointer;
+            color: var(--text-color);
+            box-shadow: 10px 10px 20px var(--shadow-dark), -10px -10px 20px var(--shadow-light);
+            transition: var(--transition-smooth);
+        }
+        .layout-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 15px 15px 30px var(--shadow-dark), -15px -15px 30px var(--shadow-light);
+        }
+        .layout-card:active {
+            transform: translateY(0);
+            box-shadow: inset 7px 7px 15px var(--shadow-dark), inset -7px -7px 15px var(--shadow-light);
+        }
+        .layout-card .image-frame {
+            background: var(--bg-color);
+            padding: 1rem;
+            border-radius: var(--border-radius-inner);
+            box-shadow: inset 4px 4px 8px var(--shadow-dark), inset -4px -4px 8px var(--shadow-light);
+            margin-bottom: 2rem;
+            display: inline-block;
+        }
+        .layout-card img {
+            width: 100%;
+            max-width: 150px;
+            display: block;
+            border-radius: 5px;
+        }
+        .layout-label {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-color);
+            margin-bottom: 0.5rem;
+        }
+        .layout-description {
+            font-size: 1.5rem;
+            color: var(--text-light);
+        }
+
+        /* --- Responsive --- */
+        @media (max-width: 992px) {
+            .layout-grid {
+                grid-template-columns: repeat(2, 1fr); /* Jadi 2 kolom di tablet */
+            }
+        }
+
+        @media (max-width: 768px) {
+            html { font-size: 58%; }
+            .main-nav { display: none; }
+            .hamburger-menu { display: flex; }
+            .header-container { padding: 10px 20px; }
+            .main-header { width: 100%; top: 0; border-radius: 0; }
+            .page-title { font-size: 3.2rem; }
+        }
+
+        @media (max-width: 576px) {
+            .layout-grid {
+                grid-template-columns: 1fr; /* Jadi 1 kolom di HP */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="main-header" data-aos="fade-down">
+        <div class="header-container">
+            <a href="index.html" class="logo">pix<span class="highlight">lord</span></a>
+            <nav class="main-nav">
+                <ul class="nav-links" id="nav-menu-desktop">
+                    <li><a href="index.html">Beranda</a></li>
+                    <li><a href="index.html#about">Tentang</a></li>
+                    <li><a href="index.html#features">Fitur</a></li>
+                    <li><a href="index.html#faq">FAQ</a></li>
+                    <li><a href="index.html#contact">Kontak</a></li>
+                </ul>
+            </nav>
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <button class="theme-toggle-btn" id="theme-toggle" aria-label="Ubah Tema">
+                    <i class="fas fa-moon"></i><i class="fas fa-sun"></i>
+                </button>
+                <button class="hamburger-menu" id="hamburger-menu" aria-label="Buka Menu">
+                    <span class="bar top"></span><span class="bar middle"></span><span class="bar bottom"></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="sidebar" id="sidebar">
+        <button class="close-sidebar-btn" id="close-sidebar-btn">&times;</button>
+        <nav class="sidebar-nav" id="nav-menu-mobile">
+            <a href="index.html">Beranda</a>
+            <a href="index.html#about">Tentang Kami</a>
+            <a href="index.html#features">Fitur</a>
+            <a href="index.html#testimonials">Testimoni</a>
+            <a href="index.html#faq">FAQ</a>
+            <a href="index.html#contact">Kontak</a>
+        </nav>
+    </div>
+
+    <main>
+        <section class="content-section">
+            <div class="container">
+                <div data-aos="fade-up">
+                    <h1 class="page-title">Pilih Layout Favoritmu</h1>
+                    <p class="page-subtitle">Pilih gaya untuk memulai. Kamu punya 3 detik untuk setiap pose!</p>
+                </div>
+                
+                <div class="layout-grid">
+                    <button class="layout-card" id="layout1Btn" data-aos="fade-right" data-aos-delay="0">
+                        <div class="image-frame">
+                            <img src="assets/layouts/thinBorders1.2.png" alt="Layout A: 3 Pose" loading="eager">
+                        </div>
+                        <h2 class="layout-label">Layout A</h2>
+                        <p class="layout-description">Strip 6x2 (3 Pose)</p>
+                    </button>
+                    <button class="layout-card" id="layout2Btn" data-aos="fade-left" data-aos-delay="100">
+                        <div class="image-frame">
+                             <img src="assets/layouts/thinBorders2.2.png" alt="Layout B: 4 Pose" loading="eager">
+                        </div>
+                        <h2 class="layout-label">Layout B</h2>
+                        <p class="layout-description">Strip 6x2 (4 Pose)</p>
+                    </button>
+                    <button class="layout-card" id="layout3Btn" data-aos="fade-right" data-aos-delay="200">
+                        <div class="image-frame">
+                            <img src="assets/layouts/thinBorders3.2.png" alt="Layout C: 2 Pose" loading="eager">
+                        </div>
+                        <h2 class="layout-label">Layout C</h2>
+                        <p class="layout-description">Strip 6x2 (2 Pose)</p>
+                    </button>
+                    <button class="layout-card" id="layout4Btn" data-aos="fade-left" data-aos-delay="300">
+                        <div class="image-frame">
+                             <img src="assets/layouts/thinBorders4.1.png" alt="Layout D: 6 Pose" loading="eager">
+                        </div>
+                        <h2 class="layout-label">Layout D</h2>
+                        <p class="layout-description">Strip 6x4 (6 Pose)</p>
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => { 
+            // Inisialisasi AOS
+            AOS.init({ duration: 800, once: false, offset: 50 });
+
+            const docElement = document.documentElement;
+            const body = document.body;
+
+            // --- Theme Toggle ---
+            const themeToggle = document.getElementById('theme-toggle');
+            const currentTheme = localStorage.getItem('theme') || 'dark';
+            docElement.setAttribute('data-theme', currentTheme);
+            themeToggle.addEventListener('click', () => {
+                const newTheme = docElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+                docElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+            });
+
+            // --- Sidebar Logic ---
+            const hamburger = document.getElementById('hamburger-menu');
+            const sidebar = document.getElementById('sidebar');
+            const closeSidebarBtn = document.getElementById('close-sidebar-btn');
+            
+            const toggleSidebar = () => {
+                body.classList.toggle('sidebar-open');
+                sidebar.classList.toggle('active');
+            };
+
+            hamburger.addEventListener('click', toggleSidebar);
+            closeSidebarBtn.addEventListener('click', toggleSidebar);
+            sidebar.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
+                if (body.classList.contains('sidebar-open')) {
+                    toggleSidebar();
+                }
+            }));
+
+
+            // --- Layout Button Click Handlers ---
+            const layoutMapping = {
+                'layout1Btn': 'canvas.html',
+                'layout2Btn': 'canvas4.html',
+                'layout3Btn': 'canvas2.html',
+                'layout4Btn': 'canvas6.html'
+            };
+
+            for (const [btnId, url] of Object.entries(layoutMapping)) {
+                const btn = document.getElementById(btnId);
+                if (btn) {
+                    btn.addEventListener('click', () => window.location.href = url);
+                }
+            }
+        });
+    </script>
+
+</body>
+</html>
