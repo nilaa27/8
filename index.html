@@ -76,13 +76,20 @@
             display: flex; justify-content: space-between; align-items: center; padding: 15px 30px;
             background: rgba(44, 47, 54, 0.7); backdrop-filter: blur(10px);
             border-radius: var(--border-radius-main); box-shadow: 10px 10px 25px var(--shadow-dark), -10px -10px 25px var(--shadow-light);
-            /* PERUBAHAN: Garis tipis ditambahkan kembali */
             border: 1px solid var(--shadow-light);
         }
         [data-theme="light"] .header-container { background: rgba(240, 242, 245, 0.7); }
-        .logo { font-size: 2.4rem; font-weight: 700; color: var(--text-color); text-decoration: none; }
+        .logo { font-size: 2.4rem; font-weight: 700; color: var(--text-color); text-decoration: none; flex-shrink: 0; /* PERBAIKAN: Mencegah logo menyusut */ }
         .logo .highlight { color: var(--primary); }
-        .main-nav { display: flex; align-items: center; gap: 2rem; }
+        
+        /* PERBAIKAN: Mengatur .main-nav agar mengisi ruang dan menengahkan isinya */
+        .main-nav { 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; /* Menengahkan ul.nav-links */
+            flex-grow: 1; /* Mengambil ruang kosong yang tersedia */
+        }
+        
         .nav-links { list-style: none; display: flex; gap: 2.5rem; font-size: 1.5rem; font-weight: 500; }
         .nav-links a { color: var(--text-light); transition: color 0.3s ease; text-decoration: none; }
         .nav-links a:hover, .nav-links a.current-nav { color: var(--primary); font-weight: 600; }
@@ -149,10 +156,12 @@
         .hero-images-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
         .hero-images-bg img { position: absolute; width: 15vw; max-width: 180px; min-width: 100px; border-radius: 12px; animation: gentle-float 8s ease-in-out infinite; box-shadow: 0px 10px 30px rgba(0,0,0,0.2); }
         @keyframes gentle-float { 0%, 100% { transform: translateY(0px) rotate(var(--initial-rotate)); } 50% { transform: translateY(-20px) rotate(var(--final-rotate)); } }
+        
+        /* PERBAIKAN: Menyesuaikan posisi gambar agar lebih seimbang */
         .preview-1 { --initial-rotate: -15deg; --final-rotate: -12deg; top: 15%; left: 10%; animation-duration: 10s; }
-        .preview-2 { --initial-rotate: -5deg; --final-rotate: -8deg; top: 40%; left: 20%; animation-duration: 8s; animation-delay: -2s; }
-        .preview-3 { --initial-rotate: 15deg; --final-rotate: 18deg; top: 20%; right: 12%; animation-duration: 9s; }
-        .preview-4 { --initial-rotate: 5deg; --final-rotate: 2deg; top: 55%; right: 18%; animation-duration: 11s; animation-delay: -4s; }
+        .preview-2 { --initial-rotate: -5deg; --final-rotate: -8deg;  top: 60%; left: 18%; animation-duration: 8s; animation-delay: -2s; }
+        .preview-3 { --initial-rotate: 15deg; --final-rotate: 18deg;  top: 20%; right: 12%; animation-duration: 9s; }
+        .preview-4 { --initial-rotate: 5deg; --final-rotate: 2deg;   top: 65%; right: 15%; animation-duration: 11s; animation-delay: -4s; }
 
         /* --- About Section (Modernized) --- */
         .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
@@ -268,12 +277,12 @@
                     <li><a href="#about">Tentang</a></li>
                     <li><a href="#how-it-works">Cara Kerja</a></li>
                     <li><a href="#features">Fitur</a></li>
+                    <li><a href="#testimonials">Testimoni</a></li>
                     <li><a href="#faq">FAQ</a></li>
                     <li><a href="#contact">Kontak</a></li>
                 </ul>
             </nav>
-            <div style="display: flex; align-items: center; gap: 15px;">
-                <button class="theme-toggle-btn" id="theme-toggle" aria-label="Ubah Tema">
+            <div style="display: flex; align-items: center; gap: 15px; flex-shrink: 0;"> <button class="theme-toggle-btn" id="theme-toggle" aria-label="Ubah Tema">
                     <i class="fas fa-moon"></i><i class="fas fa-sun"></i>
                 </button>
                 <button class="hamburger-menu" id="hamburger-menu" aria-label="Buka Menu">
@@ -328,7 +337,7 @@
                         <p>Cukup buka situs kami, bergaya di depan kamera, dan dapatkan strip foto yang dirancang dengan indah dalam hitungan detik. Tanpa registrasi, tanpa ribet.</p>
                     </div>
                     <div class="about-image-frame">
-                        <img src="333.gif" alt="ngapain?">
+                         <img src="https://images.unsplash.com/photo-1520333789090-1afc82db536a?q=80&w=2071&auto=format&fit=crop" alt="Tim sedang berdiskusi ide">
                     </div>
                 </div>
             </div>
@@ -422,7 +431,7 @@
             <p class="copyright">&copy; 2025 pictlord. Seluruh Hak Cipta Dilindungi.</p>
         </div>
     </footer>
-
+    
     <div class="modal-overlay" id="contact-modal">
         <div class="modal-content">
             <button class="modal-close-btn">&times;</button>
