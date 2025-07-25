@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
 
     <style>
-        /* === TEMA NEUMORPHIC & UTAMA === */
+        /* === TEMA & VARIABEL UTAMA === */
         :root {
             --bg-color: #2c2f36;
             --sidebar-bg: #212429;
@@ -53,77 +53,51 @@
         }
         .container { max-width: 1200px; width: 90%; margin: 0 auto; }
         
-        /* === [BARU] LAYOUT UTAMA DENGAN SIDEBAR === */
+        /* === LAYOUT UTAMA DENGAN SIDEBAR KANAN === */
         .page-wrapper {
             display: grid;
-            grid-template-columns: var(--sidebar-width) 1fr;
+            grid-template-columns: 1fr var(--sidebar-width);
             transition: grid-template-columns 0.3s ease;
         }
         .main-content {
-            grid-column: 2 / -1;
+            grid-column: 1 / 2;
             width: 100%;
         }
 
-        /* === [BARU] SIDEBAR NAVIGASI === */
+        /* === SIDEBAR NAVIGASI KANAN === */
         .main-sidebar {
             background-color: var(--sidebar-bg);
             height: 100vh;
             position: sticky;
             top: 0;
-            grid-column: 1 / 2;
+            grid-column: 2 / 3;
             display: flex;
             flex-direction: column;
             padding: 3rem 2.5rem;
             transition: var(--transition-smooth);
             z-index: 1001;
+            transform: translateX(0);
         }
         .sidebar-logo {
             font-size: 2.8rem; font-weight: 700; color: var(--text-color); text-decoration: none;
             margin-bottom: 4rem; text-align: center;
+            margin-top: 3rem; /* DIGESER LEBIH JAUH KE BAWAH */
         }
         .sidebar-logo .highlight { color: var(--primary); }
-
-        .sidebar-nav {
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
+        .sidebar-nav { list-style: none; display: flex; flex-direction: column; gap: 1.5rem; }
         .sidebar-nav a {
-            color: var(--text-light);
-            text-decoration: none;
-            font-size: 1.6rem;
-            font-weight: 500;
-            padding: 12px 20px;
-            border-radius: var(--border-radius-inner);
-            display: flex;
-            align-items: center;
-            gap: 1.5rem;
-            transition: var(--transition-smooth);
+            color: var(--text-light); text-decoration: none; font-size: 1.6rem; font-weight: 500;
+            padding: 12px 20px; border-radius: var(--border-radius-inner); display: flex;
+            align-items: center; gap: 1.5rem; transition: var(--transition-smooth);
         }
-        .sidebar-nav a:hover {
-            background-color: var(--shadow-dark);
-            color: var(--text-color);
-        }
+        .sidebar-nav a:hover { background-color: var(--shadow-dark); color: var(--text-color); }
         .sidebar-nav a.current-nav {
-            background-color: var(--primary);
-            color: #ffffff;
-            font-weight: 600;
+            background-color: var(--primary); color: #ffffff; font-weight: 600;
             box-shadow: 0 4px 15px rgba(13, 148, 136, 0.3);
         }
-        .sidebar-nav a i {
-            font-size: 1.8rem;
-            width: 20px;
-            text-align: center;
-        }
+        .sidebar-nav a i { font-size: 1.8rem; width: 20px; text-align: center; }
 
-        .sidebar-footer {
-            margin-top: auto;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 2rem;
-        }
+        .sidebar-footer { margin-top: auto; display: flex; flex-direction: column; align-items: center; gap: 2rem; }
         .theme-toggle-btn {
             background: var(--bg-color); width: 50px; height: 50px; border-radius: 50%; display: flex;
             align-items: center; justify-content: center; border: none; cursor: pointer;
@@ -135,13 +109,10 @@
         [data-theme="light"] .theme-toggle-btn i.fa-moon { display: none; }
         [data-theme="light"] .theme-toggle-btn i.fa-sun { display: block; }
         
-        /* === [BARU] HAMBURGER MENU UNTUK MOBILE === */
+        /* === HAMBURGER MENU UNTUK MOBILE === */
         .hamburger-menu {
             display: none;
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            z-index: 1002;
+            position: fixed; top: 20px; right: 20px; z-index: 1002;
             cursor: pointer; width: 48px; height: 48px; justify-content: center; align-items: center;
             background: var(--sidebar-bg); border: none; border-radius: 50%;
             box-shadow: 5px 5px 15px rgba(0,0,0,0.2);
@@ -152,22 +123,21 @@
         body.sidebar-open .hamburger-menu .bar.middle { opacity: 0; transform: translateX(10px); }
         body.sidebar-open .hamburger-menu .bar.bottom { top: 22.5px; transform: rotate(-45deg); }
         
-        /* Overlay untuk mobile sidebar */
         body.sidebar-open::before {
             content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.5); z-index: 1000; backdrop-filter: blur(2px);
         }
         
-        /* Tombol & Konten Lainnya... (Tidak Berubah Signifikan) */
+        /* --- Tombol Global & Section --- */
         .btn { display: inline-flex; align-items: center; justify-content: center; gap: 12px; padding: 14px 28px; border-radius: var(--border-radius-inner); font-size: 1.6rem; font-weight: 600; text-decoration: none; cursor: pointer; border: none; color: var(--text-light); background: var(--bg-color); transition: var(--transition-smooth); box-shadow: 6px 6px 12px var(--shadow-dark), -6px -6px 12px var(--shadow-light); }
         .btn:hover { color: var(--primary); transform: translateY(-3px); }
         .btn.primary { color: #ffffff; background: var(--primary); }
         .page-section { padding: 8rem 0; }
         .section-title { font-size: 4rem; font-weight: 800; text-align: center; margin-bottom: 1.5rem; color: var(--text-color); }
         .section-subtitle { font-size: 1.8rem; color: var(--text-light); text-align: center; max-width: 700px; margin: 0 auto 5rem auto; }
-        #hero { display: flex; align-items: center; justify-content: center; text-align: center; min-height: 100vh; padding: 4rem 0; position: relative; overflow: hidden; }
         
-        /* Sisanya tetap sama... */
+        /* --- Hero Section & Preview Images --- */
+        #hero { display: flex; align-items: center; justify-content: center; text-align: center; min-height: 100vh; padding: 4rem 0; position: relative; overflow: hidden; }
         .hero-glow-bg { position: absolute; top: 50%; left: 50%; width: 40vw; height: 40vw; max-width: 500px; max-height: 500px; background: radial-gradient(circle, rgba(13, 148, 136, 0.4), transparent 70%); border-radius: 50%; filter: blur(100px); transform: translate(-50%, -50%); z-index: 0; animation: pulsate-glow 7s ease-in-out infinite; }
         @keyframes pulsate-glow { 0%, 100% { transform: translate(-50%, -50%) scale(1); } 50% { transform: translate(-50%, -50%) scale(1.2); } }
         .hero-content { max-width: 800px; position: relative; z-index: 2; }
@@ -182,52 +152,81 @@
         .preview-2 { --initial-rotate: -5deg; --final-rotate: -8deg;  top: 60%; left: 18%; animation-duration: 8s; animation-delay: -2s; }
         .preview-3 { --initial-rotate: 15deg; --final-rotate: 18deg;  top: 20%; right: 12%; animation-duration: 9s; }
         .preview-4 { --initial-rotate: 5deg; --final-rotate: 2deg;   top: 65%; right: 15%; animation-duration: 11s; animation-delay: -4s; }
-        .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+        
+        /* --- CSS Lainnya --- */
+        .about-grid { display: grid; grid-template-columns: 1fr; gap: 5rem; align-items: center; } /* Diubah menjadi 1 kolom */
+        .about-text { text-align: center; max-width: 700px; margin: 0 auto; } /* Teks di tengah */
         .about-text h3 { font-size: 2.8rem; color: var(--primary); margin-bottom: 1rem; }
-        /* ... Sisa CSS tidak berubah ... */
-        .about-image-frame, .steps-container, .features-grid, .testimonial-grid, .privacy-points, .faq-container, .modal-overlay, .main-footer {
-            /* Gaya-gaya ini diasumsikan tetap sama */
-        }
-        .about-image-frame {
-            background: var(--bg-color); padding: 2rem; border-radius: var(--border-radius-main);
-            box-shadow: 10px 10px 20px var(--shadow-dark), -10px -10px 20px var(--shadow-light);
-        }
-        .about-image-frame img { width: 100%; border-radius: var(--border-radius-inner); }
         .steps-container, .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 3rem; }
-        .step-card, .feature-card {
-            background: var(--bg-color); padding: 35px 30px; text-align: center;
-            border-radius: var(--border-radius-main);
-            box-shadow: 10px 10px 20px var(--shadow-dark), -10px -10px 20px var(--shadow-light);
-        }
+        .step-card, .feature-card { background: var(--bg-color); padding: 35px 30px; text-align: center; border-radius: var(--border-radius-main); box-shadow: 10px 10px 20px var(--shadow-dark), -10px -10px 20px var(--shadow-light); }
         .step-icon, .feature-icon { font-size: 3rem; margin-bottom: 2rem; color: var(--primary); }
         .step-card h3, .feature-card h4 { font-size: 1.8rem; font-weight: 600; margin-bottom: 1rem; color: var(--text-color); }
         .step-card p, .feature-card p { font-size: 1.5rem; color: var(--text-light); }
         .testimonial-header { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto 4rem auto; flex-wrap: wrap; gap: 2rem; }
         .testimonial-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 3rem; }
-        .testimonial-card {
-            background: var(--bg-color); padding: 3rem; text-align: left; display: flex; flex-direction: column;
-            border-radius: var(--border-radius-main);
-            box-shadow: 10px 10px 20px var(--shadow-dark), -10px -10px 20px var(--shadow-light);
-        }
+        .testimonial-card { background: var(--bg-color); padding: 3rem; text-align: left; display: flex; flex-direction: column; border-radius: var(--border-radius-main); box-shadow: 10px 10px 20px var(--shadow-dark), -10px -10px 20px var(--shadow-light); }
         .testimonial-rating { color: var(--star-color); margin-bottom: 1.5rem; font-size: 1.4rem; }
         .testimonial-text { color: var(--text-light); margin-bottom: 2rem; font-size: 1.5rem; font-style: italic; flex-grow: 1; }
         .author-details { margin-top: auto; }
         .author-name { font-weight: 600; color: var(--text-color); }
         .author-position { font-size: 1.3rem; color: var(--text-light); }
+        .privacy-points { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; margin-top: 3rem; }
+        .privacy-point { padding: 2.5rem; border-radius: var(--border-radius-inner); text-align: left; box-shadow: inset 5px 5px 10px var(--shadow-dark), inset -5px -5px 10px var(--shadow-light); }
+        .privacy-point i { font-size: 2rem; color: var(--primary); margin-bottom: 1rem; }
+        .privacy-point h4 { font-size: 1.8rem; margin-bottom: 0.5rem; }
+        .faq-container { max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; gap: 2rem; }
+        .faq-item { background: var(--bg-color); border-radius: var(--border-radius-inner); box-shadow: 8px 8px 16px var(--shadow-dark), -8px -8px 16px var(--shadow-light); overflow: hidden; transition: var(--transition-smooth); }
+        .faq-item[open] { box-shadow: inset 8px 8px 16px var(--shadow-dark), inset -8px -8px 16px var(--shadow-light); }
+        .faq-question { padding: 2rem 2.5rem; font-weight: 600; font-size: 1.7rem; cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; }
+        .faq-question::-webkit-details-marker { display: none; }
+        .faq-arrow { color: var(--primary); font-size: 1.6rem; transition: transform 0.3s ease; }
+        .faq-item[open] .faq-arrow { transform: rotate(180deg); }
+        .faq-answer { padding: 0 2.5rem 2rem; color: var(--text-light); font-size: 1.5rem; line-height: 1.8; text-align: left; }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: flex; align-items: center; justify-content: center; z-index: 1001; opacity: 0; visibility: hidden; transition: opacity 0.4s ease, visibility 0.4s ease; backdrop-filter: blur(5px); }
+        .modal-overlay.is-visible { opacity: 1; visibility: visible; }
+        .modal-content { background: var(--bg-color); padding: 3rem 3.5rem; border-radius: var(--border-radius-main); box-shadow: 10px 10px 30px rgba(0,0,0,0.3); position: relative; max-width: 500px; width: 90%; text-align: left; transform: scale(0.95); opacity: 0; transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.4s ease; }
+        .modal-overlay.is-visible .modal-content { transform: scale(1); opacity: 1; }
+        .modal-content h2 { text-align: center; font-size: 2.4rem; margin-bottom: 1rem; color: var(--text-color); }
+        .modal-content .modal-subtitle { text-align: center; margin-bottom: 2.5rem; font-size: 1.5rem; color: var(--text-light); }
+        .modal-close-btn { position: absolute; top: 1rem; right: 1.5rem; background: none; border: none; font-size: 3rem; color: var(--text-light); cursor: pointer; transition: var(--transition-smooth); }
+        .modal-close-btn:hover { color: var(--primary); transform: rotate(90deg); }
+        .modal-button-group { display: flex; gap: 1.5rem; margin-top: 2rem; }
+        .modal-button-group .btn { flex-grow: 1; }
+        .form-group { position: relative; margin-bottom: 2.5rem; }
+        .form-input { width: 100%; padding: 14px 16px; border: none; background: var(--bg-color); border-radius: var(--border-radius-inner); color: var(--text-color); font-size: 1.6rem; box-shadow: inset 4px 4px 8px var(--shadow-dark), inset -4px -4px 8px var(--shadow-light); transition: all 0.2s ease; }
+        .form-label { position: absolute; top: 15px; left: 17px; color: var(--text-light); pointer-events: none; transition: all 0.2s ease; background-color: var(--bg-color); padding: 0 5px; }
+        .form-input:focus { outline: none; box-shadow: inset 4px 4px 8px var(--shadow-dark), inset -4px -4px 8px var(--shadow-light), 0 0 0 2px var(--primary); }
+        .form-input:focus + .form-label, .form-input:not(:placeholder-shown) + .form-label { top: -10px; left: 12px; font-size: 1.2rem; color: var(--primary); }
+        [data-theme="light"] .form-label { background-color: var(--bg-color); }
+        .rating-group label { display: block; margin-bottom: 12px; font-weight: 500; color: var(--text-color); }
+        .star-rating-input { display: flex; gap: 10px; font-size: 2.4rem; cursor: pointer; }
+        .star-rating-input i { color: var(--shadow-dark); transition: color 0.2s, transform 0.2s; }
+        .star-rating-input i:hover { transform: scale(1.2); }
+        .star-rating-input.rating-1 i:nth-child(-n+1), .star-rating-input.rating-2 i:nth-child(-n+2), .star-rating-input.rating-3 i:nth-child(-n+3), .star-rating-input.rating-4 i:nth-child(-n+4), .star-rating-input.rating-5 i:nth-child(-n+5) { color: var(--star-color); }
+        .toast-notification { position: fixed; top: 20px; right: 20px; background: var(--bg-color); color: var(--text-color); padding: 16px 25px; border-radius: var(--border-radius-inner); box-shadow: 10px 10px 20px var(--shadow-dark), -10px -10px 20px var(--shadow-light); border-left: 5px solid var(--primary); z-index: 2000; transform: translateY(-150%); opacity: 0; transition: var(--transition-snappy); display: flex; align-items: center; gap: 15px; }
+        .toast-notification.show { transform: translateY(0); opacity: 1; }
+        .toast-notification i { font-size: 1.8rem; color: var(--primary); }
+        .main-footer { padding: 4rem 2rem 2rem; background: var(--shadow-dark); text-align: center; }
+        .social-links { display: flex; justify-content: center; gap: 2.5rem; list-style: none; margin-bottom: 2rem; }
+        .social-links a { font-size: 2rem; color: var(--text-light); transition: var(--transition-smooth); }
+        .social-links a:hover { color: var(--primary); transform: translateY(-3px); }
+        .copyright { font-size: 1.3rem; color: var(--text-light); opacity: 0.7; }
 
-        /* === [BARU] RESPONSIVE LAYOUT === */
+        /* === RESPONSIVE LAYOUT === */
         @media (max-width: 1024px) {
             .page-wrapper {
                 grid-template-columns: 1fr; /* Layout menjadi satu kolom */
             }
             .main-sidebar {
                 position: fixed;
-                transform: translateX(-100%); /* Sembunyikan sidebar di luar layar */
+                transform: translateX(100%); /* Sembunyikan sidebar di kanan luar layar */
                 height: 100%;
+                right: 0;
+                top: 0;
             }
             .main-sidebar.active {
                 transform: translateX(0); /* Tampilkan sidebar saat aktif */
-                box-shadow: 10px 0 30px rgba(0,0,0,0.1);
+                box-shadow: -10px 0 30px rgba(0,0,0,0.1);
             }
             .main-content {
                 grid-column: 1 / -1; /* Konten mengisi seluruh kolom */
@@ -246,7 +245,6 @@
             .section-title { font-size: 3.6rem; }
             .preview-2, .preview-3 { display: none; }
             .about-grid, .privacy-points { grid-template-columns: 1fr; }
-            .about-image-frame { margin-top: 3rem; }
         }
 
     </style>
@@ -286,10 +284,10 @@
             <section id="hero">
                 <div class="hero-glow-bg"></div>
                 <div class="hero-images-bg">
-                    <img src="https://i.imgur.com/example1.png" alt="Contoh strip photobooth 1" class="preview-1">
-                    <img src="https://i.imgur.com/example2.png" alt="Contoh strip photobooth 2" class="preview-2">
-                    <img src="https://i.imgur.com/example3.png" alt="Contoh strip photobooth 3" class="preview-3">
-                    <img src="https://i.imgur.com/example4.png" alt="Contoh strip photobooth 4" class="preview-4">
+                    <img src="/assets/preview-img/preview6.png" alt="Contoh strip photobooth 1" class="preview-1">
+                    <img src="/assets/preview-img/preview4.png" alt="Contoh strip photobooth 2" class="preview-2">
+                    <img src="/assets/preview-img/preview3.png" alt="Contoh strip photobooth 3" class="preview-3">
+                    <img src="/assets/preview-img/preview2.png" alt="Contoh strip photobooth 4" class="preview-4">
                 </div>
                 <div class="container hero-content" data-aos="fade-up">
                     <a href="https://instagram.com/off.xlord" target="_blank" class="instagram-badge">
@@ -312,14 +310,11 @@
                             <p>pictlord lahir dari ide sederhana: semua orang suka photobooth, tetapi tidak selalu mudah ditemukan. Kami ingin menciptakan alat online yang gratis, menyenangkan, dan mudah digunakan yang memungkinkan Anda mengabadikan momen spontan bersama teman dan keluarga, di mana pun Anda berada.</p>
                             <p>Cukup buka situs kami, bergaya di depan kamera, dan dapatkan strip foto yang dirancang dengan indah dalam hitungan detik. Tanpa registrasi, tanpa ribet.</p>
                         </div>
-                        <div class="about-image-frame">
-                             <img src="https://images.unsplash.com/photo-1520333789090-1afc82db536a?q=80&w=2071&auto=format&fit=crop" alt="Tim sedang berdiskusi ide">
                         </div>
-                    </div>
                 </div>
             </section>
 
-            <section id="how-it-works" class="page-section">
+             <section id="how-it-works" class="page-section">
                 <div class="container" data-aos="fade-up">
                     <h2 class="section-title">Hanya 3 Langkah Mudah</h2>
                     <p class="section-subtitle">Proses yang simpel untuk hasil yang maksimal.</p>
@@ -328,6 +323,53 @@
                         <div class="step-card" data-aos="fade-up"><div class="step-icon"><i class="fas fa-magic-wand-sparkles"></i></div><h3>2. Kreasikan</h3><p>Pilih dari ratusan warna bingkai, filter aesthetic, dan stiker lucu untuk menghias fotomu.</p></div>
                         <div class="step-card" data-aos="fade-left"><div class="step-icon"><i class="fas fa-share-alt"></i></div><h3>3. Simpan & Bagikan</h3><p>Unduh strip fotomu dalam kualitas tinggi atau langsung bagikan ke media sosial favoritmu.</p></div>
                     </div>
+                </div>
+            </section>
+            
+            <section id="features" class="page-section">
+                <div class="container" data-aos="fade-up">
+                    <h2 class="section-title">Fitur Andalan Kami</h2>
+                    <p class="section-subtitle">Kami menyediakan semua yang Anda butuhkan untuk membuat photobooth yang sempurna.</p>
+                    <div class="features-grid">
+                        <div class="feature-card" data-aos="fade-up" data-aos-delay="0"><div class="feature-icon"><i class="fas fa-palette"></i></div><h4>Ratusan Warna Bingkai</h4><p>Sesuaikan warna bingkai strip fotomu agar cocok dengan gayamu. Pilihan tak terbatas!</p></div>
+                        <div class="feature-card" data-aos="fade-up" data-aos-delay="100"><div class="feature-icon"><i class="fas fa-icons"></i></div><h4>Filter & Stiker Lucu</h4><p>Tambahkan sentuhan personal dengan koleksi filter aesthetic dan stiker yang terus kami perbarui.</p></div>
+                        <div class="feature-card" data-aos="fade-up" data-aos-delay="200"><div class="feature-icon"><i class="fas fa-bolt"></i></div><h4>Instan & Tanpa Login</h4><p>Tidak perlu mendaftar atau login. Langsung gunakan dan dapatkan hasilnya dalam sekejap.</p></div>
+                        <div class="feature-card" data-aos="fade-up" data-aos-delay="300"><div class="feature-icon"><i class="fas fa-gem"></i></div><h4>Kualitas Tinggi</h4><p>Unduh fotomu dalam resolusi tinggi yang siap dicetak atau dipajang di media sosial.</p></div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="testimonials" class="page-section">
+                <div class="container">
+                    <div class="testimonial-header" data-aos="fade-up">
+                        <div>
+                            <h2 class="section-title" style="text-align: left; margin-bottom: 0;">Kata Mereka</h2>
+                            <p class="section-subtitle" style="text-align: left; margin: 0; max-width: none;">Suara dari komunitas kreatif kami.</p>
+                        </div>
+                        <button class="btn" id="add-testimonial-btn"><i class="fas fa-plus"></i> Beri Testimoni</button>
+                    </div>
+                    <div class="testimonial-grid" id="testimonial-grid" data-aos="fade-up" data-aos-delay="200"></div>
+                </div>
+            </section>
+            
+            <section id="faq" class="page-section">
+                <div class="container" data-aos="fade-up">
+                    <h2 class="section-title">Tanya Jawab Umum</h2>
+                    <p class="section-subtitle">Punya pertanyaan? Mungkin jawabannya ada di sini.</p>
+                    <div class="faq-container">
+                        <details class="faq-item" data-aos="fade-up"><summary class="faq-question">Apakah layanan ini benar-benar gratis?<i class="fas fa-chevron-down faq-arrow"></i></summary><p class="faq-answer">Tentu saja! pictlord 100% gratis untuk digunakan. Anda bisa membuat dan mengunduh photostrip sebanyak yang Anda mau tanpa biaya apa pun.</p></details>
+                        <details class="faq-item" data-aos="fade-up"><summary class="faq-question">Apakah foto saya aman?<i class="fas fa-chevron-down faq-arrow"></i></summary><p class="faq-answer">Sangat aman. Kami tidak pernah menyimpan foto Anda di server kami. Semua proses pengambilan dan pengeditan foto dilakukan langsung di browser Anda. Setelah Anda menutup halaman, foto tersebut hilang.</p></details>
+                        <details class="faq-item" data-aos="fade-up"><summary class="faq-question">Bisakah saya menggunakannya di HP?<i class="fas fa-chevron-down faq-arrow"></i></summary><p class="faq-answer">Ya! pictlord dirancang untuk berfungsi dengan baik di semua perangkat, baik itu desktop, tablet, maupun mobile, selama perangkat Anda memiliki kamera dan browser modern.</p></details>
+                        <details class="faq-item" data-aos="fade-up"><summary class="faq-question">Bagaimana cara mengganti warna bingkai?<i class="fas fa-chevron-down faq-arrow"></i></summary><p class="faq-answer">Setelah mengambil 4 foto, Anda akan masuk ke halaman editor. Di sana, Anda akan menemukan color picker yang memungkinkan Anda memilih dari jutaan warna untuk bingkai foto Anda.</p></details>
+                    </div>
+                </div>
+            </section>
+
+            <section id="contact" class="page-section">
+                <div class="container" style="text-align: center;" data-aos="fade-up">
+                    <h2 class="section-title">Hubungi Kami</h2>
+                    <p class="section-subtitle">Punya pertanyaan, saran, atau hanya ingin menyapa? Kami akan senang mendengar dari Anda!</p>
+                    <button class="btn primary" id="open-contact-modal-btn"><i class="fas fa-paper-plane"></i> &nbsp; Kirim Pesan</button>
                 </div>
             </section>
         </main>
@@ -344,29 +386,59 @@
     </div>
 </div>
 
+<div class="modal-overlay" id="contact-modal">
+    <div class="modal-content">
+        <button class="modal-close-btn">&times;</button>
+        <h2>Hubungi Kami</h2>
+        <p class="modal-subtitle">Isi form di bawah untuk mengirim pesan kepada kami.</p>
+        <form id="contact-form">
+            <div class="form-group"><input type="text" id="contact-name" class="form-input" placeholder=" " required><label for="contact-name" class="form-label">Nama</label></div>
+            <div class="form-group"><input type="email" id="contact-email" class="form-input" placeholder=" " required><label for="contact-email" class="form-label">Email</label></div>
+            <div class="form-group"><textarea id="contact-message" class="form-input" placeholder=" " required></textarea><label for="contact-message" class="form-label">Pesan Anda</label></div>
+            <div class="modal-button-group"><button type="submit" class="btn primary">Kirim</button></div>
+        </form>
+    </div>
+</div>
+
+<div class="modal-overlay" id="testimonial-modal">
+    <div class="modal-content">
+        <button class="modal-close-btn">&times;</button>
+        <h2>Bagikan Pengalaman Anda</h2>
+        <p class="modal-subtitle">Ceritakan pendapat Anda tentang layanan kami.</p>
+        <form id="testimonial-form">
+            <div class="form-group"><input type="text" id="testimonial-name" class="form-input" placeholder=" " required><label for="testimonial-name" class="form-label">Nama Lengkap</label></div>
+            <div class="form-group"><input type="text" id="testimonial-position" class="form-input" placeholder=" " required><label for="testimonial-position" class="form-label">Posisi (cth: Pelajar, Desainer)</label></div>
+            <div class="form-group"><textarea id="testimonial-text" class="form-input" placeholder=" " required></textarea><label for="testimonial-text" class="form-label">Testimoni Anda</label></div>
+            <div class="form-group rating-group"><label>Rating Anda</label><div class="star-rating-input" data-rating="0"><i class="fas fa-star" data-value="1"></i><i class="fas fa-star" data-value="2"></i><i class="fas fa-star" data-value="3"></i><i class="fas fa-star" data-value="4"></i><i class="fas fa-star" data-value="5"></i></div></div>
+            <div class="modal-button-group"><button type="submit" class="btn primary">Kirim</button></div>
+        </form>
+    </div>
+</div>
+    
 <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-    // Inisialisasi AOS
-    AOS.init({ duration: 800, once: true, offset: 120 });
+    // Inisialisasi AOS dengan animasi berulang
+    AOS.init({
+        duration: 800,
+        once: false, // Animasi akan berulang setiap kali scroll
+        offset: 120
+    });
 
-    const docElement = document.documentElement;
     const body = document.body;
-    
-    // --- [BARU] Logika Sidebar & Hamburger ---
+    const docElement = document.documentElement;
     const sidebar = document.getElementById('main-sidebar');
     const hamburger = document.getElementById('hamburger-menu');
     const navLinks = document.querySelectorAll('#sidebar-nav-menu a');
+    const themeToggle = document.getElementById('theme-toggle');
 
+    // Logika Sidebar & Hamburger
     if (hamburger && sidebar) {
         const toggleSidebar = () => {
             body.classList.toggle('sidebar-open');
             sidebar.classList.toggle('active');
         };
-
         hamburger.addEventListener('click', toggleSidebar);
-
-        // Tutup sidebar saat link diklik (di mobile)
         navLinks.forEach(link => {
             link.addEventListener('click', () => {
                 if (window.innerWidth <= 1024) {
@@ -376,8 +448,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- Logika Theme Toggle ---
-    const themeToggle = document.getElementById('theme-toggle');
+    // Logika Theme Toggle
     if (themeToggle) {
         const currentTheme = localStorage.getItem('theme') || 'dark';
         docElement.setAttribute('data-theme', currentTheme);
@@ -388,8 +459,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- [BARU] Logika Navigasi Aktif (Scroll-Spy) ---
-    const sections = document.querySelectorAll('main section[id]');
+    // Logika Navigasi Aktif (Scroll-Spy)
+    const sections = document.querySelectorAll('.main-content section[id]');
     const observer = new IntersectionObserver(entries => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -402,10 +473,111 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             }
         });
-    }, { rootMargin: '-30% 0px -70% 0px' }); // Disesuaikan untuk deteksi di tengah layar
-
+    }, { rootMargin: '-30% 0px -70% 0px' });
     sections.forEach(section => observer.observe(section));
 
+    // Logika Modal
+    const setupModal = (modalId, openBtnId) => {
+        const modal = document.getElementById(modalId);
+        const openBtn = document.getElementById(openBtnId);
+        if (!modal || !openBtn) return { open: ()=>{}, close: ()=>{} };
+        const closeBtns = modal.querySelectorAll('.modal-close-btn');
+        const form = modal.querySelector('form');
+        
+        const open = () => { modal.classList.add('is-visible'); body.classList.add('modal-open'); };
+        const close = () => { 
+            modal.classList.remove('is-visible'); 
+            body.classList.remove('modal-open'); 
+            if (form) {
+                form.reset();
+                if(form.id === 'testimonial-form'){
+                    const starContainer = form.querySelector('.star-rating-input');
+                    starContainer.dataset.rating = "0";
+                    starContainer.className = 'star-rating-input';
+                }
+            }
+        };
+        openBtn.addEventListener('click', open);
+        closeBtns.forEach(btn => btn.addEventListener('click', close));
+        modal.addEventListener('click', e => { if (e.target === modal) close(); });
+        return { open, close, modal };
+    };
+    const contactModal = setupModal('contact-modal', 'open-contact-modal-btn');
+    const testimonialModal = setupModal('testimonial-modal', 'add-testimonial-btn');
+
+    // Logika Toast Notification
+    const showToast = (message) => {
+        document.querySelector('.toast-notification')?.remove();
+        const toast = document.createElement('div');
+        toast.className = 'toast-notification';
+        toast.innerHTML = `<i class="fas fa-check-circle"></i><p>${message}</p>`;
+        body.appendChild(toast);
+        setTimeout(() => toast.classList.add('show'), 100);
+        setTimeout(() => {
+            toast.classList.remove('show');
+            toast.addEventListener('transitionend', () => toast.remove(), { once: true });
+        }, 4000);
+    };
+    
+    // Form Submission
+    document.getElementById('contact-form')?.addEventListener('submit', e => {
+        e.preventDefault();
+        showToast('Pesan berhasil terkirim!');
+        contactModal.close();
+    });
+
+    const testimonialGrid = document.getElementById('testimonial-grid');
+    const testimonialForm = document.getElementById('testimonial-form');
+    if (testimonialGrid && testimonialForm) {
+        const initialTestimonials = [
+            { name: 'Saraswati D.', position: 'Event Planner', rating: 5, text: "Sangat seru! Saya dan teman-teman menggunakan ini saat kumpul online. Kualitasnya luar biasa untuk web." },
+            { name: 'Budi R.', position: 'Mahasiswa', rating: 4, text: "Sangat simpel dan efektif. Saya butuh strip foto cepat untuk proyek mading dan pictlord sangat membantu." },
+            { name: 'Cantika T.', position: 'Desainer Grafis', rating: 5, text: "Ini website favorit baruku. Gratis, tidak perlu daftar, dan hasilnya instan. Pekerjaan yang fantastis!" }
+        ];
+        const createTestimonialCard = (data) => {
+            const card = document.createElement('div');
+            card.className = 'testimonial-card';
+            card.setAttribute('data-aos', 'fade-up');
+            const ratingHTML = Array.from({length: 5}, (_, i) => `<i class="fas fa-star" style="color: ${i < data.rating ? 'var(--star-color)' : 'var(--text-light)'}; opacity: ${i < data.rating ? 1 : 0.3};"></i>`).join('');
+            card.innerHTML = `<div class="testimonial-rating">${ratingHTML}</div><p class="testimonial-text">"${data.text}"</p><div class="author-details"><div class="author-name">${data.name}</div><div class="author-position">${data.position}</div></div>`;
+            return card;
+        };
+        initialTestimonials.forEach(t => testimonialGrid.appendChild(createTestimonialCard(t)));
+
+        const starContainer = testimonialForm.querySelector('.star-rating-input');
+        if (starContainer) {
+            const stars = starContainer.querySelectorAll('i');
+            const resetStars = () => {
+                starContainer.className = 'star-rating-input';
+                if (starContainer.dataset.rating > 0) starContainer.classList.add(`rating-${starContainer.dataset.rating}`);
+            }
+            stars.forEach(star => {
+                star.addEventListener('mouseover', () => {
+                    starContainer.className = 'star-rating-input';
+                    starContainer.classList.add(`rating-${star.dataset.value}`);
+                });
+                star.addEventListener('mouseout', resetStars);
+                star.addEventListener('click', () => { 
+                    starContainer.dataset.rating = star.dataset.value; 
+                    resetStars();
+                });
+            });
+        }
+        
+        testimonialForm.addEventListener('submit', e => {
+            e.preventDefault();
+            const name = document.getElementById('testimonial-name').value;
+            const position = document.getElementById('testimonial-position').value;
+            const text = document.getElementById('testimonial-text').value;
+            const rating = parseInt(starContainer.dataset.rating) || 0;
+            if (!name || !position || !text || rating === 0) { alert('Harap isi semua kolom dan berikan rating.'); return; }
+            const newCard = createTestimonialCard({ name, position, text, rating });
+            testimonialGrid.prepend(newCard);
+            setTimeout(() => AOS.refreshHard(), 50); 
+            showToast(`Terima kasih atas testimoninya, ${name}!`);
+            testimonialModal.close();
+        });
+    }
 });
 </script>
 </body>
