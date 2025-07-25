@@ -70,32 +70,35 @@
         .btn.primary { color: #ffffff; background: var(--primary); }
         .btn.primary:hover { background: var(--primary-dark); color: white; }
 
-        /* === [ROMBAK] Header & Navigasi === */
+        /* === [DIUBAH] Header & Navigasi Desktop === */
         .main-header { position: sticky; top: 15px; z-index: 1000; margin: 0 auto 15px auto; width: 95%; max-width: 980px; left: 50%; transform: translateX(-50%); }
         .header-container {
-            position: relative; /* Diperlukan untuk centering absolut nav */
             display: flex; justify-content: space-between; align-items: center; padding: 15px 30px;
             background: rgba(44, 47, 54, 0.7); backdrop-filter: blur(10px);
             border-radius: var(--border-radius-main); box-shadow: 10px 10px 25px var(--shadow-dark), -10px -10px 25px var(--shadow-light);
             border: 1px solid var(--shadow-light);
         }
         [data-theme="light"] .header-container { background: rgba(240, 242, 245, 0.7); }
-        .logo { font-size: 2.4rem; font-weight: 700; color: var(--text-color); text-decoration: none; flex-shrink: 0; z-index: 2; }
+        .logo { font-size: 2.4rem; font-weight: 700; color: var(--text-color); text-decoration: none; flex-shrink: 0; }
         .logo .highlight { color: var(--primary); }
         
-        /* Navigasi utama (desktop) dipusatkan secara absolut */
+        /* [BARU] Grup untuk navigasi dan ikon di kanan */
+        .header-right-group {
+            display: flex;
+            align-items: center;
+            gap: 3rem; /* Jarak antara navigasi dan ikon */
+        }
+
         .main-nav {
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 1;
+            display: flex; 
+            align-items: center;
         }
         
         .nav-links { list-style: none; display: flex; gap: 2.5rem; font-size: 1.5rem; font-weight: 500; }
         .nav-links a { color: var(--text-light); transition: color 0.3s ease; text-decoration: none; }
         .nav-links a:hover, .nav-links a.current-nav { color: var(--primary); font-weight: 600; }
         
-        .header-actions { display: flex; align-items: center; gap: 15px; flex-shrink: 0; z-index: 2; }
+        .header-actions { display: flex; align-items: center; gap: 15px; flex-shrink: 0; }
 
         .theme-toggle-btn {
             background: var(--bg-color); width: 45px; height: 45px; border-radius: 50%; display: flex;
@@ -108,9 +111,9 @@
         [data-theme="light"] .theme-toggle-btn i.fa-moon { display: none; }
         [data-theme="light"] .theme-toggle-btn i.fa-sun { display: block; }
         
-        /* === [ROMBAK] Hamburger & Sidebar === */
+        /* === Hamburger & Sidebar === */
         .hamburger-menu {
-            display: none; /* Sembunyi di desktop */
+            display: none; 
             cursor: pointer; width: 48px; height: 48px; justify-content: center; align-items: center;
             position: relative; z-index: 1003; background: var(--bg-color); border: none; border-radius: 50%;
             box-shadow: 5px 5px 10px var(--shadow-dark), -5px -5px 10px var(--shadow-light);
@@ -129,21 +132,20 @@
         }
         .sidebar.active { right: 0; }
         .sidebar-nav { display: flex; flex-direction: column; gap: 15px; }
-        /* Style untuk link sidebar dengan ikon */
         .sidebar-nav a {
-            display: flex; align-items: center; justify-content: flex-start; gap: 18px; /* Mengatur ikon dan teks */
+            display: flex; align-items: center; justify-content: flex-start; gap: 18px; 
             color: var(--text-light); text-decoration: none; font-size: 1.8rem; font-weight: 500;
             padding: 15px 25px; border-radius: var(--border-radius-inner); transition: var(--transition-smooth);
         }
         .sidebar-nav a:hover { color: var(--primary); background: var(--shadow-dark); }
-        .sidebar-nav a i { width: 25px; text-align: center; color: var(--primary); } /* Memberi ruang dan warna pada ikon */
+        .sidebar-nav a i { width: 25px; text-align: center; color: var(--primary); } 
         
         /* --- Sections --- */
-        .page-section { padding: 8rem 0; position: relative; } /* Tambah position relative untuk bg dinamis */
+        .page-section { padding: 8rem 0; position: relative; } 
         .section-title { font-size: 4rem; font-weight: 800; text-align: center; margin-bottom: 1.5rem; color: var(--text-color); }
         .section-subtitle { font-size: 1.8rem; color: var(--text-light); text-align: center; max-width: 700px; margin: 0 auto 5rem auto; }
         
-        /* === [BARU] Latar Belakang Dinamis untuk Desktop === */
+        /* --- Latar Belakang Dinamis untuk Desktop --- */
         .dynamic-bg-container {
             position: relative;
             z-index: 1;
@@ -173,18 +175,12 @@
             to { transform: translate(-50%, -50%) rotate(360deg); }
         }
 
-        /* --- Hero Section --- */
+        /* --- Sisa CSS (tidak diubah) --- */
         #hero { display: flex; align-items: center; justify-content: center; text-align: center; min-height: 100vh; padding: 4rem 0; position: relative; overflow: hidden; }
         .hero-glow-bg { position: absolute; top: 50%; left: 50%; width: 40vw; height: 40vw; max-width: 500px; max-height: 500px; background: radial-gradient(circle, rgba(13, 148, 136, 0.4), transparent 70%); border-radius: 50%; filter: blur(100px); transform: translate(-50%, -50%); z-index: 0; animation: pulsate-glow 7s ease-in-out infinite; }
         @keyframes pulsate-glow { 0%, 100% { transform: translate(-50%, -50%) scale(1); } 50% { transform: translate(-50%, -50%) scale(1.2); } }
         .hero-content { max-width: 800px; position: relative; z-index: 2; }
-        .instagram-badge {
-            display: inline-flex; align-items: center; gap: 1rem; text-decoration: none;
-            background: var(--bg-color); color: var(--text-light); padding: 1rem 2rem;
-            border-radius: 999px; font-size: 1.4rem; font-weight: 600; margin-bottom: 2.5rem;
-            box-shadow: 4px 4px 8px var(--shadow-dark), -4px -4px 8px var(--shadow-light);
-            transition: var(--transition-smooth);
-        }
+        .instagram-badge { display: inline-flex; align-items: center; gap: 1rem; text-decoration: none; background: var(--bg-color); color: var(--text-light); padding: 1rem 2rem; border-radius: 999px; font-size: 1.4rem; font-weight: 600; margin-bottom: 2.5rem; box-shadow: 4px 4px 8px var(--shadow-dark), -4px -4px 8px var(--shadow-light); transition: var(--transition-smooth); }
         .instagram-badge:hover { color: var(--primary); transform: translateY(-2px); }
         #announcement-text-container { transition: opacity 0.5s ease-in-out; }
         .hero-header { font-size: 6.4rem; font-weight: 800; line-height: 1.1; margin-bottom: 1.5rem; }
@@ -192,29 +188,14 @@
         .hero-images-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
         .hero-images-bg img { position: absolute; width: 15vw; max-width: 180px; min-width: 100px; border-radius: 12px; animation: gentle-float 8s ease-in-out infinite; box-shadow: 0px 10px 30px rgba(0,0,0,0.2); }
         @keyframes gentle-float { 0%, 100% { transform: translateY(0px) rotate(var(--initial-rotate)); } 50% { transform: translateY(-20px) rotate(var(--final-rotate)); } }
-        
         .preview-1 { --initial-rotate: -15deg; --final-rotate: -12deg; top: 15%; left: 10%; animation-duration: 10s; }
         .preview-2 { --initial-rotate: -5deg; --final-rotate: -8deg;  top: 60%; left: 18%; animation-duration: 8s; animation-delay: -2s; }
         .preview-3 { --initial-rotate: 15deg; --final-rotate: 18deg;  top: 20%; right: 12%; animation-duration: 9s; }
         .preview-4 { --initial-rotate: 5deg; --final-rotate: 2deg;   top: 65%; right: 15%; animation-duration: 11s; animation-delay: -4s; }
-
-        /* === [ROMBAK] Sisa CSS dari pictlord... === */
-        /* Layout About diubah jadi 1 kolom */
-        .about-grid { 
-            display: grid;
-            grid-template-columns: 1fr;
-            max-width: 850px; /* Dibatasi agar mudah dibaca */
-            margin: 0 auto; /* Tengah */
-        }
+        .about-grid { display: grid; grid-template-columns: 1fr; max-width: 850px; margin: 0 auto; }
         .about-text h3 { font-size: 2.8rem; color: var(--primary); margin-bottom: 1rem; }
-        /* Style .about-image-frame dihapus karena elemennya sudah tidak ada */
-
         .steps-container, .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 3rem; }
-        .step-card, .feature-card {
-            background: var(--bg-color); padding: 35px 30px; text-align: center;
-            border-radius: var(--border-radius-main);
-            box-shadow: 10px 10px 20px var(--shadow-dark), -10px -10px 20px var(--shadow-light);
-        }
+        .step-card, .feature-card { background: var(--bg-color); padding: 35px 30px; text-align: center; border-radius: var(--border-radius-main); box-shadow: 10px 10px 20px var(--shadow-dark), -10px -10px 20px var(--shadow-light); }
         .step-icon, .feature-icon { font-size: 3rem; margin-bottom: 2rem; color: var(--primary); }
         .step-card h3, .feature-card h4 { font-size: 1.8rem; font-weight: 600; margin-bottom: 1rem; color: var(--text-color); }
         .step-card p, .feature-card p { font-size: 1.5rem; color: var(--text-light); }
@@ -223,21 +204,14 @@
         .feature-card:hover { transform: translateY(-10px) scale(1.03) rotateY(5deg); box-shadow: 15px 15px 30px var(--shadow-dark), -15px -15px 30px var(--shadow-light); }
         .testimonial-header { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto 4rem auto; flex-wrap: wrap; gap: 2rem; }
         .testimonial-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 3rem; }
-        .testimonial-card {
-            background: var(--bg-color); padding: 3rem; text-align: left; display: flex; flex-direction: column;
-            border-radius: var(--border-radius-main);
-            box-shadow: 10px 10px 20px var(--shadow-dark), -10px -10px 20px var(--shadow-light);
-        }
+        .testimonial-card { background: var(--bg-color); padding: 3rem; text-align: left; display: flex; flex-direction: column; border-radius: var(--border-radius-main); box-shadow: 10px 10px 20px var(--shadow-dark), -10px -10px 20px var(--shadow-light); }
         .testimonial-rating { color: var(--star-color); margin-bottom: 1.5rem; font-size: 1.4rem; }
         .testimonial-text { color: var(--text-light); margin-bottom: 2rem; font-size: 1.5rem; font-style: italic; flex-grow: 1; }
         .author-details { margin-top: auto; }
         .author-name { font-weight: 600; color: var(--text-color); }
         .author-position { font-size: 1.3rem; color: var(--text-light); }
         .privacy-points { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; margin-top: 3rem; }
-        .privacy-point {
-            padding: 2.5rem; border-radius: var(--border-radius-inner); text-align: left;
-            box-shadow: inset 5px 5px 10px var(--shadow-dark), inset -5px -5px 10px var(--shadow-light);
-        }
+        .privacy-point { padding: 2.5rem; border-radius: var(--border-radius-inner); text-align: left; box-shadow: inset 5px 5px 10px var(--shadow-dark), inset -5px -5px 10px var(--shadow-light); }
         .privacy-point i { font-size: 2rem; color: var(--primary); margin-bottom: 1rem; }
         .privacy-point h4 { font-size: 1.8rem; margin-bottom: 0.5rem; }
         .faq-container { max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; gap: 2rem; }
@@ -278,10 +252,14 @@
         .social-links a:hover { color: var(--primary); transform: translateY(-3px); }
         .copyright { font-size: 1.3rem; color: var(--text-light); opacity: 0.7; }
         
-        /* === [ROMBAK] Responsive === */
-        @media (max-width: 900px) { /* Diedit agar nav hilang lebih cepat */
-            .main-nav { display: none; } /* Sembunyikan nav desktop */
-            .hamburger-menu { display: flex; } /* Tampilkan hamburger */
+        /* === Responsive === */
+        @media (max-width: 900px) { 
+            .main-nav { display: none; } 
+            .hamburger-menu { display: flex; } 
+
+            .header-container {
+                justify-content: flex-end;
+            }
         }
 
         @media (max-width: 768px) {
@@ -302,25 +280,27 @@
         <div class="header-container">
             <a href="#hero" class="logo">pict<span class="highlight">lord</span></a>
             
-            <nav class="main-nav">
-                <ul class="nav-links" id="nav-menu-desktop">
-                    <li><a href="#hero" class="current-nav">Beranda</a></li>
-                    <li><a href="#about">Tentang</a></li>
-                    <li><a href="#how-it-works">Cara Kerja</a></li>
-                    <li><a href="#features">Fitur</a></li>
-                    <li><a href="#testimonials">Testimoni</a></li>
-                    <li><a href="#faq">FAQ</a></li>
-                    <li><a href="#contact">Kontak</a></li>
-                </ul>
-            </nav>
+            <div class="header-right-group">
+                <nav class="main-nav">
+                    <ul class="nav-links" id="nav-menu-desktop">
+                        <li><a href="#hero" class="current-nav">Beranda</a></li>
+                        <li><a href="#about">Tentang</a></li>
+                        <li><a href="#how-it-works">Cara Kerja</a></li>
+                        <li><a href="#features">Fitur</a></li>
+                        <li><a href="#testimonials">Testimoni</a></li>
+                        <li><a href="#faq">FAQ</a></li>
+                        <li><a href="#contact">Kontak</a></li>
+                    </ul>
+                </nav>
 
-            <div class="header-actions">
-                <button class="theme-toggle-btn" id="theme-toggle" aria-label="Ubah Tema">
-                    <i class="fas fa-moon"></i><i class="fas fa-sun"></i>
-                </button>
-                <button class="hamburger-menu" id="hamburger-menu" aria-label="Buka Menu">
-                    <span class="bar top"></span><span class="bar middle"></span><span class="bar bottom"></span>
-                </button>
+                <div class="header-actions">
+                    <button class="theme-toggle-btn" id="theme-toggle" aria-label="Ubah Tema">
+                        <i class="fas fa-moon"></i><i class="fas fa-sun"></i>
+                    </button>
+                    <button class="hamburger-menu" id="hamburger-menu" aria-label="Buka Menu">
+                        <span class="bar top"></span><span class="bar middle"></span><span class="bar bottom"></span>
+                    </button>
+                </div>
             </div>
         </div>
     </header>
