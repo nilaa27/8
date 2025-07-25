@@ -67,7 +67,7 @@
         .btn.primary { color: #ffffff; background: var(--primary); }
         .btn.primary:hover { background: var(--primary-dark); color: white; }
 
-        /* --- Header & Navigasi --- */
+        /* --- Header --- */
         .main-header { position: sticky; top: 15px; z-index: 1000; margin: 0 auto 15px auto; width: 95%; max-width: 980px; left: 50%; transform: translateX(-50%); }
         .header-container {
             display: flex; justify-content: space-between; align-items: center; padding: 15px 30px;
@@ -76,21 +76,10 @@
             border: 1px solid var(--shadow-light);
         }
         [data-theme="light"] .header-container { background: rgba(240, 242, 245, 0.7); }
-        .logo { font-size: 2.4rem; font-weight: 700; color: var(--text-color); text-decoration: none; flex-shrink: 0; }
+        .logo { font-size: 2.4rem; font-weight: 700; color: var(--text-color); text-decoration: none; }
         .logo .highlight { color: var(--primary); }
         
-        .main-nav {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-grow: 1;
-        }
-        
-        .nav-links { list-style: none; display: flex; gap: 2.5rem; font-size: 1.5rem; font-weight: 500; }
-        .nav-links a { color: var(--text-light); transition: color 0.3s ease; text-decoration: none; }
-        .nav-links a:hover, .nav-links a.current-nav { color: var(--primary); font-weight: 600; }
-        
-        .header-actions { display: flex; align-items: center; gap: 15px; flex-shrink: 0; }
+        .header-actions { display: flex; align-items: center; gap: 15px; }
 
         .theme-toggle-btn {
             background: var(--bg-color); width: 45px; height: 45px; border-radius: 50%; display: flex;
@@ -211,29 +200,10 @@
         .copyright { font-size: 1.3rem; color: var(--text-light); opacity: 0.7; }
         
         /* --- Responsive --- */
-        @media (max-width: 900px) { /* Titik henti baru untuk navigasi */
-            .main-nav { flex-grow: 0; }
-            .nav-links { gap: 1.5rem; font-size: 1.4rem; }
-        }
-
         @media (max-width: 768px) {
             html { font-size: 58%; }
-
-            /* Penyesuaian Header untuk Mobile (Tanpa Sidebar) */
             .main-header { width: 100%; top: 0; border-radius: 0; }
-            .header-container { flex-wrap: wrap; padding: 15px 20px; }
-            .main-nav {
-                order: 3; /* Pindahkan navigasi ke baris bawah */
-                width: 100%;
-                margin-top: 15px;
-                flex-grow: 1; /* Biarkan mengisi ruang agar bisa di tengah */
-            }
-            .nav-links {
-                flex-wrap: wrap; /* Izinkan link untuk wrap */
-                justify-content: center;
-                gap: 1rem 2rem; /* Atur spasi untuk baris dan kolom */
-            }
-            
+            .header-container { padding: 10px 20px; }
             .hero-header { font-size: 4.8rem; }
             .section-title { font-size: 3.6rem; }
             .preview-2, .preview-3 { display: none; }
@@ -247,20 +217,8 @@
 
     <header class="main-header" data-aos="fade-down">
         <div class="header-container">
-            <a href="#hero" class="logo">pict<span class="highlight">lord</span></a>
+            <a href="#" class="logo">pict<span class="highlight">lord</span></a>
             
-            <nav class="main-nav">
-                <ul class="nav-links" id="nav-menu-desktop">
-                    <li><a href="#hero" class="current-nav">Beranda</a></li>
-                    <li><a href="#about">Tentang</a></li>
-                    <li><a href="#how-it-works">Cara Kerja</a></li>
-                    <li><a href="#features">Fitur</a></li>
-                    <li><a href="#testimonials">Testimoni</a></li>
-                    <li><a href="#faq">FAQ</a></li>
-                    <li><a href="#contact">Kontak</a></li>
-                </ul>
-            </nav>
-
             <div class="header-actions">
                 <button class="theme-toggle-btn" id="theme-toggle" aria-label="Ubah Tema">
                     <i class="fas fa-moon"></i><i class="fas fa-sun"></i>
@@ -313,7 +271,7 @@
                 <div class="steps-container">
                     <div class="step-card" data-aos="fade-right"><div class="step-icon"><i class="fas fa-camera-retro"></i></div><h3>1. Ambil Foto</h3><p>Aktifkan kameramu, pasang pose terbaikmu, dan biarkan kami menangkap 4 momen spesialmu.</p></div>
                     <div class="step-card" data-aos="fade-up"><div class="step-icon"><i class="fas fa-magic-wand-sparkles"></i></div><h3>2. Kreasikan</h3><p>Pilih dari ratusan warna bingkai, filter aesthetic, dan stiker lucu untuk menghias fotomu.</p></div>
-                    <div class="step-card" data-aos="fade-left"><div class="step-icon"><i class="fas fa-share-alt"></i></div><h3>3. Simpan & Bagikan</h3><p>Unduh strip fotomu dalam kualitas tinggi atau langsung bagikan ke media sosial favoritmu.</p></div>
+                    <div class="step-card" data-aos="fade-left"><div class="step-icon"><i class="fas fa-download"></i></div><h3>3. Simpan & Bagikan</h3><p>Unduh strip fotomu dalam kualitas tinggi atau langsung bagikan ke media sosial favoritmu.</p></div>
                 </div>
             </div>
         </section>
@@ -384,6 +342,7 @@
             </div>
         </section>
     </main>
+
     <footer class="main-footer">
         <div class="container">
             <div class="social-links">
@@ -443,7 +402,7 @@
             });
         }
 
-        // --- Sisa JavaScript (tidak berubah) ---
+        // --- Sisa JavaScript dari pictlord ---
         const announcementTextContainer = document.getElementById('announcement-text-container');
         if (announcementTextContainer) {
             const messages = [
@@ -460,23 +419,6 @@
                 }, 500);
             }, 4000);
         }
-
-        const allNavLinks = document.querySelectorAll('#nav-menu-desktop a');
-        const sections = document.querySelectorAll('main section[id]');
-        const observer = new IntersectionObserver(entries => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const id = entry.target.id;
-                    allNavLinks.forEach(link => {
-                        link.classList.remove('current-nav');
-                        if (link.getAttribute('href').includes(`#${id}`)) {
-                            link.classList.add('current-nav');
-                        }
-                    });
-                }
-            });
-        }, { rootMargin: '-40% 0px -60% 0px' });
-        sections.forEach(section => observer.observe(section));
         
         document.querySelectorAll('.faq-item').forEach(item => {
             item.addEventListener('toggle', e => {
