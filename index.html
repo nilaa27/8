@@ -50,11 +50,8 @@
             line-height: 1.7; transition: background-color 0.5s ease, color 0.5s ease;
             overflow-x: hidden;
         }
-        body.sidebar-open, body.modal-open { overflow: hidden; }
-        body.sidebar-open::before {
-            content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.5); z-index: 998; backdrop-filter: blur(2px);
-        }
+        body.modal-open { overflow: hidden; }
+
         .container { max-width: 1200px; width: 90%; margin: 0 auto; }
 
         /* --- Tombol Global --- */
@@ -70,7 +67,7 @@
         .btn.primary { color: #ffffff; background: var(--primary); }
         .btn.primary:hover { background: var(--primary-dark); color: white; }
 
-        /* --- [FINAL FIX] Header & Navigasi --- */
+        /* --- Header & Navigasi --- */
         .main-header { position: sticky; top: 15px; z-index: 1000; margin: 0 auto 15px auto; width: 95%; max-width: 980px; left: 50%; transform: translateX(-50%); }
         .header-container {
             display: flex; justify-content: space-between; align-items: center; padding: 15px 30px;
@@ -83,10 +80,10 @@
         .logo .highlight { color: var(--primary); }
         
         .main-nav {
-            display: flex; /* Tetap flex untuk desktop */
+            display: flex;
             align-items: center;
-            justify-content: center; /* Menengahkan ul.nav-links */
-            flex-grow: 1; /* KUNCI: Membuat navigasi mengisi ruang agar bisa di tengah */
+            justify-content: center;
+            flex-grow: 1;
         }
         
         .nav-links { list-style: none; display: flex; gap: 2.5rem; font-size: 1.5rem; font-weight: 500; }
@@ -105,30 +102,6 @@
         .theme-toggle-btn i.fa-sun { display: none; }
         [data-theme="light"] .theme-toggle-btn i.fa-moon { display: none; }
         [data-theme="light"] .theme-toggle-btn i.fa-sun { display: block; }
-        
-        /* --- [FINAL FIX] Hamburger & Sidebar --- */
-        .hamburger-menu {
-            display: none; /* Sembunyi di desktop */
-            cursor: pointer; width: 48px; height: 48px; justify-content: center; align-items: center;
-            position: relative; z-index: 1003; background: var(--bg-color); border: none; border-radius: 50%;
-            box-shadow: 5px 5px 10px var(--shadow-dark), -5px -5px 10px var(--shadow-light);
-        }
-        .hamburger-menu .bar { display: block; width: 22px; height: 3px; background-color: var(--text-color); border-radius: 3px; position: absolute; left: 13px; transition: var(--transition-snappy); }
-        .bar.top { top: 16px; } .bar.middle { top: 22.5px; } .bar.bottom { top: 29px; }
-        body.sidebar-open .bar.top { top: 22.5px; transform: rotate(45deg); }
-        body.sidebar-open .bar.middle { opacity: 0; transform: translateX(10px); }
-        body.sidebar-open .bar.bottom { top: 22.5px; transform: rotate(-45deg); }
-        
-        .sidebar {
-            position: fixed; top: 0; right: -320px; width: 300px; height: 100%;
-            background: var(--bg-color); box-shadow: -10px 0px 30px var(--shadow-dark); z-index: 999;
-            padding: 80px 30px 30px; display: flex; flex-direction: column; gap: 25px;
-            transition: right 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        }
-        .sidebar.active { right: 0; }
-        .sidebar-nav { display: flex; flex-direction: column; gap: 20px; text-align: center; }
-        .sidebar-nav a { color: var(--text-light); text-decoration: none; font-size: 1.8rem; font-weight: 500; padding: 15px; border-radius: var(--border-radius-inner); transition: var(--transition-smooth); }
-        .sidebar-nav a:hover { color: var(--primary); background: var(--shadow-dark); }
         
         /* --- Sections --- */
         .page-section { padding: 8rem 0; }
@@ -237,13 +210,30 @@
         .social-links a:hover { color: var(--primary); transform: translateY(-3px); }
         .copyright { font-size: 1.3rem; color: var(--text-light); opacity: 0.7; }
         
-        /* --- [FINAL FIX] Responsive --- */
+        /* --- Responsive --- */
+        @media (max-width: 900px) { /* Titik henti baru untuk navigasi */
+            .main-nav { flex-grow: 0; }
+            .nav-links { gap: 1.5rem; font-size: 1.4rem; }
+        }
+
         @media (max-width: 768px) {
             html { font-size: 58%; }
-            .main-nav { display: none; } /* Sembunyikan nav desktop */
-            .hamburger-menu { display: flex; } /* Tampilkan hamburger */
-            .header-container { padding: 10px 20px; }
+
+            /* Penyesuaian Header untuk Mobile (Tanpa Sidebar) */
             .main-header { width: 100%; top: 0; border-radius: 0; }
+            .header-container { flex-wrap: wrap; padding: 15px 20px; }
+            .main-nav {
+                order: 3; /* Pindahkan navigasi ke baris bawah */
+                width: 100%;
+                margin-top: 15px;
+                flex-grow: 1; /* Biarkan mengisi ruang agar bisa di tengah */
+            }
+            .nav-links {
+                flex-wrap: wrap; /* Izinkan link untuk wrap */
+                justify-content: center;
+                gap: 1rem 2rem; /* Atur spasi untuk baris dan kolom */
+            }
+            
             .hero-header { font-size: 4.8rem; }
             .section-title { font-size: 3.6rem; }
             .preview-2, .preview-3 { display: none; }
@@ -275,28 +265,9 @@
                 <button class="theme-toggle-btn" id="theme-toggle" aria-label="Ubah Tema">
                     <i class="fas fa-moon"></i><i class="fas fa-sun"></i>
                 </button>
-                <button class="hamburger-menu" id="hamburger-menu" aria-label="Buka Menu">
-                    <span class="bar top"></span><span class="bar middle"></span><span class="bar bottom"></span>
-                </button>
             </div>
         </div>
     </header>
-
-    <div class="sidebar" id="sidebar">
-        <nav class="sidebar-nav" id="nav-menu-mobile">
-            <a href="#hero">Beranda</a>
-            <a href="#about">Tentang Kami</a>
-            <a href="#how-it-works">Cara Kerja</a>
-            <a href="#features">Fitur</a>
-            <a href="#testimonials">Testimoni</a>
-            <a href="#privacy">Privasi</a>
-            <a href="#faq">FAQ</a>
-            <a href="#contact">Kontak</a>
-        </nav>
-        <a href="layout.html" class="btn primary" style="margin-top: auto; justify-content: center;">
-            MULAI SEKARANG <i class="fas fa-camera"></i>
-        </a>
-    </div>
 
     <main>
         <section id="hero">
@@ -413,7 +384,6 @@
             </div>
         </section>
     </main>
-
     <footer class="main-footer">
         <div class="container">
             <div class="social-links">
@@ -461,12 +431,8 @@
         const docElement = document.documentElement;
         const body = document.body;
         
-        // --- [FINAL FIX] Theme Toggle & Sidebar Logic ---
+        // --- Theme Toggle Logic ---
         const themeToggle = document.getElementById('theme-toggle');
-        const hamburger = document.getElementById('hamburger-menu');
-        const sidebar = document.getElementById('sidebar');
-
-        // Theme Toggle
         if (themeToggle) {
             const currentTheme = localStorage.getItem('theme') || 'dark';
             docElement.setAttribute('data-theme', currentTheme);
@@ -477,22 +443,7 @@
             });
         }
 
-        // Sidebar
-        if (hamburger && sidebar) {
-            const toggleSidebar = () => {
-                body.classList.toggle('sidebar-open');
-                sidebar.classList.toggle('active');
-            };
-            hamburger.addEventListener('click', toggleSidebar);
-            
-            sidebar.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
-                if (body.classList.contains('sidebar-open')) {
-                    toggleSidebar();
-                }
-            }));
-        }
-
-        // --- Sisa JavaScript dari pictlord ---
+        // --- Sisa JavaScript (tidak berubah) ---
         const announcementTextContainer = document.getElementById('announcement-text-container');
         if (announcementTextContainer) {
             const messages = [
@@ -510,7 +461,7 @@
             }, 4000);
         }
 
-        const allNavLinks = document.querySelectorAll('#nav-menu-desktop a, #nav-menu-mobile a');
+        const allNavLinks = document.querySelectorAll('#nav-menu-desktop a');
         const sections = document.querySelectorAll('main section[id]');
         const observer = new IntersectionObserver(entries => {
             entries.forEach(entry => {
