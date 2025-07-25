@@ -17,7 +17,6 @@
     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
 
     <style>
-        /* === TEMA NEUMORPHIC === */
         :root {
             --bg-color: #2c2f36;
             --shadow-dark: #212429;
@@ -45,10 +44,7 @@
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; scroll-behavior: smooth; }
         html { font-size: 62.5%; }
-        /* [FIX] Disabled horizontal scroll */
-        body, html {
-            overflow-x: hidden;
-        }
+        body, html { overflow-x: hidden; }
         body {
             font-size: 1.6rem; background: var(--bg-color); color: var(--text-color);
             line-height: 1.7; transition: background-color 0.5s ease, color 0.5s ease;
@@ -60,7 +56,6 @@
         }
         .container { max-width: 1280px; width: 92%; margin: 0 auto; }
 
-        /* --- Tombol Global --- */
         .btn {
             display: inline-flex; align-items: center; justify-content: center; gap: 12px;
             padding: 14px 28px; border-radius: var(--border-radius-inner);
@@ -74,33 +69,47 @@
         .btn.primary { color: #ffffff; background: var(--primary); }
         .btn.primary:hover { background: var(--primary-dark); color: white; transform: translateY(-3px) scale(1.02); }
         
-        /* --- Header & Navigasi --- */
+        /* === [START] Navbar Fix === */
         .main-header { position: sticky; top: 15px; z-index: 1000; margin: 0 auto 15px auto; width: 95%; max-width: 1280px; left: 50%; transform: translateX(-50%); }
         .header-container {
-            display: flex; justify-content: space-between; align-items: center; padding: 15px 30px;
-            background: rgba(44, 47, 54, 0.7); backdrop-filter: blur(10px);
-            border-radius: var(--border-radius-main); box-shadow: 10px 10px 25px var(--shadow-dark), -10px -10px 25px var(--shadow-light);
+            display: flex;
+            justify-content: space-between; /* Mendorong item ke tepi */
+            align-items: center;
+            padding: 15px 30px;
+            background: rgba(44, 47, 54, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: var(--border-radius-main);
+            box-shadow: 10px 10px 25px var(--shadow-dark), -10px -10px 25px var(--shadow-light);
             border: 1px solid var(--shadow-light);
         }
         [data-theme="light"] .header-container { background: rgba(240, 242, 245, 0.7); }
         
-        /* [NEW] Logo with SVG */
         .logo { 
             font-size: 2.4rem; font-weight: 700; color: var(--text-color); text-decoration: none; 
-            flex-shrink: 0; display: flex; align-items: center; gap: 12px;
+            display: flex; align-items: center; gap: 12px;
+            flex-shrink: 0; /* Mencegah logo menyusut */
         }
         .logo svg { width: 32px; height: 32px; transition: transform 0.4s ease; }
         .logo:hover svg { transform: rotate(180deg); }
         .logo .highlight { color: var(--primary); }
         
-        .main-nav { display: flex; align-items: center; justify-content: center; flex-grow: 1; }
+        .main-nav {
+            display: flex;
+            justify-content: center; /* Menengahkan link di dalam nav */
+            flex-grow: 1; /* [KUNCI] Membuat nav mengisi ruang kosong */
+        }
         .nav-links { list-style: none; display: flex; gap: 3rem; font-size: 1.5rem; font-weight: 500; }
         .nav-links a { color: var(--text-light); transition: color 0.3s ease; text-decoration: none; }
         .nav-links a:hover, .nav-links a.current-nav { color: var(--primary); font-weight: 600; }
         
-        .header-actions { display: flex; align-items: center; gap: 15px; flex-shrink: 0; }
-        
-        /* [NEW] Hide desktop button on mobile */
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-shrink: 0; /* Mencegah tombol menyusut */
+        }
+        /* === [END] Navbar Fix === */
+
         .hide-on-mobile { display: inline-flex; }
 
         .theme-toggle-btn {
@@ -114,7 +123,6 @@
         [data-theme="light"] .theme-toggle-btn i.fa-moon { display: none; }
         [data-theme="light"] .theme-toggle-btn i.fa-sun { display: block; }
         
-        /* --- Hamburger & Sidebar --- */
         .hamburger-menu {
             display: none; cursor: pointer; width: 48px; height: 48px; justify-content: center; align-items: center;
             position: relative; z-index: 1003; background: var(--bg-color); border: none; border-radius: 50%;
@@ -134,15 +142,17 @@
         }
         .sidebar.active { right: 0; }
         .sidebar-nav { display: flex; flex-direction: column; gap: 20px; text-align: center; }
-        .sidebar-nav a { color: var(--text-light); text-decoration: none; font-size: 1.8rem; font-weight: 500; padding: 15px; border-radius: var(--border-radius-inner); transition: var(--transition-smooth); }
+        .sidebar-nav a { 
+            color: var(--text-light); text-decoration: none; font-size: 1.8rem; font-weight: 500; 
+            padding: 15px; border-radius: var(--border-radius-inner); transition: var(--transition-smooth);
+            display: flex; align-items: center; justify-content: center; gap: 1.5rem;
+        }
         .sidebar-nav a:hover { color: var(--primary); background: var(--shadow-dark); }
         
-        /* --- Sections --- */
         .page-section { padding: 8rem 0; }
         .section-title { font-size: 4rem; font-weight: 800; text-align: center; margin-bottom: 1.5rem; color: var(--text-color); }
         .section-subtitle { font-size: 1.8rem; color: var(--text-light); text-align: center; max-width: 800px; margin: 0 auto 5rem auto; }
         
-        /* --- Hero Section --- */
         #hero { display: flex; align-items: center; justify-content: center; text-align: center; min-height: 100vh; padding: 4rem 0; position: relative; overflow: hidden; }
         .hero-glow-bg { position: absolute; top: 50%; left: 50%; width: 40vw; height: 40vw; max-width: 500px; max-height: 500px; background: radial-gradient(circle, rgba(13, 148, 136, 0.4), transparent 70%); border-radius: 50%; filter: blur(100px); transform: translate(-50%, -50%); z-index: 0; animation: pulsate-glow 7s ease-in-out infinite; }
         @keyframes pulsate-glow { 0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; } 50% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; } }
@@ -167,8 +177,6 @@
         .preview-3 { --initial-rotate: 15deg; --final-rotate: 18deg;  top: 20%; right: 12%; animation-duration: 9s; }
         .preview-4 { --initial-rotate: 5deg; --final-rotate: 2deg;   top: 65%; right: 15%; animation-duration: 11s; animation-delay: -4s; }
 
-        /* [REMOVED] .about-grid, image frame styling as it's no longer needed */
-        
         .steps-container, .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 3rem; }
         .step-card, .feature-card {
             background: var(--bg-color); padding: 35px 30px; text-align: center;
@@ -179,12 +187,9 @@
         .step-icon, .feature-icon { font-size: 3rem; margin-bottom: 2rem; color: var(--primary); }
         .step-card h3, .feature-card h4 { font-size: 1.8rem; font-weight: 600; margin-bottom: 1rem; color: var(--text-color); }
         .step-card p, .feature-card p { font-size: 1.5rem; color: var(--text-light); }
-        
         .features-grid { perspective: 1200px; }
         .feature-card { text-align: left; transform-style: preserve-3d; }
         .feature-card:hover { transform: translateY(-10px) scale(1.03); box-shadow: 15px 15px 30px var(--shadow-dark), -15px -15px 30px var(--shadow-light); }
-        
-        /* ... (Sisa CSS tidak berubah secara signifikan, hanya penyesuaian minor) ... */
         .testimonial-header { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto 4rem auto; flex-wrap: wrap; gap: 2rem; }
         .testimonial-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 3rem; }
         .testimonial-card {
@@ -242,14 +247,27 @@
         .social-links a:hover { color: var(--primary); transform: translateY(-3px); }
         .copyright { font-size: 1.3rem; color: var(--text-light); opacity: 0.7; }
         
-        /* --- Responsive --- */
+        @media (max-width: 992px) { /* Medium devices (tablets, less than 992px) */
+             .main-nav { display: none; }
+             .hamburger-menu { display: flex; }
+             .hide-on-mobile { display: none !important; }
+        }
+
         @media (max-width: 768px) {
             html { font-size: 58%; }
-            .main-nav { display: none; } /* Sembunyikan nav desktop */
-            .hamburger-menu { display: flex; } /* Tampilkan hamburger */
-            .hide-on-mobile { display: none !important; } /* Sembunyikan tombol header desktop */
-            .header-container { padding: 10px 20px; }
-            .main-header { width: 100%; top: 0; border-radius: 0; }
+            .header-container { 
+                padding: 10px 20px;
+                border-radius: 0;
+            }
+            .main-header { 
+                width: 100%; 
+                top: 0;
+                margin-bottom: 0;
+                border-radius: 0;
+                /* --- FIX: Reset positioning for full-width --- */
+                left: 0;
+                transform: none;
+            }
             .hero-header { font-size: 4.8rem; }
             .section-title { font-size: 3.6rem; }
             .preview-2, .preview-3 { display: none; }
@@ -295,14 +313,14 @@
 
     <div class="sidebar" id="sidebar">
         <nav class="sidebar-nav" id="nav-menu-mobile">
-            <a href="#hero">Beranda</a>
-            <a href="#about">Tentang</a>
-            <a href="#how-it-works">Cara Kerja</a>
-            <a href="#features">Fitur</a>
-            <a href="#testimonials">Testimoni</a>
-            <a href="#privacy">Privasi</a>
-            <a href="#faq">FAQ</a>
-            <a href="#contact">Kontak</a>
+            <a href="#hero"><i class="fas fa-home"></i> Beranda</a>
+            <a href="#about"><i class="fas fa-info-circle"></i> Tentang</a>
+            <a href="#how-it-works"><i class="fas fa-tasks"></i> Cara Kerja</a>
+            <a href="#features"><i class="fas fa-star"></i> Fitur</a>
+            <a href="#testimonials"><i class="fas fa-comment-dots"></i> Testimoni</a>
+            <a href="#privacy"><i class="fas fa-user-secret"></i> Privasi</a>
+            <a href="#faq"><i class="fas fa-question-circle"></i> FAQ</a>
+            <a href="#contact"><i class="fas fa-envelope"></i> Kontak</a>
         </nav>
         <a href="layout.html" class="btn primary" style="margin-top: auto; justify-content: center;">
             MULAI SEKARANG <i class="fas fa-camera"></i>
@@ -313,10 +331,10 @@
         <section id="hero">
             <div class="hero-glow-bg"></div>
             <div class="hero-images-bg">
-                <img src="assets/preview-img/preview6.png" alt="Contoh strip photobooth 1" class="preview-1">
-                <img src="assets/preview-img/preview4.png" alt="Contoh strip photobooth 2" class="preview-2">
-                <img src="assets/preview-img/preview3.png" alt="Contoh strip photobooth 3" class="preview-3">
-                <img src="assets/preview-img/preview2.png" alt="Contoh strip photobooth 4" class="preview-4">
+                <img src="assets/preview-img1.png" alt="Contoh strip photobooth 1" class="preview-1">
+                <img src="assets/preview-img2.png" alt="Contoh strip photobooth 2" class="preview-2">
+                <img src="assets/preview-img3.png" alt="Contoh strip photobooth 3" class="preview-3">
+                <img src="assets/preview-img4.png" alt="Contoh strip photobooth 4" class="preview-4">
             </div>
             <div class="container hero-content" data-aos="fade-up">
                 <a href="https://instagram.com/off.xlord" target="_blank" class="instagram-badge">
@@ -459,8 +477,6 @@
     
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
     <script>
-    // JavaScript tidak ada perubahan signifikan, hanya menyalin script yang sudah ada
-    // karena sudah berfungsi dengan baik untuk fungsionalitas yang ada.
     document.addEventListener('DOMContentLoaded', () => {
         AOS.init({ duration: 800, once: false, offset: 120 });
 
@@ -582,11 +598,14 @@
             }, 4000);
         };
         
-        document.getElementById('contact-form').addEventListener('submit', e => {
-            e.preventDefault();
-            showToast('Pesan berhasil terkirim!');
-            contactModal.close();
-        });
+        const contactForm = document.getElementById('contact-form');
+        if (contactForm) {
+            contactForm.addEventListener('submit', e => {
+                e.preventDefault();
+                showToast('Pesan berhasil terkirim!');
+                contactModal.close();
+            });
+        }
 
         const testimonialGrid = document.getElementById('testimonial-grid');
         const initialTestimonials = [
