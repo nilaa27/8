@@ -73,53 +73,26 @@
         /* --- Header & Navigasi --- */
         .main-header { position: sticky; top: 15px; z-index: 1000; margin: 0 auto 15px auto; width: 95%; max-width: 980px; left: 50%; transform: translateX(-50%); }
         .header-container {
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            padding: 15px 30px;
+            display: flex; justify-content: space-between; align-items: center; padding: 15px 30px;
             background: rgba(44, 47, 54, 0.7); backdrop-filter: blur(10px);
             border-radius: var(--border-radius-main); box-shadow: 10px 10px 25px var(--shadow-dark), -10px -10px 25px var(--shadow-light);
             border: 1px solid var(--shadow-light);
         }
         [data-theme="light"] .header-container { background: rgba(240, 242, 245, 0.7); }
-        
-        .logo {
-            font-size: 2.4rem;
-            font-weight: 700;
-            color: var(--text-color);
-            text-decoration: none;
-            flex-shrink: 0; /* Mencegah logo menyusut */
-        }
+        .logo { font-size: 2.4rem; font-weight: 700; color: var(--text-color); text-decoration: none; flex-shrink: 0; /* PERBAIKAN: Mencegah logo menyusut */ }
         .logo .highlight { color: var(--primary); }
         
-        /* === PERBAIKAN FINAL NAVBAR === */
-        .main-nav {
-            flex-grow: 1; /* **PENTING**: Membuat navigasi mengisi ruang kosong */
-            display: flex;
-            justify-content: center; /* Menengahkan `ul` di dalam `nav` */
+        /* PERBAIKAN: Mengatur .main-nav agar mengisi ruang dan menengahkan isinya */
+        .main-nav { 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; /* Menengahkan ul.nav-links */
+            flex-grow: 1; /* Mengambil ruang kosong yang tersedia */
         }
         
-        .nav-links {
-            list-style: none;
-            display: flex;
-            gap: 2.5rem;
-            font-size: 1.5rem;
-            font-weight: 500;
-            padding: 0; /* Reset padding default dari `ul` */
-            margin: 0; /* Reset margin default dari `ul` */
-        }
-        /* ============================== */
-
+        .nav-links { list-style: none; display: flex; gap: 2.5rem; font-size: 1.5rem; font-weight: 500; }
         .nav-links a { color: var(--text-light); transition: color 0.3s ease; text-decoration: none; }
         .nav-links a:hover, .nav-links a.current-nav { color: var(--primary); font-weight: 600; }
-        
-        .header-buttons {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            flex-shrink: 0; /* Mencegah grup tombol menyusut */
-        }
-
         .theme-toggle-btn {
             background: var(--bg-color); width: 45px; height: 45px; border-radius: 50%; display: flex;
             align-items: center; justify-content: center; border: none; cursor: pointer;
@@ -309,8 +282,7 @@
                     <li><a href="#contact">Kontak</a></li>
                 </ul>
             </nav>
-            <div class="header-buttons">
-                <button class="theme-toggle-btn" id="theme-toggle" aria-label="Ubah Tema">
+            <div style="display: flex; align-items: center; gap: 15px; flex-shrink: 0;"> <button class="theme-toggle-btn" id="theme-toggle" aria-label="Ubah Tema">
                     <i class="fas fa-moon"></i><i class="fas fa-sun"></i>
                 </button>
                 <button class="hamburger-menu" id="hamburger-menu" aria-label="Buka Menu">
@@ -338,10 +310,10 @@
         <section id="hero">
             <div class="hero-glow-bg"></div>
             <div class="hero-images-bg">
-                <img src="https://i.imgur.com/rGRy8aI.png" alt="Contoh strip photobooth 1" class="preview-1">
-                <img src="https://i.imgur.com/vHqgA6G.png" alt="Contoh strip photobooth 2" class="preview-2">
-                <img src="https://i.imgur.com/K6bL6aD.png" alt="Contoh strip photobooth 3" class="preview-3">
-                <img src="https://i.imgur.com/b5kS9yD.png" alt="Contoh strip photobooth 4" class="preview-4">
+                <img src="assets/preview-img/preview6.png" alt="Contoh strip photobooth 1" class="preview-1">
+                <img src="assets/preview-img/preview4.png" alt="Contoh strip photobooth 2" class="preview-2">
+                <img src="assets/preview-img/preview3.png" alt="Contoh strip photobooth 3" class="preview-3">
+                <img src="assets/preview-img/preview2.png" alt="Contoh strip photobooth 4" class="preview-4">
             </div>
             <div class="container hero-content" data-aos="fade-up">
                 <a href="https://instagram.com/off.xlord" target="_blank" class="instagram-badge">
