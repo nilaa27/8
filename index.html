@@ -2,7 +2,7 @@
 <html lang="id" data-theme="dark">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0">
     <meta name="description" content="Ambil foto ala photobooth instan secara online. Kreasikan dengan filter, stiker, dan unduh strip foto berkualitas tinggi secara gratis.">
     <meta name="keywords" content="photobooth, photobooth online, foto box, pictlord, webcamtoy, photobooth aesthetic">
     <title>pictlord | Photobooth Online Modern & Aesthetic</title>
@@ -45,33 +45,37 @@
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; scroll-behavior: smooth; }
         html { font-size: 62.5%; }
+        /* [FIX] Disabled horizontal scroll */
+        body, html {
+            overflow-x: hidden;
+        }
         body {
             font-size: 1.6rem; background: var(--bg-color); color: var(--text-color);
             line-height: 1.7; transition: background-color 0.5s ease, color 0.5s ease;
-            overflow-x: hidden;
         }
         body.sidebar-open, body.modal-open { overflow: hidden; }
         body.sidebar-open::before {
             content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.5); z-index: 998; backdrop-filter: blur(2px);
         }
-        .container { max-width: 1200px; width: 90%; margin: 0 auto; }
+        .container { max-width: 1280px; width: 92%; margin: 0 auto; }
 
         /* --- Tombol Global --- */
         .btn {
             display: inline-flex; align-items: center; justify-content: center; gap: 12px;
             padding: 14px 28px; border-radius: var(--border-radius-inner);
             font-size: 1.6rem; font-weight: 600; text-decoration: none; cursor: pointer; border: none;
-            color: var(--text-light); background: var(--bg-color); transition: var(--transition-smooth);
+            color: var(--text-light); background: var(--bg-color);
+            transition: transform 0.2s ease, color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
             box-shadow: 6px 6px 12px var(--shadow-dark), -6px -6px 12px var(--shadow-light);
         }
         .btn:hover { color: var(--primary); transform: translateY(-3px); }
         .btn:active { transform: translateY(0); color: var(--primary); box-shadow: inset 5px 5px 10px var(--shadow-dark), inset -5px -5px 10px var(--shadow-light); }
         .btn.primary { color: #ffffff; background: var(--primary); }
-        .btn.primary:hover { background: var(--primary-dark); color: white; }
-
-        /* === Header & Navigasi Desktop === */
-        .main-header { position: sticky; top: 15px; z-index: 1000; margin: 0 auto 15px auto; width: 95%; max-width: 980px; left: 50%; transform: translateX(-50%); }
+        .btn.primary:hover { background: var(--primary-dark); color: white; transform: translateY(-3px) scale(1.02); }
+        
+        /* --- Header & Navigasi --- */
+        .main-header { position: sticky; top: 15px; z-index: 1000; margin: 0 auto 15px auto; width: 95%; max-width: 1280px; left: 50%; transform: translateX(-50%); }
         .header-container {
             display: flex; justify-content: space-between; align-items: center; padding: 15px 30px;
             background: rgba(44, 47, 54, 0.7); backdrop-filter: blur(10px);
@@ -79,25 +83,25 @@
             border: 1px solid var(--shadow-light);
         }
         [data-theme="light"] .header-container { background: rgba(240, 242, 245, 0.7); }
-        .logo { font-size: 2.4rem; font-weight: 700; color: var(--text-color); text-decoration: none; flex-shrink: 0; }
+        
+        /* [NEW] Logo with SVG */
+        .logo { 
+            font-size: 2.4rem; font-weight: 700; color: var(--text-color); text-decoration: none; 
+            flex-shrink: 0; display: flex; align-items: center; gap: 12px;
+        }
+        .logo svg { width: 32px; height: 32px; transition: transform 0.4s ease; }
+        .logo:hover svg { transform: rotate(180deg); }
         .logo .highlight { color: var(--primary); }
         
-        .header-right-group {
-            display: flex;
-            align-items: center;
-            gap: 3rem; 
-        }
-
-        .main-nav {
-            display: flex; 
-            align-items: center;
-        }
-        
-        .nav-links { list-style: none; display: flex; gap: 2.5rem; font-size: 1.5rem; font-weight: 500; }
+        .main-nav { display: flex; align-items: center; justify-content: center; flex-grow: 1; }
+        .nav-links { list-style: none; display: flex; gap: 3rem; font-size: 1.5rem; font-weight: 500; }
         .nav-links a { color: var(--text-light); transition: color 0.3s ease; text-decoration: none; }
         .nav-links a:hover, .nav-links a.current-nav { color: var(--primary); font-weight: 600; }
         
         .header-actions { display: flex; align-items: center; gap: 15px; flex-shrink: 0; }
+        
+        /* [NEW] Hide desktop button on mobile */
+        .hide-on-mobile { display: inline-flex; }
 
         .theme-toggle-btn {
             background: var(--bg-color); width: 45px; height: 45px; border-radius: 50%; display: flex;
@@ -110,10 +114,9 @@
         [data-theme="light"] .theme-toggle-btn i.fa-moon { display: none; }
         [data-theme="light"] .theme-toggle-btn i.fa-sun { display: block; }
         
-        /* === Hamburger & Sidebar === */
+        /* --- Hamburger & Sidebar --- */
         .hamburger-menu {
-            display: none; 
-            cursor: pointer; width: 48px; height: 48px; justify-content: center; align-items: center;
+            display: none; cursor: pointer; width: 48px; height: 48px; justify-content: center; align-items: center;
             position: relative; z-index: 1003; background: var(--bg-color); border: none; border-radius: 50%;
             box-shadow: 5px 5px 10px var(--shadow-dark), -5px -5px 10px var(--shadow-light);
         }
@@ -130,56 +133,27 @@
             transition: right 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
         .sidebar.active { right: 0; }
-        .sidebar-nav { display: flex; flex-direction: column; gap: 15px; }
-        .sidebar-nav a {
-            display: flex; align-items: center; justify-content: flex-start; gap: 18px; 
-            color: var(--text-light); text-decoration: none; font-size: 1.8rem; font-weight: 500;
-            padding: 15px 25px; border-radius: var(--border-radius-inner); transition: var(--transition-smooth);
-        }
+        .sidebar-nav { display: flex; flex-direction: column; gap: 20px; text-align: center; }
+        .sidebar-nav a { color: var(--text-light); text-decoration: none; font-size: 1.8rem; font-weight: 500; padding: 15px; border-radius: var(--border-radius-inner); transition: var(--transition-smooth); }
         .sidebar-nav a:hover { color: var(--primary); background: var(--shadow-dark); }
-        .sidebar-nav a i { width: 25px; text-align: center; color: var(--primary); } 
         
         /* --- Sections --- */
-        .page-section { padding: 8rem 0; position: relative; } 
+        .page-section { padding: 8rem 0; }
         .section-title { font-size: 4rem; font-weight: 800; text-align: center; margin-bottom: 1.5rem; color: var(--text-color); }
-        .section-subtitle { font-size: 1.8rem; color: var(--text-light); text-align: center; max-width: 700px; margin: 0 auto 5rem auto; }
+        .section-subtitle { font-size: 1.8rem; color: var(--text-light); text-align: center; max-width: 800px; margin: 0 auto 5rem auto; }
         
-        /* --- Latar Belakang Dinamis untuk Desktop --- */
-        .dynamic-bg-container {
-            position: relative;
-            z-index: 1;
-        }
-
-        @media (min-width: 769px) {
-            .dynamic-bg-container::before {
-                content: '';
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                width: 100%;
-                height: 100%;
-                max-width: 600px;
-                max-height: 600px;
-                background: radial-gradient(circle, rgba(255, 255, 255, 0.03) 0%, transparent 65%);
-                z-index: -1;
-                animation: slow-rotate 30s linear infinite;
-                transform-origin: center center;
-            }
-            [data-theme="light"] .dynamic-bg-container::before {
-                background: radial-gradient(circle, rgba(0, 0, 0, 0.03) 0%, transparent 65%);
-            }
-        }
-        @keyframes slow-rotate {
-            from { transform: translate(-50%, -50%) rotate(0deg); }
-            to { transform: translate(-50%, -50%) rotate(360deg); }
-        }
-
-        /* --- Sisa CSS (tidak diubah) --- */
+        /* --- Hero Section --- */
         #hero { display: flex; align-items: center; justify-content: center; text-align: center; min-height: 100vh; padding: 4rem 0; position: relative; overflow: hidden; }
         .hero-glow-bg { position: absolute; top: 50%; left: 50%; width: 40vw; height: 40vw; max-width: 500px; max-height: 500px; background: radial-gradient(circle, rgba(13, 148, 136, 0.4), transparent 70%); border-radius: 50%; filter: blur(100px); transform: translate(-50%, -50%); z-index: 0; animation: pulsate-glow 7s ease-in-out infinite; }
-        @keyframes pulsate-glow { 0%, 100% { transform: translate(-50%, -50%) scale(1); } 50% { transform: translate(-50%, -50%) scale(1.2); } }
+        @keyframes pulsate-glow { 0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; } 50% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; } }
         .hero-content { max-width: 800px; position: relative; z-index: 2; }
-        .instagram-badge { display: inline-flex; align-items: center; gap: 1rem; text-decoration: none; background: var(--bg-color); color: var(--text-light); padding: 1rem 2rem; border-radius: 999px; font-size: 1.4rem; font-weight: 600; margin-bottom: 2.5rem; box-shadow: 4px 4px 8px var(--shadow-dark), -4px -4px 8px var(--shadow-light); transition: var(--transition-smooth); }
+        .instagram-badge {
+            display: inline-flex; align-items: center; gap: 1rem; text-decoration: none;
+            background: var(--bg-color); color: var(--text-light); padding: 1rem 2rem;
+            border-radius: 999px; font-size: 1.4rem; font-weight: 600; margin-bottom: 2.5rem;
+            box-shadow: 4px 4px 8px var(--shadow-dark), -4px -4px 8px var(--shadow-light);
+            transition: var(--transition-smooth);
+        }
         .instagram-badge:hover { color: var(--primary); transform: translateY(-2px); }
         #announcement-text-container { transition: opacity 0.5s ease-in-out; }
         .hero-header { font-size: 6.4rem; font-weight: 800; line-height: 1.1; margin-bottom: 1.5rem; }
@@ -187,30 +161,47 @@
         .hero-images-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
         .hero-images-bg img { position: absolute; width: 15vw; max-width: 180px; min-width: 100px; border-radius: 12px; animation: gentle-float 8s ease-in-out infinite; box-shadow: 0px 10px 30px rgba(0,0,0,0.2); }
         @keyframes gentle-float { 0%, 100% { transform: translateY(0px) rotate(var(--initial-rotate)); } 50% { transform: translateY(-20px) rotate(var(--final-rotate)); } }
+        
         .preview-1 { --initial-rotate: -15deg; --final-rotate: -12deg; top: 15%; left: 10%; animation-duration: 10s; }
         .preview-2 { --initial-rotate: -5deg; --final-rotate: -8deg;  top: 60%; left: 18%; animation-duration: 8s; animation-delay: -2s; }
         .preview-3 { --initial-rotate: 15deg; --final-rotate: 18deg;  top: 20%; right: 12%; animation-duration: 9s; }
         .preview-4 { --initial-rotate: 5deg; --final-rotate: 2deg;   top: 65%; right: 15%; animation-duration: 11s; animation-delay: -4s; }
-        .about-grid { display: grid; grid-template-columns: 1fr; max-width: 850px; margin: 0 auto; }
-        .about-text h3 { font-size: 2.8rem; color: var(--primary); margin-bottom: 1rem; }
+
+        /* [REMOVED] .about-grid, image frame styling as it's no longer needed */
+        
         .steps-container, .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 3rem; }
-        .step-card, .feature-card { background: var(--bg-color); padding: 35px 30px; text-align: center; border-radius: var(--border-radius-main); box-shadow: 10px 10px 20px var(--shadow-dark), -10px -10px 20px var(--shadow-light); }
+        .step-card, .feature-card {
+            background: var(--bg-color); padding: 35px 30px; text-align: center;
+            border-radius: var(--border-radius-main);
+            box-shadow: 10px 10px 20px var(--shadow-dark), -10px -10px 20px var(--shadow-light);
+            transition: var(--transition-smooth);
+        }
         .step-icon, .feature-icon { font-size: 3rem; margin-bottom: 2rem; color: var(--primary); }
         .step-card h3, .feature-card h4 { font-size: 1.8rem; font-weight: 600; margin-bottom: 1rem; color: var(--text-color); }
         .step-card p, .feature-card p { font-size: 1.5rem; color: var(--text-light); }
+        
         .features-grid { perspective: 1200px; }
-        .feature-card { text-align: left; transform-style: preserve-3d; transition: var(--transition-smooth); }
-        .feature-card:hover { transform: translateY(-10px) scale(1.03) rotateY(5deg); box-shadow: 15px 15px 30px var(--shadow-dark), -15px -15px 30px var(--shadow-light); }
+        .feature-card { text-align: left; transform-style: preserve-3d; }
+        .feature-card:hover { transform: translateY(-10px) scale(1.03); box-shadow: 15px 15px 30px var(--shadow-dark), -15px -15px 30px var(--shadow-light); }
+        
+        /* ... (Sisa CSS tidak berubah secara signifikan, hanya penyesuaian minor) ... */
         .testimonial-header { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto 4rem auto; flex-wrap: wrap; gap: 2rem; }
         .testimonial-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 3rem; }
-        .testimonial-card { background: var(--bg-color); padding: 3rem; text-align: left; display: flex; flex-direction: column; border-radius: var(--border-radius-main); box-shadow: 10px 10px 20px var(--shadow-dark), -10px -10px 20px var(--shadow-light); }
+        .testimonial-card {
+            background: var(--bg-color); padding: 3rem; text-align: left; display: flex; flex-direction: column;
+            border-radius: var(--border-radius-main);
+            box-shadow: 10px 10px 20px var(--shadow-dark), -10px -10px 20px var(--shadow-light);
+        }
         .testimonial-rating { color: var(--star-color); margin-bottom: 1.5rem; font-size: 1.4rem; }
         .testimonial-text { color: var(--text-light); margin-bottom: 2rem; font-size: 1.5rem; font-style: italic; flex-grow: 1; }
         .author-details { margin-top: auto; }
         .author-name { font-weight: 600; color: var(--text-color); }
         .author-position { font-size: 1.3rem; color: var(--text-light); }
         .privacy-points { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; margin-top: 3rem; }
-        .privacy-point { padding: 2.5rem; border-radius: var(--border-radius-inner); text-align: left; box-shadow: inset 5px 5px 10px var(--shadow-dark), inset -5px -5px 10px var(--shadow-light); }
+        .privacy-point {
+            padding: 2.5rem; border-radius: var(--border-radius-inner); text-align: left;
+            box-shadow: inset 5px 5px 10px var(--shadow-dark), inset -5px -5px 10px var(--shadow-light);
+        }
         .privacy-point i { font-size: 2rem; color: var(--primary); margin-bottom: 1rem; }
         .privacy-point h4 { font-size: 1.8rem; margin-bottom: 0.5rem; }
         .faq-container { max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; gap: 2rem; }
@@ -251,14 +242,12 @@
         .social-links a:hover { color: var(--primary); transform: translateY(-3px); }
         .copyright { font-size: 1.3rem; color: var(--text-light); opacity: 0.7; }
         
-        /* === Responsive === */
-        @media (max-width: 900px) { 
-            .main-nav { display: none; } 
-            .hamburger-menu { display: flex; } 
-        }
-
+        /* --- Responsive --- */
         @media (max-width: 768px) {
             html { font-size: 58%; }
+            .main-nav { display: none; } /* Sembunyikan nav desktop */
+            .hamburger-menu { display: flex; } /* Tampilkan hamburger */
+            .hide-on-mobile { display: none !important; } /* Sembunyikan tombol header desktop */
             .header-container { padding: 10px 20px; }
             .main-header { width: 100%; top: 0; border-radius: 0; }
             .hero-header { font-size: 4.8rem; }
@@ -273,43 +262,47 @@
 
     <header class="main-header" data-aos="fade-down">
         <div class="header-container">
-            <a href="#hero" class="logo">pict<span class="highlight">lord</span></a>
+            <a href="#hero" class="logo">
+                <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2ZM12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4ZM12 8C9.79086 8 8 9.79086 8 12C8 14.2091 9.79086 16 12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8ZM10 12C10 10.8954 10.8954 10 12 10C13.1046 10 14 10.8954 14 12C14 13.1046 13.1046 14 12 14C10.8954 14 10 13.1046 10 12Z"/>
+                </svg>
+                pict<span class="highlight">lord</span>
+            </a>
             
-            <div class="header-right-group">
-                <nav class="main-nav">
-                    <ul class="nav-links" id="nav-menu-desktop">
-                        <li><a href="#hero" class="current-nav">Beranda</a></li>
-                        <li><a href="#about">Tentang</a></li>
-                        <li><a href="#how-it-works">Cara Kerja</a></li>
-                        <li><a href="#features">Fitur</a></li>
-                        <li><a href="#testimonials">Testimoni</a></li>
-                        <li><a href="#faq">FAQ</a></li>
-                        <li><a href="#contact">Kontak</a></li>
-                    </ul>
-                </nav>
+            <nav class="main-nav">
+                <ul class="nav-links" id="nav-menu-desktop">
+                    <li><a href="#hero" class="current-nav">Beranda</a></li>
+                    <li><a href="#about">Tentang</a></li>
+                    <li><a href="#how-it-works">Cara Kerja</a></li>
+                    <li><a href="#features">Fitur</a></li>
+                    <li><a href="#testimonials">Testimoni</a></li>
+                    <li><a href="#faq">FAQ</a></li>
+                    <li><a href="#contact">Kontak</a></li>
+                </ul>
+            </nav>
 
-                <div class="header-actions">
-                    <button class="theme-toggle-btn" id="theme-toggle" aria-label="Ubah Tema">
-                        <i class="fas fa-moon"></i><i class="fas fa-sun"></i>
-                    </button>
-                    <button class="hamburger-menu" id="hamburger-menu" aria-label="Buka Menu">
-                        <span class="bar top"></span><span class="bar middle"></span><span class="bar bottom"></span>
-                    </button>
-                </div>
+            <div class="header-actions">
+                <a href="layout.html" class="btn primary hide-on-mobile">Mulai Sekarang</a>
+                <button class="theme-toggle-btn" id="theme-toggle" aria-label="Ubah Tema">
+                    <i class="fas fa-moon"></i><i class="fas fa-sun"></i>
+                </button>
+                <button class="hamburger-menu" id="hamburger-menu" aria-label="Buka Menu">
+                    <span class="bar top"></span><span class="bar middle"></span><span class="bar bottom"></span>
+                </button>
             </div>
         </div>
     </header>
 
     <div class="sidebar" id="sidebar">
         <nav class="sidebar-nav" id="nav-menu-mobile">
-            <a href="#hero"><i class="fas fa-home"></i>Beranda</a>
-            <a href="#about"><i class="fas fa-info-circle"></i>Tentang Kami</a>
-            <a href="#how-it-works"><i class="fas fa-cogs"></i>Cara Kerja</a>
-            <a href="#features"><i class="fas fa-star"></i>Fitur</a>
-            <a href="#testimonials"><i class="fas fa-comment-dots"></i>Testimoni</a>
-            <a href="#privacy"><i class="fas fa-user-secret"></i>Privasi</a>
-            <a href="#faq"><i class="fas fa-question-circle"></i>FAQ</a>
-            <a href="#contact"><i class="fas fa-envelope"></i>Kontak</a>
+            <a href="#hero">Beranda</a>
+            <a href="#about">Tentang</a>
+            <a href="#how-it-works">Cara Kerja</a>
+            <a href="#features">Fitur</a>
+            <a href="#testimonials">Testimoni</a>
+            <a href="#privacy">Privasi</a>
+            <a href="#faq">FAQ</a>
+            <a href="#contact">Kontak</a>
         </nav>
         <a href="layout.html" class="btn primary" style="margin-top: auto; justify-content: center;">
             MULAI SEKARANG <i class="fas fa-camera"></i>
@@ -320,10 +313,10 @@
         <section id="hero">
             <div class="hero-glow-bg"></div>
             <div class="hero-images-bg">
-                <img src="https://via.placeholder.com/180x240.png" alt="Contoh strip photobooth 1" class="preview-1">
-                <img src="https://via.placeholder.com/180x240.png" alt="Contoh strip photobooth 2" class="preview-2">
-                <img src="https://via.placeholder.com/180x240.png" alt="Contoh strip photobooth 3" class="preview-3">
-                <img src="https://via.placeholder.com/180x240.png" alt="Contoh strip photobooth 4" class="preview-4">
+                <img src="assets/preview-img/preview6.png" alt="Contoh strip photobooth 1" class="preview-1">
+                <img src="assets/preview-img/preview4.png" alt="Contoh strip photobooth 2" class="preview-2">
+                <img src="assets/preview-img/preview3.png" alt="Contoh strip photobooth 3" class="preview-3">
+                <img src="assets/preview-img/preview2.png" alt="Contoh strip photobooth 4" class="preview-4">
             </div>
             <div class="container hero-content" data-aos="fade-up">
                 <a href="https://instagram.com/off.xlord" target="_blank" class="instagram-badge">
@@ -339,13 +332,10 @@
         <section id="about" class="page-section">
             <div class="container" data-aos="fade-up">
                 <h2 class="section-title">Tentang pictlord</h2>
-                <p class="section-subtitle">Membawa keseruan photobooth klasik ke layar Anda, dengan sentuhan modern dan elegan.</p>
-                <div class="about-grid dynamic-bg-container">
-                    <div class="about-text">
-                        <h3>Dari Ide Menjadi Kenyataan</h3>
-                        <p>pictlord lahir dari ide sederhana: semua orang suka photobooth, tetapi tidak selalu mudah ditemukan. Kami ingin menciptakan alat online yang gratis, menyenangkan, dan mudah digunakan yang memungkinkan Anda mengabadikan momen spontan bersama teman dan keluarga, di mana pun Anda berada.</p>
-                        <p>Cukup buka situs kami, bergaya di depan kamera, dan dapatkan strip foto yang dirancang dengan indah dalam hitungan detik. Tanpa registrasi, tanpa ribet.</p>
-                    </div>
+                <p class="section-subtitle">Membawa keseruan photobooth ke layar Anda, kapan saja, di mana saja.</p>
+                <div class="about-text" style="max-width: 850px; margin: 0 auto; text-align: center;">
+                    <p><strong>pictlord</strong> adalah alat berbasis peramban yang dapat disesuaikan dan dapat Anda gunakan kapan saja, di mana saja. Pengguna dapat mengambil foto instan bergaya photobooth, memasang bingkai dalam lebih dari 100 warna, menambahkan stiker digital, dan mengunduh strip foto beresolusi tinggi langsung dari perangkat apa pun. Tidak perlu instalasi atau akun.</p>
+                    <p>Dirancang untuk performa, kesederhanaan, dan fleksibilitas kreatif, ini adalah alat lengkap untuk menciptakan pengalaman foto yang dapat dibagikan secara daring.</p>
                 </div>
             </div>
         </section>
@@ -384,7 +374,7 @@
                     </div>
                     <button class="btn" id="add-testimonial-btn"><i class="fas fa-plus"></i> Beri Testimoni</button>
                 </div>
-                <div class="testimonial-grid dynamic-bg-container" id="testimonial-grid" data-aos="fade-up" data-aos-delay="200"></div>
+                <div class="testimonial-grid" id="testimonial-grid" data-aos="fade-up" data-aos-delay="200"></div>
             </div>
         </section>
 
@@ -411,7 +401,7 @@
             <div class="container" data-aos="fade-up">
                 <h2 class="section-title">Tanya Jawab Umum</h2>
                 <p class="section-subtitle">Punya pertanyaan? Mungkin jawabannya ada di sini.</p>
-                <div class="faq-container dynamic-bg-container">
+                <div class="faq-container">
                     <details class="faq-item" data-aos="fade-up"><summary class="faq-question">Apakah layanan ini benar-benar gratis?<i class="fas fa-chevron-down faq-arrow"></i></summary><p class="faq-answer">Tentu saja! pictlord 100% gratis untuk digunakan. Anda bisa membuat dan mengunduh photostrip sebanyak yang Anda mau tanpa biaya apa pun.</p></details>
                     <details class="faq-item" data-aos="fade-up"><summary class="faq-question">Apakah foto saya aman?<i class="fas fa-chevron-down faq-arrow"></i></summary><p class="faq-answer">Sangat aman. Kami tidak pernah menyimpan foto Anda di server kami. Semua proses pengambilan dan pengeditan foto dilakukan langsung di browser Anda. Setelah Anda menutup halaman, foto tersebut hilang.</p></details>
                     <details class="faq-item" data-aos="fade-up"><summary class="faq-question">Bisakah saya menggunakannya di HP?<i class="fas fa-chevron-down faq-arrow"></i></summary><p class="faq-answer">Ya! pictlord dirancang untuk berfungsi dengan baik di semua perangkat, baik itu desktop, tablet, maupun mobile, selama perangkat Anda memiliki kamera dan browser modern.</p></details>
@@ -469,11 +459,14 @@
     
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
     <script>
-    // JavaScript tidak ada perubahan, fungsionalitas tetap sama.
+    // JavaScript tidak ada perubahan signifikan, hanya menyalin script yang sudah ada
+    // karena sudah berfungsi dengan baik untuk fungsionalitas yang ada.
     document.addEventListener('DOMContentLoaded', () => {
         AOS.init({ duration: 800, once: false, offset: 120 });
+
         const docElement = document.documentElement;
         const body = document.body;
+        
         const themeToggle = document.getElementById('theme-toggle');
         const hamburger = document.getElementById('hamburger-menu');
         const sidebar = document.getElementById('sidebar');
@@ -494,6 +487,7 @@
                 sidebar.classList.toggle('active');
             };
             hamburger.addEventListener('click', toggleSidebar);
+            
             sidebar.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
                 if (body.classList.contains('sidebar-open')) {
                     toggleSidebar();
@@ -503,7 +497,10 @@
 
         const announcementTextContainer = document.getElementById('announcement-text-container');
         if (announcementTextContainer) {
-            const messages = ["Ikuti kami di Instagram", "Bagikan & tag kami di fotomu!"];
+            const messages = [
+                "Ikuti kami di Instagram",
+                "Bagikan & tag kami di fotomu!"
+            ];
             let messageIndex = 0;
             setInterval(() => {
                 announcementTextContainer.style.opacity = '0';
@@ -606,6 +603,7 @@
             return card;
         };
         const loadTestimonials = () => {
+            if (!testimonialGrid) return;
             testimonialGrid.innerHTML = '';
             initialTestimonials.forEach(t => testimonialGrid.appendChild(createTestimonialCard(t)));
         };
@@ -630,20 +628,25 @@
             });
         }
         
-        document.getElementById('testimonial-form').addEventListener('submit', e => {
-            e.preventDefault();
-            const name = document.getElementById('testimonial-name').value;
-            const position = document.getElementById('testimonial-position').value;
-            const text = document.getElementById('testimonial-text').value;
-            const rating = parseInt(starContainer.dataset.rating) || 0;
-            if (!name || !position || !text || rating === 0) { alert('Harap isi semua kolom dan berikan rating.'); return; }
-            const newCard = createTestimonialCard({ name, position, text, rating });
-            testimonialGrid.prepend(newCard);
-            setTimeout(() => AOS.refreshHard(), 50); 
-            showToast(`Terima kasih atas testimoninya, ${name}!`);
-            testimonialModal.close();
-        });
-
+        const testimonialForm = document.getElementById('testimonial-form');
+        if(testimonialForm) {
+            testimonialForm.addEventListener('submit', e => {
+                e.preventDefault();
+                const name = document.getElementById('testimonial-name').value;
+                const position = document.getElementById('testimonial-position').value;
+                const text = document.getElementById('testimonial-text').value;
+                const rating = parseInt(starContainer.dataset.rating) || 0;
+                if (!name || !position || !text || rating === 0) { alert('Harap isi semua kolom dan berikan rating.'); return; }
+                const newCard = createTestimonialCard({ name, position, text, rating });
+                testimonialGrid.prepend(newCard);
+                
+                setTimeout(() => AOS.refreshHard(), 50); 
+                
+                showToast(`Terima kasih atas testimoninya, ${name}!`);
+                testimonialModal.close();
+            });
+        }
+        
         loadTestimonials();
     });
     </script>
