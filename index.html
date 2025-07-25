@@ -2,7 +2,7 @@
 <html lang="id" data-theme="dark">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0">
     <meta name="description" content="Ambil foto ala photobooth instan secara online. Kreasikan dengan filter, stiker, dan unduh strip foto berkualitas tinggi secara gratis.">
     <meta name="keywords" content="photobooth, photobooth online, foto box, pictlord, webcamtoy, photobooth aesthetic">
     <title>pictlord | Photobooth Online Modern & Aesthetic</title>
@@ -48,6 +48,7 @@
         body {
             font-size: 1.6rem; background: var(--bg-color); color: var(--text-color);
             line-height: 1.7; transition: background-color 0.5s ease, color 0.5s ease;
+            /* MODIFIKASI: Menghilangkan scroll horizontal */
             overflow-x: hidden;
         }
         body.sidebar-open, body.modal-open { overflow: hidden; }
@@ -79,15 +80,14 @@
             border: 1px solid var(--shadow-light);
         }
         [data-theme="light"] .header-container { background: rgba(240, 242, 245, 0.7); }
-        .logo { font-size: 2.4rem; font-weight: 700; color: var(--text-color); text-decoration: none; flex-shrink: 0; /* PERBAIKAN: Mencegah logo menyusut */ }
+        .logo { font-size: 2.4rem; font-weight: 700; color: var(--text-color); text-decoration: none; flex-shrink: 0; }
         .logo .highlight { color: var(--primary); }
         
-        /* === PERBAIKAN: Mengatur .main-nav agar mengisi ruang dan menengahkan isinya === */
         .main-nav { 
             display: flex; 
             align-items: center; 
-            justify-content: center; /* Menengahkan ul.nav-links */
-            flex-grow: 1; /* Mengambil ruang kosong yang tersedia */
+            justify-content: center;
+            flex-grow: 1;
         }
         
         .nav-links { list-style: none; display: flex; gap: 2.5rem; font-size: 1.5rem; font-weight: 500; }
@@ -157,30 +157,29 @@
         .hero-images-bg img { position: absolute; width: 15vw; max-width: 180px; min-width: 100px; border-radius: 12px; animation: gentle-float 8s ease-in-out infinite; box-shadow: 0px 10px 30px rgba(0,0,0,0.2); }
         @keyframes gentle-float { 0%, 100% { transform: translateY(0px) rotate(var(--initial-rotate)); } 50% { transform: translateY(-20px) rotate(var(--final-rotate)); } }
         
-        /* === PERBAIKAN: Menyesuaikan posisi gambar agar mirip dengan referensi === */
-        .preview-1 { 
-            --initial-rotate: -12deg; --final-rotate: -15deg; 
-            top: 20%; left: 8%; 
-            z-index: 10;
+        .preview-1 { /* Top-Left */
+            --initial-rotate: -10deg; --final-rotate: -12deg; 
+            top: 15%; 
+            left: 12%; 
             animation-duration: 10s; 
         }
-        .preview-2 { 
-            --initial-rotate: -6deg; --final-rotate: -8deg;  
-            top: 50%; left: 15%;
-            z-index: 9;
-            animation-duration: 8s; animation-delay: -2s; 
+        .preview-2 { /* Bottom-Left */
+            --initial-rotate: 8deg; --final-rotate: 5deg;
+            top: 55%; 
+            left: 18%; 
+            animation-duration: 11s; animation-delay: -2s;
         }
-        .preview-3 { 
-            --initial-rotate: 12deg; --final-rotate: 15deg;  
-            top: 22%; right: 8%; 
-            z-index: 10;
+        .preview-3 { /* Top-Right */
+            --initial-rotate: 10deg; --final-rotate: 13deg;
+            top: 20%; 
+            right: 10%; 
             animation-duration: 9s; 
         }
-        .preview-4 { 
-            --initial-rotate: 6deg; --final-rotate: 2deg;   
-            top: 52%; right: 15%; 
-            z-index: 9;
-            animation-duration: 11s; animation-delay: -4s; 
+        .preview-4 { /* Bottom-Right */
+            --initial-rotate: -8deg; --final-rotate: -5deg;
+            top: 60%; 
+            right: 16%; 
+            animation-duration: 12s; animation-delay: -4s;
         }
 
         /* --- About Section (Modernized) --- */
