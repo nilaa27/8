@@ -123,15 +123,16 @@
         }
         .navbar-cta:hover { background: var(--primary-dark); transform: translateY(-2px); }
 
-        /* === ANIMASI HAMBURGER/X DINAMIS (DIPERBARUI) === */
+        /* === ANIMASI HAMBURGER/X DINAMIS === */
         .hamburger-menu {
-            display: none; cursor: pointer; width: 40px; height: 40px; justify-content: center; align-items: center;
+            display: none; /* Sembunyi di desktop */
+            cursor: pointer; width: 40px; height: 40px; justify-content: center; align-items: center;
             background: transparent; border: none; position: relative; z-index: 1002;
         }
         .hamburger-menu .bar {
             display: block; width: 22px; height: 2px; background-color: var(--text-color);
             border-radius: 3px; position: absolute;
-            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1); /* Kurva animasi springy */
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
         }
         .bar.top { transform: translateY(-7px); }
         .bar.bottom { transform: translateY(7px); }
@@ -139,14 +140,14 @@
             transform: translateY(0) rotate(45deg);
         }
         .hamburger-menu.active .bar.middle {
-            transform: scaleX(0); /* Garis tengah menyusut saat aktif */
+            transform: scaleX(0);
             opacity: 0;
         }
         .hamburger-menu.active .bar.bottom {
             transform: translateY(0) rotate(-45deg);
         }
-
-        /* --- Sisa CSS (tidak ada perubahan signifikan) --- */
+        
+        /* Sisa CSS lainnya... */
         .btn { display: inline-flex; align-items: center; justify-content: center; gap: 12px; padding: 14px 28px; border-radius: var(--border-radius-inner); font-size: 1.6rem; font-weight: 600; text-decoration: none; cursor: pointer; border: none; color: var(--text-light); background: var(--bg-color); transition: var(--transition-smooth); box-shadow: 6px 6px 12px var(--shadow-dark), -6px -6px 12px var(--shadow-light); }
         .btn:hover { color: var(--primary); transform: translateY(-3px); }
         .btn.primary { color: #ffffff; background: var(--primary); }
@@ -215,7 +216,6 @@
         .social-links a { font-size: 2rem; color: var(--text-light); transition: var(--transition-smooth); }
         .social-links a:hover { color: var(--primary); transform: translateY(-3px); }
         .copyright { font-size: 1.3rem; color: var(--text-light); opacity: 0.7; }
-        
         .theme-toggle-btn {
             background: var(--bg-color); width: 40px; height: 40px; border-radius: 50%; display: flex;
             align-items: center; justify-content: center; border: none; cursor: pointer;
@@ -226,7 +226,6 @@
         .theme-toggle-btn i.fa-sun { display: none; }
         [data-theme="light"] .theme-toggle-btn i.fa-moon { display: none; }
         [data-theme="light"] .theme-toggle-btn i.fa-sun { display: block; }
-        
         .theme-toggle-btn-mobile-wrapper {
             display: none;
         }
@@ -263,7 +262,7 @@
                 pointer-events: auto;
             }
             .navbar-cta { display: none; }
-            .hamburger-menu { display: flex; }
+            .hamburger-menu { display: flex; } /* Tampilkan di mobile */
             .navbar-right { gap: 0.5rem; }
             
             .navbar-right .theme-toggle-btn {
@@ -541,8 +540,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }, { rootMargin: '-40% 0px -60% 0px' });
     sections.forEach(section => observer.observe(section));
     
-    // Gunakan setTimeout untuk memastikan semua elemen, terutama font, sudah dirender dengan benar
-    // sebelum mengkalkulasi posisi highlight, ini mencegah kesalahan kalkulasi saat load awal.
     window.addEventListener('load', () => {
       setTimeout(() => {
         const activeItem = document.querySelector('#navbar-menu a.current-nav');
@@ -551,7 +548,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }, 100);
     });
-
 
     const setupModal = (modalId, openBtnId) => {
         const modal = document.getElementById(modalId);
