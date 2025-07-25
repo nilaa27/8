@@ -17,23 +17,22 @@
     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
 
     <style>
-        /* === TEMA NEUMORPHIC (dari pictlord) === */
+        /* === TEMA NEUMORPHIC === */
         :root {
             --bg-color: #2c2f36;
             --shadow-dark: #212429;
             --shadow-light: #373a43;
             --text-color: #e0e5ec;
             --text-light: #97a1b3;
-            /* Menggunakan warna utama dari pictlord */
-            --primary: #0D9488; 
-            --secondary: #ff69b4; /* Bisa disesuaikan jika perlu */
+            --primary: #0D9488;
+            --primary-dark: #0f766e;
+            --secondary: #f59e0b;
             --star-color: #f59e0b;
             --gradient-primary: linear-gradient(135deg, var(--primary), #14b8a6);
             --transition-smooth: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
             --transition-snappy: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-            /* Menggunakan border-radius dari XlordVerse agar cocok dengan navbar baru */
-            --border-radius-main: 30px;
-            --border-radius-inner: 15px;
+            --border-radius-main: 20px;
+            --border-radius-inner: 12px;
         }
 
         [data-theme="light"] {
@@ -42,11 +41,10 @@
             --shadow-light: #ffffff;
             --text-color: #333333;
             --text-light: #666666;
-            --primary: #0D9488;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; scroll-behavior: smooth; }
-        html { font-size: 62.5%; overflow-x: hidden; }
+        html { font-size: 62.5%; }
         body {
             font-size: 1.6rem; background: var(--bg-color); color: var(--text-color);
             line-height: 1.7; transition: background-color 0.5s ease, color 0.5s ease;
@@ -70,78 +68,75 @@
         .btn:hover { color: var(--primary); transform: translateY(-3px); }
         .btn:active { transform: translateY(0); color: var(--primary); box-shadow: inset 5px 5px 10px var(--shadow-dark), inset -5px -5px 10px var(--shadow-light); }
         .btn.primary { color: #ffffff; background: var(--primary); }
-        .btn.primary:hover { transform: translateY(-3px); background: linear-gradient(135deg, #0f766e, #0D9488); box-shadow: 10px 10px 20px var(--shadow-dark), -10px -10px 20px var(--shadow-light); }
+        .btn.primary:hover { background: var(--primary-dark); color: white; }
 
-        /* ========================================
-        --- CSS NAVBAR BARU DARI XLORDVERSE ---
-        ========================================
-        */
-        
-        /* --- Header / Navigasi --- */
-        .main-header { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 980px; z-index: 1000; }
-        .header-container { display: flex; justify-content: space-between; align-items: center; padding: 15px 30px; background: rgba(44, 47, 54, 0.8); backdrop-filter: blur(10px); border-radius: var(--border-radius-main); box-shadow: 10px 10px 25px var(--shadow-dark), -10px -10px 25px var(--shadow-light); border: 1px solid var(--shadow-light); }
-        [data-theme="light"] .header-container { background: rgba(240, 242, 245, 0.8); }
-        .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--text-color); font-weight: 700; font-size: 2rem; }
-        .logo .highlight { color: var(--primary); }
-        .logo img { width: 32px; height: 32px; transition: transform 0.4s ease; border-radius: 50%; }
-        .logo:hover img { transform: rotate(360deg); }
-        .main-nav { display: flex; gap: 30px; }
-        .main-nav a { color: var(--text-light); text-decoration: none; font-weight: 500; transition: var(--transition-smooth); font-size: 1.5rem; }
-        .main-nav a:hover, .main-nav a.current-nav { color: var(--primary); font-weight: 600; }
-        
-        /* --- Tombol Tema --- */
-        .theme-toggle-btn {
-            background: var(--bg-color); width: 48px; height: 48px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            border: none; cursor: pointer; color: var(--text-color);
-            box-shadow: 5px 5px 10px var(--shadow-dark), -5px -5px 10px var(--shadow-light);
-            transition: var(--transition-smooth); margin-left: 15px;
+        /* --- [FINAL FIX] Header & Navigasi --- */
+        .main-header { position: sticky; top: 15px; z-index: 1000; margin: 0 auto 15px auto; width: 95%; max-width: 980px; left: 50%; transform: translateX(-50%); }
+        .header-container {
+            display: flex; justify-content: space-between; align-items: center; padding: 15px 30px;
+            background: rgba(44, 47, 54, 0.7); backdrop-filter: blur(10px);
+            border-radius: var(--border-radius-main); box-shadow: 10px 10px 25px var(--shadow-dark), -10px -10px 25px var(--shadow-light);
+            border: 1px solid var(--shadow-light);
         }
-        .theme-toggle-btn:hover { transform: scale(1.05); color: var(--primary); }
-        .theme-toggle-btn:active { box-shadow: inset 4px 4px 8px var(--shadow-dark), inset -4px -4px 8px var(--shadow-light); }
+        [data-theme="light"] .header-container { background: rgba(240, 242, 245, 0.7); }
+        .logo { font-size: 2.4rem; font-weight: 700; color: var(--text-color); text-decoration: none; flex-shrink: 0; }
+        .logo .highlight { color: var(--primary); }
+        
+        .main-nav {
+            display: flex; /* Tetap flex untuk desktop */
+            align-items: center;
+            justify-content: center; /* Menengahkan ul.nav-links */
+            flex-grow: 1; /* KUNCI: Membuat navigasi mengisi ruang agar bisa di tengah */
+        }
+        
+        .nav-links { list-style: none; display: flex; gap: 2.5rem; font-size: 1.5rem; font-weight: 500; }
+        .nav-links a { color: var(--text-light); transition: color 0.3s ease; text-decoration: none; }
+        .nav-links a:hover, .nav-links a.current-nav { color: var(--primary); font-weight: 600; }
+        
+        .header-actions { display: flex; align-items: center; gap: 15px; flex-shrink: 0; }
+
+        .theme-toggle-btn {
+            background: var(--bg-color); width: 45px; height: 45px; border-radius: 50%; display: flex;
+            align-items: center; justify-content: center; border: none; cursor: pointer;
+            color: var(--text-color); box-shadow: 5px 5px 10px var(--shadow-dark), -5px -5px 10px var(--shadow-light);
+            transition: var(--transition-smooth);
+        }
+        .theme-toggle-btn:hover { color: var(--primary); transform: scale(1.05); }
+        .theme-toggle-btn i.fa-sun { display: none; }
         [data-theme="light"] .theme-toggle-btn i.fa-moon { display: none; }
         [data-theme="light"] .theme-toggle-btn i.fa-sun { display: block; }
-        .theme-toggle-btn i.fa-sun { display: none; }
-
-        /* --- Hamburger & Sidebar (Model XlordVerse) --- */
+        
+        /* --- [FINAL FIX] Hamburger & Sidebar --- */
         .hamburger-menu {
-            display: none; cursor: pointer; width: 48px; height: 48px;
-            justify-content: center; align-items: center; position: relative; z-index: 1003;
-            background: var(--bg-color); border: none; border-radius: 50%;
+            display: none; /* Sembunyi di desktop */
+            cursor: pointer; width: 48px; height: 48px; justify-content: center; align-items: center;
+            position: relative; z-index: 1003; background: var(--bg-color); border: none; border-radius: 50%;
             box-shadow: 5px 5px 10px var(--shadow-dark), -5px -5px 10px var(--shadow-light);
-            transition: var(--transition-smooth);
         }
         .hamburger-menu .bar { display: block; width: 22px; height: 3px; background-color: var(--text-color); border-radius: 3px; position: absolute; left: 13px; transition: var(--transition-snappy); }
         .bar.top { top: 16px; } .bar.middle { top: 22.5px; } .bar.bottom { top: 29px; }
         body.sidebar-open .bar.top { top: 22.5px; transform: rotate(45deg); }
         body.sidebar-open .bar.middle { opacity: 0; transform: translateX(10px); }
         body.sidebar-open .bar.bottom { top: 22.5px; transform: rotate(-45deg); }
-
+        
         .sidebar {
             position: fixed; top: 0; right: -320px; width: 300px; height: 100%;
-            background: var(--bg-color); box-shadow: -10px 0px 30px var(--shadow-dark);
-            z-index: 999; padding: 80px 30px 30px; display: flex; flex-direction: column;
-            gap: 25px; transition: right 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            background: var(--bg-color); box-shadow: -10px 0px 30px var(--shadow-dark); z-index: 999;
+            padding: 80px 30px 30px; display: flex; flex-direction: column; gap: 25px;
+            transition: right 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
         .sidebar.active { right: 0; }
         .sidebar-nav { display: flex; flex-direction: column; gap: 20px; text-align: center; }
         .sidebar-nav a { color: var(--text-light); text-decoration: none; font-size: 1.8rem; font-weight: 500; padding: 15px; border-radius: var(--border-radius-inner); transition: var(--transition-smooth); }
         .sidebar-nav a:hover { color: var(--primary); background: var(--shadow-dark); }
-        .sidebar .btn.primary { margin-top: auto; width: 100%; }
-
-        /* ========================================
-        --- AKHIR DARI CSS NAVBAR BARU ---
-        ========================================
-        */
-
+        
         /* --- Sections --- */
         .page-section { padding: 8rem 0; }
         .section-title { font-size: 4rem; font-weight: 800; text-align: center; margin-bottom: 1.5rem; color: var(--text-color); }
         .section-subtitle { font-size: 1.8rem; color: var(--text-light); text-align: center; max-width: 700px; margin: 0 auto 5rem auto; }
         
         /* --- Hero Section --- */
-        /* Memberi padding atas agar tidak tertutup header */
-        #hero { padding-top: 150px; display: flex; align-items: center; justify-content: center; text-align: center; min-height: 100vh; position: relative; overflow: hidden; }
+        #hero { display: flex; align-items: center; justify-content: center; text-align: center; min-height: 100vh; padding: 4rem 0; position: relative; overflow: hidden; }
         .hero-glow-bg { position: absolute; top: 50%; left: 50%; width: 40vw; height: 40vw; max-width: 500px; max-height: 500px; background: radial-gradient(circle, rgba(13, 148, 136, 0.4), transparent 70%); border-radius: 50%; filter: blur(100px); transform: translate(-50%, -50%); z-index: 0; animation: pulsate-glow 7s ease-in-out infinite; }
         @keyframes pulsate-glow { 0%, 100% { transform: translate(-50%, -50%) scale(1); } 50% { transform: translate(-50%, -50%) scale(1.2); } }
         .hero-content { max-width: 800px; position: relative; z-index: 2; }
@@ -165,7 +160,7 @@
         .preview-3 { --initial-rotate: 15deg; --final-rotate: 18deg;  top: 20%; right: 12%; animation-duration: 9s; }
         .preview-4 { --initial-rotate: 5deg; --final-rotate: 2deg;   top: 65%; right: 15%; animation-duration: 11s; animation-delay: -4s; }
 
-        /* --- About Section (Modernized) --- */
+        /* Sisa CSS dari pictlord tidak diubah... */
         .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
         .about-text h3 { font-size: 2.8rem; color: var(--primary); margin-bottom: 1rem; }
         .about-image-frame {
@@ -173,8 +168,6 @@
             box-shadow: 10px 10px 20px var(--shadow-dark), -10px -10px 20px var(--shadow-light);
         }
         .about-image-frame img { width: 100%; border-radius: var(--border-radius-inner); }
-
-        /* --- 3 Steps & Features --- */
         .steps-container, .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 3rem; }
         .step-card, .feature-card {
             background: var(--bg-color); padding: 35px 30px; text-align: center;
@@ -187,8 +180,6 @@
         .features-grid { perspective: 1200px; }
         .feature-card { text-align: left; transform-style: preserve-3d; transition: var(--transition-smooth); }
         .feature-card:hover { transform: translateY(-10px) scale(1.03) rotateY(5deg); box-shadow: 15px 15px 30px var(--shadow-dark), -15px -15px 30px var(--shadow-light); }
-        
-        /* --- Testimonials Section --- */
         .testimonial-header { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto 4rem auto; flex-wrap: wrap; gap: 2rem; }
         .testimonial-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 3rem; }
         .testimonial-card {
@@ -201,8 +192,6 @@
         .author-details { margin-top: auto; }
         .author-name { font-weight: 600; color: var(--text-color); }
         .author-position { font-size: 1.3rem; color: var(--text-light); }
-
-        /* --- Privacy & FAQ --- */
         .privacy-points { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; margin-top: 3rem; }
         .privacy-point {
             padding: 2.5rem; border-radius: var(--border-radius-inner); text-align: left;
@@ -218,17 +207,10 @@
         .faq-arrow { color: var(--primary); font-size: 1.6rem; transition: transform 0.3s ease; }
         .faq-item[open] .faq-arrow { transform: rotate(180deg); }
         .faq-answer { padding: 0 2.5rem 2rem; color: var(--text-light); font-size: 1.5rem; line-height: 1.8; text-align: left; }
-        
-        /* --- Modal & Form --- */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: flex; align-items: center; justify-content: center; z-index: 1001; opacity: 0; visibility: hidden; transition: opacity 0.4s ease, visibility 0.4s ease; backdrop-filter: blur(5px); }
-        .modal-overlay.active { opacity: 1; visibility: visible; }
-        .modal-content { 
-            background: var(--bg-color); padding: 3rem 3.5rem; border-radius: var(--border-radius-main); 
-            box-shadow: 0 10px 40px rgba(0,0,0,0.4); position: relative; max-width: 500px; width: 90%; 
-            text-align: left; transform: scale(0.95); opacity: 0;
-            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.4s ease;
-        }
-        .modal-overlay.active .modal-content { transform: scale(1); opacity: 1; }
+        .modal-overlay.is-visible { opacity: 1; visibility: visible; }
+        .modal-content { background: var(--bg-color); padding: 3rem 3.5rem; border-radius: var(--border-radius-main); box-shadow: 10px 10px 30px rgba(0,0,0,0.3); position: relative; max-width: 500px; width: 90%; text-align: left; transform: scale(0.95); opacity: 0; transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.4s ease; }
+        .modal-overlay.is-visible .modal-content { transform: scale(1); opacity: 1; }
         .modal-content h2 { text-align: center; font-size: 2.4rem; margin-bottom: 1rem; color: var(--text-color); }
         .modal-content .modal-subtitle { text-align: center; margin-bottom: 2.5rem; font-size: 1.5rem; color: var(--text-light); }
         .modal-close-btn { position: absolute; top: 1rem; right: 1.5rem; background: none; border: none; font-size: 3rem; color: var(--text-light); cursor: pointer; transition: var(--transition-smooth); }
@@ -246,10 +228,8 @@
         .star-rating-input i { color: var(--shadow-dark); transition: color 0.2s, transform 0.2s; }
         .star-rating-input i:hover { transform: scale(1.2); }
         .star-rating-input.rating-1 i:nth-child(-n+1), .star-rating-input.rating-2 i:nth-child(-n+2), .star-rating-input.rating-3 i:nth-child(-n+3), .star-rating-input.rating-4 i:nth-child(-n+4), .star-rating-input.rating-5 i:nth-child(-n+5) { color: var(--star-color); }
-
-        /* --- Toast & Footer --- */
-        .toast-notification { position: fixed; top: 90px; right: 20px; background: var(--bg-color); color: var(--text-color); padding: 16px 25px; border-radius: var(--border-radius-inner); box-shadow: 10px 10px 20px var(--shadow-dark), -10px -10px 20px var(--shadow-light); border-left: 5px solid var(--primary); z-index: 2000; transform: translateX(120%); opacity: 0; transition: var(--transition-snappy); display: flex; align-items: center; gap: 15px; }
-        .toast-notification.show { transform: translateX(0); opacity: 1; }
+        .toast-notification { position: fixed; top: 20px; right: 20px; background: var(--bg-color); color: var(--text-color); padding: 16px 25px; border-radius: var(--border-radius-inner); box-shadow: 10px 10px 20px var(--shadow-dark), -10px -10px 20px var(--shadow-light); border-left: 5px solid var(--primary); z-index: 2000; transform: translateY(-150%); opacity: 0; transition: var(--transition-snappy); display: flex; align-items: center; gap: 15px; }
+        .toast-notification.show { transform: translateY(0); opacity: 1; }
         .toast-notification i { font-size: 1.8rem; color: var(--primary); }
         .main-footer { padding: 4rem 2rem 2rem; background: var(--shadow-dark); text-align: center; }
         .social-links { display: flex; justify-content: center; gap: 2.5rem; list-style: none; margin-bottom: 2rem; }
@@ -257,52 +237,46 @@
         .social-links a:hover { color: var(--primary); transform: translateY(-3px); }
         .copyright { font-size: 1.3rem; color: var(--text-light); opacity: 0.7; }
         
-        /* --- Media Queries --- */
+        /* --- [FINAL FIX] Responsive --- */
         @media (max-width: 768px) {
             html { font-size: 58%; }
-            .main-nav { display: none; }
-            .hamburger-menu { display: flex; margin-left: auto; }
-            .theme-toggle-btn { margin-left: 0; margin-right: 15px; }
-            .header-container { padding: 15px 20px; }
+            .main-nav { display: none; } /* Sembunyikan nav desktop */
+            .hamburger-menu { display: flex; } /* Tampilkan hamburger */
+            .header-container { padding: 10px 20px; }
             .main-header { width: 100%; top: 0; border-radius: 0; }
-            #hero { padding-top: 120px; }
             .hero-header { font-size: 4.8rem; }
             .section-title { font-size: 3.6rem; }
             .preview-2, .preview-3 { display: none; }
             .about-grid, .privacy-points { grid-template-columns: 1fr; }
             .about-image-frame { margin-top: 3rem; }
-            .toast-notification { top: 80px; left: 50%; transform: translate(-50%, -150%); width: 90%; }
-            .toast-notification.show { transform: translate(-50%, 0); }
+            .toast-notification { top: 10px; left: 10px; right: 10px; width: auto; }
         }
-        @media (min-width: 769px) { .hamburger-menu { display: none; } }
-
     </style>
 </head>
 <body>
 
     <header class="main-header" data-aos="fade-down">
         <div class="header-container">
-            <a href="#hero" class="logo">
-                <img src="https://via.placeholder.com/32x32/0D9488/FFFFFF?text=P" alt="Logo pictlord">
-                pict<span class="highlight">lord</span>
-            </a>
-            <nav class="main-nav" id="nav-menu-desktop">
-                <a href="#hero" class="current-nav">Beranda</a>
-                <a href="#about">Tentang</a>
-                <a href="#how-it-works">Cara Kerja</a>
-                <a href="#features">Fitur</a>
-                <a href="#testimonials">Testimoni</a>
-                <a href="#faq">FAQ</a>
+            <a href="#hero" class="logo">pict<span class="highlight">lord</span></a>
+            
+            <nav class="main-nav">
+                <ul class="nav-links" id="nav-menu-desktop">
+                    <li><a href="#hero" class="current-nav">Beranda</a></li>
+                    <li><a href="#about">Tentang</a></li>
+                    <li><a href="#how-it-works">Cara Kerja</a></li>
+                    <li><a href="#features">Fitur</a></li>
+                    <li><a href="#testimonials">Testimoni</a></li>
+                    <li><a href="#faq">FAQ</a></li>
+                    <li><a href="#contact">Kontak</a></li>
+                </ul>
             </nav>
-            <div style="display: flex; align-items: center;">
-                <button class="theme-toggle-btn" id="theme-toggle" aria-label="Toggle dark mode">
-                    <i class="fas fa-moon"></i>
-                    <i class="fas fa-sun"></i>
+
+            <div class="header-actions">
+                <button class="theme-toggle-btn" id="theme-toggle" aria-label="Ubah Tema">
+                    <i class="fas fa-moon"></i><i class="fas fa-sun"></i>
                 </button>
-                <button class="hamburger-menu" id="hamburger-menu" aria-label="Buka menu">
-                    <span class="bar top"></span>
-                    <span class="bar middle"></span>
-                    <span class="bar bottom"></span>
+                <button class="hamburger-menu" id="hamburger-menu" aria-label="Buka Menu">
+                    <span class="bar top"></span><span class="bar middle"></span><span class="bar bottom"></span>
                 </button>
             </div>
         </div>
@@ -311,7 +285,7 @@
     <div class="sidebar" id="sidebar">
         <nav class="sidebar-nav" id="nav-menu-mobile">
             <a href="#hero">Beranda</a>
-            <a href="#about">Tentang</a>
+            <a href="#about">Tentang Kami</a>
             <a href="#how-it-works">Cara Kerja</a>
             <a href="#features">Fitur</a>
             <a href="#testimonials">Testimoni</a>
@@ -319,7 +293,9 @@
             <a href="#faq">FAQ</a>
             <a href="#contact">Kontak</a>
         </nav>
-        <a href="layout.html" class="btn primary" style="margin-top: auto;">Mulai Sekarang <i class="fas fa-camera" style="color: #ffffff;"></i></a>
+        <a href="layout.html" class="btn primary" style="margin-top: auto; justify-content: center;">
+            MULAI SEKARANG <i class="fas fa-camera"></i>
+        </a>
     </div>
 
     <main>
@@ -485,61 +461,38 @@
         const docElement = document.documentElement;
         const body = document.body;
         
-        // --- LOGIKA BARU UNTUK THEME TOGGLE & SIDEBAR ---
-        // --- Theme Toggle Functionality ---
-        (() => {
-            const themeToggle = document.getElementById('theme-toggle');
-            if (!themeToggle) return;
-            const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
-            const currentTheme = localStorage.getItem('theme') || (prefersDarkScheme.matches ? 'dark' : 'light');
-            
-            document.documentElement.setAttribute('data-theme', currentTheme);
-            
+        // --- [FINAL FIX] Theme Toggle & Sidebar Logic ---
+        const themeToggle = document.getElementById('theme-toggle');
+        const hamburger = document.getElementById('hamburger-menu');
+        const sidebar = document.getElementById('sidebar');
+
+        // Theme Toggle
+        if (themeToggle) {
+            const currentTheme = localStorage.getItem('theme') || 'dark';
+            docElement.setAttribute('data-theme', currentTheme);
             themeToggle.addEventListener('click', () => {
-                const currentTheme = document.documentElement.getAttribute('data-theme');
-                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-                document.documentElement.setAttribute('data-theme', newTheme);
+                const newTheme = docElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+                docElement.setAttribute('data-theme', newTheme);
                 localStorage.setItem('theme', newTheme);
             });
-            
-            prefersDarkScheme.addListener(e => {
-                if(localStorage.getItem('theme')) return; // Don't override user's choice
-                const newTheme = e.matches ? 'dark' : 'light';
-                document.documentElement.setAttribute('data-theme', newTheme);
-            });
-        })();
+        }
 
-        // --- Sidebar Logic ---
-        (() => {
-            const hamburger = document.getElementById('hamburger-menu');
-            const sidebar = document.getElementById('sidebar');
-            if(!hamburger || !sidebar) return;
-
+        // Sidebar
+        if (hamburger && sidebar) {
             const toggleSidebar = () => {
+                body.classList.toggle('sidebar-open');
                 sidebar.classList.toggle('active');
-                document.body.classList.toggle('sidebar-open');
             };
-
             hamburger.addEventListener('click', toggleSidebar);
             
-            // Close sidebar when a link is clicked
-            sidebar.querySelectorAll('a').forEach(link => {
-                link.addEventListener('click', () => {
-                    if (sidebar.classList.contains('active')) {
-                        toggleSidebar();
-                    }
-                });
-            });
-            
-            // Close sidebar when clicking outside
-             document.addEventListener('click', (e) => {
-                if (sidebar.classList.contains('active') && !sidebar.contains(e.target) && !hamburger.contains(e.target)) {
+            sidebar.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
+                if (body.classList.contains('sidebar-open')) {
                     toggleSidebar();
                 }
-            });
-        })();
+            }));
+        }
 
-        // --- Announcement Text Cycle ---
+        // --- Sisa JavaScript dari pictlord ---
         const announcementTextContainer = document.getElementById('announcement-text-container');
         if (announcementTextContainer) {
             const messages = [
@@ -557,7 +510,6 @@
             }, 4000);
         }
 
-        // --- Active Nav on Scroll ---
         const allNavLinks = document.querySelectorAll('#nav-menu-desktop a, #nav-menu-mobile a');
         const sections = document.querySelectorAll('main section[id]');
         const observer = new IntersectionObserver(entries => {
@@ -566,7 +518,7 @@
                     const id = entry.target.id;
                     allNavLinks.forEach(link => {
                         link.classList.remove('current-nav');
-                        if (link.getAttribute('href') === `#${id}`) {
+                        if (link.getAttribute('href').includes(`#${id}`)) {
                             link.classList.add('current-nav');
                         }
                     });
@@ -575,7 +527,6 @@
         }, { rootMargin: '-40% 0px -60% 0px' });
         sections.forEach(section => observer.observe(section));
         
-        // --- FAQ Accordion ---
         document.querySelectorAll('.faq-item').forEach(item => {
             item.addEventListener('toggle', e => {
                 if (e.target.open) {
@@ -586,7 +537,6 @@
             });
         });
 
-        // --- Modal Handler ---
         const setupModal = (modalId, openBtnId) => {
             const modal = document.getElementById(modalId);
             const openBtn = document.getElementById(openBtnId);
@@ -594,9 +544,9 @@
             const closeBtn = modal.querySelector('.modal-close-btn');
             const form = modal.querySelector('form');
             
-            const open = () => { modal.classList.add('active'); body.classList.add('modal-open'); };
+            const open = () => { modal.classList.add('is-visible'); body.classList.add('modal-open'); };
             const close = () => { 
-                modal.classList.remove('active'); 
+                modal.classList.remove('is-visible'); 
                 body.classList.remove('modal-open'); 
                 if (form) {
                     form.reset();
@@ -617,7 +567,6 @@
         const contactModal = setupModal('contact-modal', 'open-contact-modal-btn');
         const testimonialModal = setupModal('testimonial-modal', 'add-testimonial-btn');
         
-        // --- Toast Notification ---
         const showToast = (message) => {
             document.querySelector('.toast-notification')?.remove();
             const toast = document.createElement('div');
@@ -637,7 +586,6 @@
             contactModal.close();
         });
 
-        // --- Testimonial Logic ---
         const testimonialGrid = document.getElementById('testimonial-grid');
         const initialTestimonials = [
             { name: 'Saraswati D.', position: 'Event Planner', rating: 5, text: "Sangat seru! Saya dan teman-teman menggunakan ini saat kumpul online. Kualitasnya luar biasa untuk web. Desain neumorphic-nya juga keren banget!" },
@@ -653,50 +601,46 @@
             return card;
         };
         const loadTestimonials = () => {
-            if (!testimonialGrid) return;
             testimonialGrid.innerHTML = '';
             initialTestimonials.forEach(t => testimonialGrid.appendChild(createTestimonialCard(t)));
         };
 
-        const testimonialForm = document.getElementById('testimonial-form');
-        if (testimonialForm) {
-            const starContainer = testimonialForm.querySelector('.star-rating-input');
-            if (starContainer) {
-                const stars = starContainer.querySelectorAll('i');
-                const resetStars = () => {
-                    starContainer.classList.remove(...[1,2,3,4,5].map(n => `rating-${n}`));
-                    if (starContainer.dataset.rating > 0) starContainer.classList.add(`rating-${starContainer.dataset.rating}`);
-                }
-                stars.forEach(star => {
-                    star.addEventListener('mouseover', () => {
-                        starContainer.classList.remove(...[1,2,3,4,5].map(n => `rating-${n}`));
-                        starContainer.classList.add(`rating-${star.dataset.value}`);
-                    });
-                    star.addEventListener('mouseout', resetStars);
-                    star.addEventListener('click', () => { 
-                        starContainer.dataset.rating = star.dataset.value; 
-                        resetStars();
-                    });
-                });
+        const starContainer = document.querySelector('#testimonial-modal .star-rating-input');
+        if (starContainer) {
+            const stars = starContainer.querySelectorAll('i');
+            const resetStars = () => {
+                starContainer.classList.remove(...[1,2,3,4,5].map(n => `rating-${n}`));
+                if (starContainer.dataset.rating > 0) starContainer.classList.add(`rating-${starContainer.dataset.rating}`);
             }
-            
-            testimonialForm.addEventListener('submit', e => {
-                e.preventDefault();
-                const name = document.getElementById('testimonial-name').value;
-                const position = document.getElementById('testimonial-position').value;
-                const text = document.getElementById('testimonial-text').value;
-                const rating = parseInt(starContainer.dataset.rating) || 0;
-                if (!name || !position || !text || rating === 0) { alert('Harap isi semua kolom dan berikan rating.'); return; }
-                const newCard = createTestimonialCard({ name, position, text, rating });
-                testimonialGrid.prepend(newCard);
-                
-                setTimeout(() => AOS.refreshHard(), 50); 
-                
-                showToast(`Terima kasih atas testimoninya, ${name}!`);
-                testimonialModal.close();
+            stars.forEach(star => {
+                star.addEventListener('mouseover', () => {
+                    starContainer.classList.remove(...[1,2,3,4,5].map(n => `rating-${n}`));
+                    starContainer.classList.add(`rating-${star.dataset.value}`);
+                });
+                star.addEventListener('mouseout', resetStars);
+                star.addEventListener('click', () => { 
+                    starContainer.dataset.rating = star.dataset.value; 
+                    resetStars();
+                });
             });
         }
         
+        document.getElementById('testimonial-form').addEventListener('submit', e => {
+            e.preventDefault();
+            const name = document.getElementById('testimonial-name').value;
+            const position = document.getElementById('testimonial-position').value;
+            const text = document.getElementById('testimonial-text').value;
+            const rating = parseInt(starContainer.dataset.rating) || 0;
+            if (!name || !position || !text || rating === 0) { alert('Harap isi semua kolom dan berikan rating.'); return; }
+            const newCard = createTestimonialCard({ name, position, text, rating });
+            testimonialGrid.prepend(newCard);
+            
+            setTimeout(() => AOS.refreshHard(), 50); 
+            
+            showToast(`Terima kasih atas testimoninya, ${name}!`);
+            testimonialModal.close();
+        });
+
         loadTestimonials();
     });
     </script>
