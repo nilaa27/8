@@ -2,7 +2,7 @@
 <html lang="id" data-theme="dark">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="description" content="Ambil foto ala photobooth instan secara online. Kreasikan dengan filter, stiker, dan unduh strip foto berkualitas tinggi secara gratis.">
     <meta name="keywords" content="photobooth, photobooth online, foto box, pictlord, webcamtoy, photobooth aesthetic">
     <title>pictlord | Photobooth Online Modern & Aesthetic</title>
@@ -46,12 +46,16 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; scroll-behavior: smooth; }
-        html { font-size: 62.5%; }
-        body {
-            font-size: 1.6rem; background: var(--bg-color); color: var(--text-color);
-            line-height: 1.7; transition: background-color 0.5s ease, color 0.5s ease;
-            overflow-x: hidden;
-        }
+html { font-size: 62.5%; }
+body {
+    font-size: 1.6rem; background: var(--bg-color); color: var(--text-color);
+    line-height: 1.7; transition: background-color 0.5s ease, color 0.5s ease;
+}
+/* Tambahkan selector html untuk memastikan tidak ada scroll horizontal */
+html, body {
+    overflow-x: hidden;
+}
+
         .container { max-width: 1200px; width: 90%; margin: 0 auto; }
         
         /* === HEADER & NAVBAR === */
