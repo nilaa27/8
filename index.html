@@ -230,8 +230,9 @@
             display: none;
         }
 
-        /* === RESPONSIVE LAYOUT === */
-        @media (max-width: 1024px) {
+        /* === RESPONSIVE LAYOUT (UPDATED) === */
+        @media (max-width: 768px) {
+            /* Mengaktifkan Tampilan Mobile/Hamburger hanya untuk layar di bawah 768px */
             .navbar-menu {
                 position: absolute;
                 top: calc(100% + 1rem);
@@ -240,7 +241,7 @@
                 flex-direction: column;
                 align-items: stretch;
                 padding: 1.5rem;
-                background: var(--navbar-mobile-bg); /* Latar belakang lebih solid */
+                background: var(--navbar-mobile-bg);
                 backdrop-filter: blur(10px);
                 -webkit-backdrop-filter: blur(10px);
                 border-radius: var(--border-radius-main);
@@ -261,6 +262,7 @@
                 opacity: 1;
                 pointer-events: auto;
             }
+            
             .navbar-cta { display: none; }
             .hamburger-menu { display: flex; } /* Tampilkan di mobile */
             .navbar-right { gap: 0.5rem; }
@@ -273,9 +275,8 @@
                 margin-top: 1rem;
                 text-align: center;
             }
-        }
-        
-        @media (max-width: 768px) {
+
+            /* Penyesuaian layout dan font untuk mobile */
             html { font-size: 58%; }
             .hero-header { font-size: 4.8rem; }
             .section-title { font-size: 3.6rem; }
@@ -284,7 +285,6 @@
             .main-header { width: 90%; }
             .navbar { padding: 0.8rem 1rem; }
         }
-
     </style>
 </head>
 <body>
@@ -419,7 +419,7 @@
     <footer class="main-footer">
         <div class="container">
             <div class="social-links">
-                <a href="https://github.com/judiemosinabre" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                <a href="https://github.com/" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
                 <a href="https://instagram.com/off.xlord" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
             </div>
             <p class="copyright">&copy; 2025 pictlord. Seluruh Hak Cipta Dilindungi.</p>
@@ -500,7 +500,7 @@ document.addEventListener('DOMContentLoaded', () => {
         hamburger.addEventListener('click', toggleMenu);
         navLinks.forEach(link => {
             link.addEventListener('click', () => {
-                if (window.innerWidth <= 1024 && navbarMenu.classList.contains('active')) {
+                if (window.innerWidth <= 768 && navbarMenu.classList.contains('active')) { // Diubah dari 1024 ke 768
                     toggleMenu();
                 }
             });
@@ -531,7 +531,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const activeLink = document.querySelector(`.navbar-menu a[href="#${id}"]`);
                 if (activeLink) {
                     activeLink.classList.add('current-nav');
-                    if (window.innerWidth > 1024) {
+                    if (window.innerWidth > 768) { // Diubah dari 1024 ke 768
                        moveHighlight(activeLink.parentElement);
                     }
                 }
