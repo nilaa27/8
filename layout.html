@@ -2,10 +2,10 @@
 <html lang="id" data-theme="dark">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="description" content="Pilih layout foto favoritmu untuk memulai sesi photobooth online.">
     <title>Pixlord | Pilih Layout Foto</title>
-
+    
     <link rel="canonical" href="https://pict.xlord.web.id/layout.html">
     <link rel="icon" href="https://via.placeholder.com/32x32/0D9488/FFFFFF?text=P">
 
@@ -43,92 +43,49 @@
             --text-light: #666666;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; scroll-behavior: smooth; }
         html { font-size: 62.5%; }
         body {
             font-size: 1.6rem; background: var(--bg-color); color: var(--text-color);
             line-height: 1.7; transition: background-color 0.5s ease, color 0.5s ease;
             overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        main {
+            flex-grow: 1;
         }
         .container { max-width: 1200px; width: 90%; margin: 0 auto; }
-
-        /* === HEADER & NAVBAR (PERBAIKAN POSISI TENGAH) === */
+        
+        /* === HEADER & NAVBAR === */
         .main-header {
             position: sticky;
             top: 2rem;
-            left: 50%;
-            transform: translateX(-50%);
             width: 95%;
             max-width: 1200px;
             z-index: 1000;
-            transition: var(--transition-smooth);
-            margin-bottom: 2rem;
+            margin: 0 auto;
         }
         .navbar {
-            display: grid; /* Menggunakan Grid untuk layouting presisi */
-            grid-template-columns: 1fr auto 1fr; /* Kiri, Tengah (auto), Kanan */
-            align-items: center;
-            padding: 0.8rem 1.5rem; /* Sedikit padding horizontal */
-            background: var(--navbar-bg);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-radius: 999px;
-            border: 1px solid var(--shadow-light);
-            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+            display: flex; align-items: center; justify-content: space-between; padding: 0.8rem 1rem;
+            background: var(--navbar-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            border-radius: 999px; border: 1px solid var(--shadow-light); box-shadow: 0 8px 24px rgba(0,0,0,0.1);
         }
-        .navbar-logo {
-            grid-column: 1; /* Posisi di kolom 1 */
-            justify-self: start; /* Rata kiri */
-            font-size: 2.2rem; font-weight: 700; color: var(--text-color); text-decoration: none;
-        }
+        .navbar-logo { font-size: 2.2rem; font-weight: 700; color: var(--text-color); text-decoration: none; margin-left: 1.5rem; }
         .navbar-logo .highlight { color: var(--primary); }
-        .navbar-menu {
-            grid-column: 2; /* Posisi di kolom 2 */
-            list-style: none; display: flex; align-items: center; gap: 0.5rem;
-            margin: 0; padding: 0;
-            position: relative;
-        }
+        .navbar-menu { list-style: none; display: flex; align-items: center; gap: 0.5rem; margin: 0; padding: 0; position: relative; }
         .navbar-menu li { list-style: none; }
         .navbar-menu a {
             color: var(--text-light); text-decoration: none; font-size: 1.5rem; font-weight: 500;
-            padding: 8px 16px;
-            border-radius: 999px;
-            display: block;
-            position: relative;
-            z-index: 2;
-            transition: color 0.3s ease;
+            padding: 8px 16px; border-radius: 999px; display: block; position: relative; z-index: 2; transition: color 0.3s ease;
         }
         .navbar-menu a:hover { color: var(--text-color); }
         .nav-highlight {
-            position: absolute;
-            top: 0; left: 0;
-            background: var(--primary);
-            border-radius: 999px;
-            z-index: 1;
-            transition: all 0.4s cubic-bezier(0.45, 0.05, 0.55, 0.95);
-            opacity: 0;
+            position: absolute; top: 0; left: 0; background: var(--primary);
+            border-radius: 999px; z-index: 1; transition: all 0.4s cubic-bezier(0.45, 0.05, 0.55, 0.95);
         }
-        .navbar-menu:hover .nav-highlight { opacity: 1; }
-
-        .navbar-right {
-            grid-column: 3; /* Posisi di kolom 3 */
-            justify-self: end; /* Rata kanan */
-            display: flex; align-items: center; gap: 1.5rem;
-        }
-        .hamburger-menu {
-            display: none; cursor: pointer; width: 40px; height: 40px; justify-content: center; align-items: center;
-            background: transparent; border: none; position: relative; z-index: 1002;
-        }
-        .hamburger-menu .bar {
-            display: block; width: 22px; height: 2px; background-color: var(--text-color);
-            border-radius: 3px; position: absolute;
-            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-        }
-        .bar.top { transform: translateY(-7px); }
-        .bar.bottom { transform: translateY(7px); }
-        .hamburger-menu.active .bar.top { transform: translateY(0) rotate(45deg); }
-        .hamburger-menu.active .bar.middle { transform: scaleX(0); opacity: 0; }
-        .hamburger-menu.active .bar.bottom { transform: translateY(0) rotate(-45deg); }
+        .navbar-right { display: flex; align-items: center; gap: 1.5rem; margin-right: 0.5rem; }
         .theme-toggle-btn {
             background: var(--bg-color); width: 40px; height: 40px; border-radius: 50%; display: flex;
             align-items: center; justify-content: center; border: none; cursor: pointer;
@@ -141,134 +98,78 @@
         [data-theme="light"] .theme-toggle-btn i.fa-sun { display: block; }
         .theme-toggle-btn-mobile-wrapper { display: none; }
 
-        /* --- Content Styling --- */
-        .content-section {
-            padding: 3rem 0;
-            text-align: center;
+        .hamburger-menu {
+            display: none; cursor: pointer; width: 40px; height: 40px; justify-content: center; align-items: center;
+            background: transparent; border: none; position: relative; z-index: 1002;
         }
-        .page-title {
-            font-size: 4rem;
-            font-weight: 800;
-            margin-bottom: 1rem;
-            color: var(--text-color);
+        .hamburger-menu .bar {
+            display: block; width: 22px; height: 2px; background-color: var(--text-color);
+            border-radius: 3px; position: absolute; transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
         }
-        .page-subtitle {
-            font-size: 1.8rem;
-            color: var(--text-light);
-            margin-bottom: 5rem;
-            max-width: 500px;
-            margin-left: auto;
-            margin-right: auto;
-        }
+        .bar.top { transform: translateY(-7px); } .bar.middle { transform: translateY(0); } .bar.bottom { transform: translateY(7px); }
+        .hamburger-menu.active .bar.top { transform: translateY(0) rotate(45deg); }
+        .hamburger-menu.active .bar.middle { transform: scaleX(0); opacity: 0; }
+        .hamburger-menu.active .bar.bottom { transform: translateY(0) rotate(-45deg); }
 
-        /* --- Layout Grid Styling Neumorphic --- */
+        /* --- Content Styling --- */
+        .content-section { padding: 5rem 0; text-align: center; }
+        .page-title { font-size: 4rem; font-weight: 800; margin-bottom: 1rem; color: var(--text-color); }
+        .page-subtitle { font-size: 1.8rem; color: var(--text-light); margin-bottom: 5rem; max-width: 500px; margin-left: auto; margin-right: auto; }
+        
+        /* --- Layout Grid Styling --- */
         .layout-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 3rem;
-            max-width: 1100px;
-            margin: 0 auto;
+            display: grid; grid-template-columns: repeat(4, 1fr);
+            gap: 3rem; max-width: 1100px; margin: 0 auto;
         }
         .layout-card {
-            background: var(--bg-color);
-            border-radius: var(--border-radius-main);
-            padding: 2.5rem;
-            text-align: center;
-            border: none;
-            cursor: pointer;
-            color: var(--text-color);
+            background: var(--bg-color); border-radius: var(--border-radius-main); padding: 2.5rem; text-align: center;
+            border: none; cursor: pointer; color: var(--text-color);
             box-shadow: 10px 10px 20px var(--shadow-dark), -10px -10px 20px var(--shadow-light);
             transition: var(--transition-smooth);
         }
-        .layout-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 15px 15px 30px var(--shadow-dark), -15px -15px 30px var(--shadow-light);
-        }
-        .layout-card:active {
-            transform: translateY(0);
-            box-shadow: inset 7px 7px 15px var(--shadow-dark), inset -7px -7px 15px var(--shadow-light);
-        }
+        .layout-card:hover { transform: translateY(-8px); box-shadow: 15px 15px 30px var(--shadow-dark), -15px -15px 30px var(--shadow-light); }
+        .layout-card:active { transform: translateY(0); box-shadow: inset 7px 7px 15px var(--shadow-dark), inset -7px -7px 15px var(--shadow-light); }
         .layout-card .image-frame {
-            background: var(--bg-color);
-            padding: 1rem;
-            border-radius: var(--border-radius-inner);
+            background: var(--bg-color); padding: 1rem; border-radius: var(--border-radius-inner);
             box-shadow: inset 4px 4px 8px var(--shadow-dark), inset -4px -4px 8px var(--shadow-light);
-            margin-bottom: 2rem;
-            display: inline-block;
+            margin-bottom: 2rem; display: inline-block;
         }
-        .layout-card img {
-            width: 100%;
-            max-width: 150px;
-            display: block;
-            border-radius: 5px;
-        }
-        .layout-label {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--text-color);
-            margin-bottom: 0.5rem;
-        }
-        .layout-description {
-            font-size: 1.5rem;
-            color: var(--text-light);
-        }
+        .layout-card img { width: 100%; max-width: 150px; display: block; border-radius: 5px; }
+        .layout-label { font-size: 2rem; font-weight: 700; color: var(--text-color); margin-bottom: 0.5rem; }
+        .layout-description { font-size: 1.5rem; color: var(--text-light); }
+        
+        /* --- Footer --- */
+        .main-footer { padding: 4rem 2rem 2rem; background: var(--shadow-dark); text-align: center; margin-top: auto;}
+        .social-links { display: flex; justify-content: center; gap: 2.5rem; list-style: none; margin-bottom: 2rem; }
+        .social-links a { font-size: 2rem; color: var(--text-light); transition: var(--transition-smooth); }
+        .social-links a:hover { color: var(--primary); transform: translateY(-3px); }
+        .copyright { font-size: 1.3rem; color: var(--text-light); opacity: 0.7; }
 
         /* --- Responsive --- */
-        @media (max-width: 1024px) {
-            .navbar {
-                display: flex; /* Kembali ke flexbox di mobile */
-                justify-content: space-between;
-            }
-            .navbar-menu {
-                position: absolute;
-                top: calc(100% + 1rem);
-                left: 0; right: 0;
-                width: 90%; margin: auto;
-                flex-direction: column;
-                align-items: stretch;
-                padding: 1.5rem;
-                background: var(--navbar-mobile-bg);
-                backdrop-filter: blur(10px);
-                border-radius: var(--border-radius-main);
-                box-shadow: 0 8px 24px rgba(0,0,0,0.1);
-                border: 1px solid var(--shadow-light);
-                transform: translateY(-20px) scale(0.95);
-                opacity: 0;
-                pointer-events: none;
-                transform-origin: top center;
-                transition: transform 0.3s ease, opacity 0.3s ease;
-                display: none; /* Sembunyi by default */
-            }
-            .navbar-menu.active {
-                display: flex; /* Tampil saat aktif */
-                transform: translateY(0) scale(1);
-                opacity: 1;
-                pointer-events: auto;
-            }
-            .navbar-menu > li { display: block; }
-            .navbar-menu a { text-align: center; }
-            .nav-highlight { display: none; }
-            
-            .hamburger-menu {
-                display: flex;
-            }
-            .layout-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            .navbar-right .theme-toggle-btn { display: none; }
-            .theme-toggle-btn-mobile-wrapper { display: block; margin-top: 1rem; text-align: center; }
-        }
-
         @media (max-width: 768px) {
             html { font-size: 58%; }
-            .main-header { position: sticky; }
             .page-title { font-size: 3.2rem; }
+            .navbar-menu {
+                position: absolute; top: calc(100% + 1rem); left: 0; right: 0;
+                width: 90%; margin: auto; flex-direction: column; align-items: stretch;
+                padding: 1.5rem; background: var(--navbar-mobile-bg); backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px); border-radius: var(--border-radius-main);
+                box-shadow: 0 8px 24px rgba(0,0,0,0.1); border: 1px solid var(--shadow-light);
+                transform: translateY(-20px) scale(0.95); opacity: 0; pointer-events: none;
+                transform-origin: top center; transition: transform 0.3s ease, opacity 0.3s ease;
+            }
+            .navbar-menu a { text-align: center; }
+            .nav-highlight { display: none; }
+            .navbar-menu.active { transform: translateY(0) scale(1); opacity: 1; pointer-events: auto; }
+            .hamburger-menu { display: flex; }
+            .navbar-right { gap: 0.5rem; }
+            .navbar-right .theme-toggle-btn { display: none; }
+            .theme-toggle-btn-mobile-wrapper { display: block; margin-top: 1rem; text-align: center; }
+            .layout-grid { grid-template-columns: repeat(2, 1fr); }
         }
 
         @media (max-width: 576px) {
-            .layout-grid {
-                grid-template-columns: 1fr;
-            }
+            .layout-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -277,17 +178,15 @@
     <header class="main-header" data-aos="fade-down">
         <nav class="navbar container">
             <a href="index.html" class="navbar-logo">pix<span class="highlight">lord</span></a>
-
+            
             <ul class="navbar-menu" id="navbar-menu">
                 <li><a href="index.html">Beranda</a></li>
-                <li><a href="index.html#about">Tentang</a></li>
-                <li><a href="index.html#how-it-works">Cara Kerja</a></li>
                 <li><a href="index.html#features">Fitur</a></li>
                 <li><a href="index.html#testimonials">Testimoni</a></li>
                 <li><a href="index.html#faq">FAQ</a></li>
                 <li><a href="index.html#contact">Kontak</a></li>
                 <div class="nav-highlight"></div>
-                <li class="theme-toggle-btn-mobile-wrapper">
+                <li class="theme-toggle-btn-mobile-wrapper"> 
                     <button class="theme-toggle-btn" id="theme-toggle-mobile" aria-label="Ubah Tema">
                         <i class="fas fa-moon"></i><i class="fas fa-sun"></i>
                     </button>
@@ -304,7 +203,7 @@
             </div>
         </nav>
     </header>
-
+    
     <main>
         <section class="content-section">
             <div class="container">
@@ -312,84 +211,90 @@
                     <h1 class="page-title">Pilih Layout Favoritmu</h1>
                     <p class="page-subtitle">Pilih gaya untuk memulai. Kamu punya 3 detik untuk setiap pose!</p>
                 </div>
-
+                
                 <div class="layout-grid">
                     <button class="layout-card" id="layout1Btn" data-aos="fade-up" data-aos-delay="0">
-                        <div class="image-frame">
-                            <img src="assets/layouts/thinBorders1.2.png" alt="Layout A: 3 Pose" loading="eager">
-                        </div>
-                        <h2 class="layout-label">Layout A</h2>
-                        <p class="layout-description">Strip 6x2 (3 Pose)</p>
+                        <div class="image-frame"><img src="assets/layouts/thinBorders1.2.png" alt="Layout A: 3 Pose" loading="eager"></div>
+                        <h2 class="layout-label">Layout A</h2><p class="layout-description">Strip 6x2 (3 Pose)</p>
                     </button>
                     <button class="layout-card" id="layout2Btn" data-aos="fade-up" data-aos-delay="100">
-                        <div class="image-frame">
-                             <img src="assets/layouts/thinBorders2.2.png" alt="Layout B: 4 Pose" loading="eager">
-                        </div>
-                        <h2 class="layout-label">Layout B</h2>
-                        <p class="layout-description">Strip 6x2 (4 Pose)</p>
+                        <div class="image-frame"><img src="assets/layouts/thinBorders2.2.png" alt="Layout B: 4 Pose" loading="eager"></div>
+                        <h2 class="layout-label">Layout B</h2><p class="layout-description">Strip 6x2 (4 Pose)</p>
                     </button>
                     <button class="layout-card" id="layout3Btn" data-aos="fade-up" data-aos-delay="200">
-                        <div class="image-frame">
-                            <img src="assets/layouts/thinBorders3.2.png" alt="Layout C: 2 Pose" loading="eager">
-                        </div>
-                        <h2 class="layout-label">Layout C</h2>
-                        <p class="layout-description">Strip 6x2 (2 Pose)</p>
+                        <div class="image-frame"><img src="assets/layouts/thinBorders3.2.png" alt="Layout C: 2 Pose" loading="eager"></div>
+                        <h2 class="layout-label">Layout C</h2><p class="layout-description">Strip 6x2 (2 Pose)</p>
                     </button>
                     <button class="layout-card" id="layout4Btn" data-aos="fade-up" data-aos-delay="300">
-                        <div class="image-frame">
-                             <img src="assets/layouts/thinBorders4.1.png" alt="Layout D: 6 Pose" loading="eager">
-                        </div>
-                        <h2 class="layout-label">Layout D</h2>
-                        <p class="layout-description">Strip 6x4 (6 Pose)</p>
+                        <div class="image-frame"><img src="assets/layouts/thinBorders4.1.png" alt="Layout D: 6 Pose" loading="eager"></div>
+                        <h2 class="layout-label">Layout D</h2><p class="layout-description">Strip 6x4 (6 Pose)</p>
                     </button>
                 </div>
             </div>
         </section>
     </main>
 
+    <footer class="main-footer">
+        <div class="container">
+            <div class="social-links">
+                <a href="https://github.com/" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                <a href="https://instagram.com/off.xlord" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            </div>
+            <p class="copyright">&copy; 2025 pictlord. Seluruh Hak Cipta Dilindungi.</p>
+        </div>
+    </footer>
+    
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', () => { 
             AOS.init({ duration: 800, once: false, offset: 50 });
 
             const docElement = document.documentElement;
+            const body = document.body;
+
+            // --- Navigasi & Tema ---
             const hamburger = document.getElementById('hamburger-menu');
             const navbarMenu = document.getElementById('navbar-menu');
             const navItems = document.querySelectorAll('#navbar-menu > li:not(.theme-toggle-btn-mobile-wrapper)');
-            const navLinks = navbarMenu.querySelectorAll('a');
+            const navLinks = document.querySelectorAll('#navbar-menu a');
             const highlight = document.querySelector('.nav-highlight');
             const themeToggles = [document.getElementById('theme-toggle'), document.getElementById('theme-toggle-mobile')];
 
-            // --- Logika Highlight Block ---
             function moveHighlight(target) {
                 if (!highlight || !target) return;
                 highlight.style.width = `${target.offsetWidth}px`;
                 highlight.style.height = `${target.offsetHeight}px`;
                 highlight.style.left = `${target.offsetLeft}px`;
-                highlight.style.opacity = '1';
             }
 
             navItems.forEach(item => {
-                item.addEventListener('mouseover', () => moveHighlight(item));
-            });
-            navbarMenu.addEventListener('mouseleave', () => {
-                if(highlight) highlight.style.opacity = '0';
+                item.addEventListener('mouseover', () => moveHighlight(item.querySelector('a')));
             });
 
-            // --- Logika Hamburger Menu ---
+            navbarMenu.addEventListener('mouseleave', () => {
+                highlight.style.width = '0';
+            });
+
             if (hamburger && navbarMenu) {
                 const toggleMenu = () => {
                     hamburger.classList.toggle('active');
                     navbarMenu.classList.toggle('active');
                 };
                 hamburger.addEventListener('click', toggleMenu);
+                navLinks.forEach(link => {
+                    link.addEventListener('click', () => {
+                        if (window.innerWidth <= 768 && navbarMenu.classList.contains('active')) {
+                            toggleMenu();
+                        }
+                    });
+                });
             }
 
-            // --- Logika Theme Toggle ---
             const applyTheme = (theme) => {
                 docElement.setAttribute('data-theme', theme);
                 localStorage.setItem('theme', theme);
             };
+
             themeToggles.forEach(toggle => {
                 if(toggle) {
                     toggle.addEventListener('click', () => {
@@ -398,6 +303,7 @@
                     });
                 }
             });
+
             applyTheme(localStorage.getItem('theme') || 'dark');
 
             // --- Layout Button Click Handlers ---
