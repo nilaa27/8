@@ -780,7 +780,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (engLogo) {
       engLogo.addEventListener('click', () => {
         resetLogoBackgrounds();
-        updateText('photobooth');
+        updateText('pictlord');
         engLogo.style.backgroundColor = '#E28585';
         engLogo.classList.add('active');
       });
@@ -789,7 +789,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (korLogo) {
       korLogo.addEventListener('click', () => {
         resetLogoBackgrounds();
-        updateText('포토부스');
+        updateText('ㅔㅑㅊ시ㅐㄱㅇ');
         korLogo.style.backgroundColor = '#E28585';
         korLogo.classList.add('active');
       });
@@ -1641,7 +1641,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             const link = document.createElement('a');
                             const url = URL.createObjectURL(blob);
                             link.href = url;
-                            link.download = 'photobooth.png';
+                            link.download = 'pictlord.png';
 
                             document.body.appendChild(link);
                             link.click();
@@ -1651,7 +1651,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         } else {
                             const link = document.createElement('a');
                             link.href = imageData;
-                            link.download = 'photobooth.png';
+                            link.download = 'pictlord.png';
                             document.body.appendChild(link);
                             link.click();
                             document.body.removeChild(link);
