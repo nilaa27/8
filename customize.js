@@ -114,7 +114,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let finalCanvas = null;
     let selectedSticker = null;
 
-    let selectedText = 'photobooth';
+    let selectedText = 'pictlord';
 
     if (customBack) {
         customBack.addEventListener('click', () => {
