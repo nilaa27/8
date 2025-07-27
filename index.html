@@ -92,7 +92,6 @@
             align-items: center;
             gap: 1.2rem;
             text-decoration: none;
-            /* DIUBAH: Warna latar disesuaikan agar mirip navbar */
             background-color: rgba(44, 47, 54, 0.25); 
             color: var(--text-color);
             padding: 1.2rem 2.5rem;
@@ -103,13 +102,11 @@
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
             border: 1px solid rgba(255, 255, 255, 0.15);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-            /* DITAMBAHKAN: Efek blur disamakan dengan navbar */
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
         }
 
         [data-theme="light"] .instagram-badge {
-            /* DIUBAH: Warna latar untuk tema terang */
             background-color: rgba(240, 242, 245, 0.25);
             border-color: rgba(0, 0, 0, 0.1);
         }
@@ -390,6 +387,10 @@
 </div>
 
 <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-database-compat.js"></script>
+
 <script>
 document.addEventListener('DOMContentLoaded', () => {
     AOS.init({
@@ -397,6 +398,28 @@ document.addEventListener('DOMContentLoaded', () => {
         once: false,
         offset: 50,
     });
+    
+    // =================================================================
+    // START: Konfigurasi Firebase (Sudah diisi dengan data Anda)
+    // =================================================================
+    const firebaseConfig = {
+      apiKey: "AIzaSyCCaLXoaHFOuXRnHAvQzg9R0c1tfsTsTBU",
+      authDomain: "project-xlord.firebaseapp.com",
+      databaseURL: "https://project-xlord-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "project-xlord",
+      storageBucket: "project-xlord.appspot.com",
+      messagingSenderId: "847461816867",
+      appId: "1:847461816867:web:17071ba14ffe6a6099ef96",
+      measurementId: "G-344KX3B197"
+    };
+
+    // Inisialisasi Firebase
+    firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
+    const testimonialsRef = database.ref('testimonials');
+    // =================================================================
+    // END: Konfigurasi Firebase
+    // =================================================================
 
     const badgeContainer = document.querySelector('.badge-text-container');
     const badgeTexts = document.querySelectorAll('.badge-text');
@@ -559,14 +582,14 @@ document.addEventListener('DOMContentLoaded', () => {
         contactModal.close();
     });
 
+    // =================================================================
+    // START: Logika Testimoni dengan Firebase
+    // =================================================================
     const testimonialGrid = document.getElementById('testimonial-grid');
     const testimonialForm = document.getElementById('testimonial-form');
+
     if (testimonialGrid && testimonialForm) {
-        const initialTestimonials = [
-            { name: 'Saraswati D.', position: 'Event Planner', rating: 5, text: "Sangat seru! Saya dan teman-teman menggunakan ini saat kumpul online. Kualitasnya luar biasa untuk web." },
-            { name: 'Budi R.', position: 'Mahasiswa', rating: 4, text: "Sangat simpel dan efektif. Saya butuh strip foto cepat untuk proyek mading dan pictlord sangat membantu." },
-            { name: 'Cantika T.', position: 'Desainer Grafis', rating: 5, text: "Ini website favorit baruku. Gratis, tidak perlu daftar, dan hasilnya instan. Pekerjaan yang fantastis!" }
-        ];
+        // Fungsi untuk membuat elemen kartu testimoni dari objek data
         const createTestimonialCard = (data) => {
             const card = document.createElement('div');
             card.className = 'testimonial-card';
@@ -575,8 +598,20 @@ document.addEventListener('DOMContentLoaded', () => {
             card.innerHTML = `<div class="testimonial-rating">${ratingHTML}</div><p class="testimonial-text">"${data.text}"</p><div class="author-details"><div class="author-name">${data.name}</div><div class="author-position">${data.position}</div></div>`;
             return card;
         };
-        initialTestimonials.forEach(t => testimonialGrid.appendChild(createTestimonialCard(t)));
 
+        // Fungsi untuk memuat testimoni dari Firebase
+        const loadTestimonials = () => {
+            // Mengambil 6 testimoni terakhir berdasarkan timestamp
+            testimonialsRef.orderByChild('timestamp').limitToLast(6).on('child_added', (snapshot) => {
+                const newTestimonial = snapshot.val();
+                const newCard = createTestimonialCard(newTestimonial);
+                testimonialGrid.prepend(newCard); // prepend() agar testimoni terbaru muncul di paling atas
+                AOS.refresh(); // Refresh AOS untuk mengaktifkan animasi pada kartu baru
+            });
+        };
+        loadTestimonials(); // Panggil fungsi untuk memuat data awal
+
+        // Mengatur interaksi rating bintang pada form
         const starContainer = testimonialForm.querySelector('.star-rating-input');
         if (starContainer) {
             const stars = starContainer.querySelectorAll('i');
@@ -597,18 +632,38 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
         
+        // Event listener untuk mengirim form testimoni
         testimonialForm.addEventListener('submit', e => {
             e.preventDefault();
-            const name = document.getElementById('testimonial-name').value;
-            const position = document.getElementById('testimonial-position').value;
-            const text = document.getElementById('testimonial-text').value;
+            const name = document.getElementById('testimonial-name').value.trim();
+            const position = document.getElementById('testimonial-position').value.trim();
+            const text = document.getElementById('testimonial-text').value.trim();
             const rating = parseInt(starContainer.dataset.rating) || 0;
-            if (!name || !position || !text || rating === 0) { alert('Harap isi semua kolom dan berikan rating.'); return; }
-            const newCard = createTestimonialCard({ name, position, text, rating });
-            testimonialGrid.prepend(newCard);
-            setTimeout(() => AOS.refreshHard(), 50); 
-            showToast(`Terima kasih atas testimoninya, ${name}!`);
-            testimonialModal.close();
+
+            if (!name || !position || !text || rating === 0) {
+                alert('Harap isi semua kolom dan berikan rating.');
+                return;
+            }
+
+            // Objek data testimoni baru
+            const newTestimonialData = {
+                name: name,
+                position: position,
+                text: text,
+                rating: rating,
+                timestamp: firebase.database.ServerValue.TIMESTAMP // Gunakan timestamp server
+            };
+
+            // Kirim data ke Firebase
+            testimonialsRef.push(newTestimonialData)
+                .then(() => {
+                    showToast(`Terima kasih atas testimoninya, ${name}!`);
+                    testimonialModal.close();
+                })
+                .catch((error) => {
+                    console.error("Gagal menyimpan testimoni:", error);
+                    alert("Maaf, terjadi kesalahan saat mengirim testimoni Anda.");
+                });
         });
     }
 });
