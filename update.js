@@ -21,12 +21,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const clickedButton = e.target.closest('button');
             if (!clickedButton) return;
             
-            if (!clickedButton.closest('.stickers-container')) {
-                const buttonsInGroup = container.querySelectorAll('button');
-                buttonsInGroup.forEach(btn => btn.classList.remove('active'));
-                clickedButton.classList.add('active');
+            if (!clickedButton.closest('.stickers-container')) { 
+                 const buttonsInGroup = container.querySelectorAll('button');
+                 buttonsInGroup.forEach(btn => btn.classList.remove('active'));
+                 clickedButton.classList.add('active');
             } else {
-                if (clickedButton.id === 'noneSticker') {
+                if(clickedButton.id === 'noneSticker') {
                     const stickerButtons = container.querySelectorAll('button');
                     stickerButtons.forEach(btn => btn.classList.remove('active'));
                     clickedButton.classList.add('active');
@@ -37,16 +37,16 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
-    
+
     // --- 3. Logika Modal Preview ---
     const previewModal = document.getElementById('previewModal');
     const previewBtn = document.getElementById('previewBtn');
     const modalImage = document.getElementById('modalImagePreview');
     const closeModalBtn = document.querySelector('.modal-close-btn');
-    
+
     if (previewBtn) {
         previewBtn.addEventListener('click', () => {
-            const finalCanvas = document.querySelector('#photoPreview canvas');
+            const finalCanvas = document.querySelector('#photoPreview canvas'); 
             if (finalCanvas) {
                 modalImage.src = finalCanvas.toDataURL('image/png');
                 previewModal.style.display = 'block';
@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-    if (closeModalBtn) {
+    if(closeModalBtn) {
         closeModalBtn.addEventListener('click', () => {
             previewModal.style.display = 'none';
         });
@@ -65,12 +65,12 @@ document.addEventListener('DOMContentLoaded', () => {
             previewModal.style.display = 'none';
         }
     });
-    
+
     // --- 4. Logika QR Code & Download ---
     const downloadBtn = document.getElementById('downloadCopyBtn');
     const qrCodeContainer = document.getElementById('qrCodeContainer');
     const qrcodeDiv = document.getElementById('qrcode');
-    
+
     if (downloadBtn) {
         downloadBtn.addEventListener('click', () => {
             const finalCanvas = document.querySelector('#photoPreview canvas');
@@ -91,7 +91,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-    
+
     // --- 5. Logika Tombol Share ---
     const shareBtn = document.getElementById('shareBtn');
     if (shareBtn) {
@@ -101,7 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 text: 'Coba deh photobooth online keren ini! Aku baru aja bikin foto ciamik di sini. ✨',
                 url: window.location.origin // Menggunakan URL domain utama situs
             };
-            
+    
             try {
                 if (navigator.share) {
                     await navigator.share(shareData);
@@ -113,7 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-    
+
     // --- 6. Logika untuk Kustomisasi Warna Logo ---
     const logoColorPicker = document.getElementById('logoColorPicker');
     if (logoColorPicker) {
