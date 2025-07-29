@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     
-    // --- 1. Theme Manager Script ---
+    // --- 1. Theme Manager Script (Tetap Sama) ---
     const themeToggle = document.getElementById('theme-toggle');
     const applyTheme = (theme) => {
         document.body.classList.toggle('dark-mode', theme === 'dark');
@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const savedTheme = localStorage.getItem('theme') || 'dark';
     applyTheme(savedTheme);
     
-    // --- 2. Script untuk Active Button States ---
+    // --- 2. Script untuk Active Button States (Tetap Sama) ---
     const buttonContainers = document.querySelectorAll('.custom-buttons-container, .logo-container');
     buttonContainers.forEach(container => {
         container.addEventListener('click', (e) => {
@@ -38,11 +38,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // --- 3. Logika Modal Preview ---
+    // --- 3. Logika Modal Preview (Tetap Sama) ---
     const previewModal = document.getElementById('previewModal');
     const previewBtn = document.getElementById('previewBtn');
     const modalImage = document.getElementById('modalImagePreview');
-    const closeModalBtn = document.querySelector('.modal-close-btn');
 
     if (previewBtn) {
         previewBtn.addEventListener('click', () => {
@@ -55,51 +54,69 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-    if(closeModalBtn) {
-        closeModalBtn.addEventListener('click', () => {
-            previewModal.style.display = 'none';
+
+    // =========================================================
+    // --- 4. LOGIKA BARU: Modal Download & QR Code ---
+    // =========================================================
+    const downloadModal = document.getElementById('downloadModal');
+    const openDownloadModalBtn = document.getElementById('downloadCopyBtn');
+    const qrCodeContainer = document.getElementById('qrCodeContainer');
+    const finalDownloadLink = document.getElementById('finalDownloadLink');
+
+    if (openDownloadModalBtn) {
+        openDownloadModalBtn.addEventListener('click', () => {
+            const finalCanvas = document.querySelector('#photoPreview canvas');
+            if (!finalCanvas) {
+                alert('Gambar belum siap untuk diunduh!');
+                return;
+            }
+
+            // 1. Ambil data gambar dari canvas
+            const imageDataUrl = finalCanvas.toDataURL('image/png');
+
+            // 2. Set link download pada tombol di dalam modal
+            finalDownloadLink.href = imageDataUrl;
+            
+            // 3. Hapus QR code lama (jika ada) dan buat yang baru
+            qrCodeContainer.innerHTML = '';
+            new QRCode(qrCodeContainer, {
+                text: imageDataUrl,
+                width: 200,  // Ukuran QR Code
+                height: 200,
+                correctLevel: QRCode.CorrectLevel.L // Level koreksi terendah untuk data besar
+            });
+
+            // 4. Tampilkan modal
+            downloadModal.style.display = 'block';
         });
     }
-    window.addEventListener('click', (event) => {
-        if (event.target == previewModal) {
-            previewModal.style.display = 'none';
+
+    // --- 5. Logika Menutup Semua Modal ---
+    function setupModalClose(modalElement) {
+        if (!modalElement) return;
+        const closeBtn = modalElement.querySelector('.modal-close-btn');
+        if (closeBtn) {
+            closeBtn.addEventListener('click', () => {
+                modalElement.style.display = 'none';
+            });
         }
-    });
-
-    // --- 4. Logika QR Code & Download ---
-    const downloadBtn = document.getElementById('downloadCopyBtn');
-    const qrCodeContainer = document.getElementById('qrCodeContainer');
-    const qrcodeDiv = document.getElementById('qrcode');
-
-    if (downloadBtn) {
-        downloadBtn.addEventListener('click', () => {
-            const finalCanvas = document.querySelector('#photoPreview canvas');
-            if (finalCanvas) {
-                if (qrCodeContainer.style.display === 'none') {
-                    qrcodeDiv.innerHTML = '';
-                    new QRCode(qrcodeDiv, {
-                        text: finalCanvas.toDataURL('image/png'),
-                        width: 128,
-                        height: 128,
-                        correctLevel: QRCode.CorrectLevel.H
-                    });
-                    qrCodeContainer.style.display = 'block';
-                }
-                // Anda tetap bisa menjalankan fungsi download asli dari customize6.js di sini
-            } else {
-                alert('Silakan buat gambar terlebih dahulu!');
+        window.addEventListener('click', (event) => {
+            if (event.target == modalElement) {
+                modalElement.style.display = 'none';
             }
         });
     }
+    setupModalClose(previewModal);
+    setupModalClose(downloadModal); // Terapkan juga untuk modal download
 
-    // --- 5. Logika Tombol Share ---
+    // --- 6. Logika Tombol Share (Tetap Sama) ---
     const shareBtn = document.getElementById('shareBtn');
     if (shareBtn) {
         shareBtn.addEventListener('click', async () => {
             const shareData = {
                 title: 'Pictlord Photobooth',
                 text: 'Coba deh photobooth online keren ini! Aku baru aja bikin foto ciamik di sini. ✨',
-                url: window.location.origin // Menggunakan URL domain utama situs
+                url: window.location.origin 
             };
     
             try {
@@ -114,16 +131,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- 6. Logika untuk Kustomisasi Warna Logo ---
+    // --- 7. Logika untuk Kustomisasi Warna Logo (Tetap Sama) ---
     const logoColorPicker = document.getElementById('logoColorPicker');
     if (logoColorPicker) {
         logoColorPicker.addEventListener('input', () => {
-            // Panggil fungsi redraw canvas Anda dari customize6.js/canvas.js di sini
-            // Ini akan memastikan canvas diperbarui setiap kali warna diubah
-            // Contoh:
-            // if (typeof redrawCanvasWithOptions === 'function') {
-            //     redrawCanvasWithOptions(); 
-            // }
+            // Logika ini akan memanggil fungsi redraw dari `customize.js`
+            // karena `customize.js` memiliki listener yang terhubung dengan color picker ini.
+            // Anda tidak perlu menambahkan apa-apa di sini.
             console.log('Warna logo baru dipilih:', logoColorPicker.value);
         });
     }
