@@ -66,9 +66,12 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            
+            /* --- EFEK BLUR TRANSPARAN --- */
             background-color: rgba(56, 64, 72, 0.7); 
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
+
             border-radius: 50px;
             animation: fadeInUp 0.5s ease-out;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
@@ -102,6 +105,7 @@
         .dark-mode #sun-icon { display: none; }
         .dark-mode #moon-icon { display: block; }
 
+        /* Light mode header style */
         body:not(.dark-mode) #main-header { 
             background-color: rgba(240, 242, 245, 0.75);
             border: 1px solid rgba(0, 0, 0, 0.1); 
@@ -188,7 +192,9 @@
         .btnShapeSize, .stickerIconSize { width: 22px; height: 22px; }
 
         /* --- Specific Controls Styling --- */
-        #colorPickerBtn { background: conic-gradient(red, orange, yellow, green, cyan, blue, violet, red); }
+        #colorPickerBtn {
+            background: conic-gradient(red, orange, yellow, green, cyan, blue, violet, red);
+        }
         #pinkBtnFrame { background-color: #FFC2D1; }
         #blueBtnFrame { background-color: #CAF0F8; }
         #yellowBtnFrame { background-color: #FFF8A5; }
@@ -198,6 +204,7 @@
         #redBtnFrame { background-color: #780000; }
         #whiteBtnFrame { background-color: #FFFFFF; border: 1px solid #ccc; }
         #blackBtnFrame { background-color: #000000; }
+
         #pinkGlitter { background-image: url(assets/frame-backgrounds/pink-glitter.jpg); background-size: cover; }
         #pinkPlaid { background-image: url(assets/frame-backgrounds/pink-plaid.jpg); }
         #bluePlaid { background-image: url(assets/frame-backgrounds/blue-plaid.jpg); background-size: cover; }
@@ -245,10 +252,15 @@
         #blingDenimFrame { background-image: url(assets/frame-backgrounds/bling-denim.jpg); background-size: 210%; }
 
         /* Logo and Date Checkbox */
-        .logo-options-grid { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 15px; }
         .logo-container { display: flex; gap: 10px; }
         .logoCustomBtn { padding: 8px 15px; border-radius: 20px; font-size: 1.4rem; }
-        .date-overlay { display: flex; align-items: center; gap: 15px; margin-top: 20px; }
+        
+        .date-overlay {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
         .date-option { display: flex; align-items: center; gap: 8px; }
         .date-option label { font-size: 1.4rem; cursor: pointer; }
         .date-option input[type="checkbox"] {
@@ -258,23 +270,17 @@
             box-shadow: inset 2px 2px 5px var(--light-inset-shadow-dark), inset -2px -2px 5px var(--light-inset-shadow-light);
             cursor: pointer; position: relative;
         }
-        .date-option input[type="checkbox"]:checked { background-color: var(--light-accent); }
+        .date-option input[type="checkbox"]:checked {
+            background-color: var(--light-accent);
+        }
         .date-option input[type="checkbox"]:checked::before {
-            content: '✔'; font-size: 14px; color: white;
-            position: absolute; top: 50%; left: 50%;
+            content: '✔';
+            font-size: 14px;
+            color: white;
+            position: absolute;
+            top: 50%; left: 50%;
             transform: translate(-50%, -50%);
         }
-        .color-picker-container { display: flex; align-items: center; gap: 10px; }
-        .color-picker-label { font-size: 1.4rem; }
-        input[type="color"] {
-            -webkit-appearance: none; -moz-appearance: none; appearance: none;
-            width: 40px; height: 40px; border: none; border-radius: 50%;
-            cursor: pointer; background-color: transparent;
-            box-shadow: 5px 5px 10px var(--light-shadow-dark), -5px -5px 10px var(--light-shadow-light);
-        }
-        input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
-        input[type="color"]::-webkit-color-swatch { border: none; border-radius: 50%; }
-        input[type="color"]::-moz-color-swatch { border: none; border-radius: 50%; }
 
         /* --- Final Action Buttons --- */
         .final-actions-container {
@@ -283,11 +289,12 @@
             gap: 15px;
             margin-top: 30px;
         }
-        .final-actions-container button, .final-actions-container a {
+        .final-actions-container button {
             padding: 12px;
             font-size: 1.5rem;
             border-radius: 25px;
         }
+
         #downloadCopyBtn {
              background: var(--light-accent); color: white;
              box-shadow: 5px 5px 10px var(--light-shadow-dark), -5px -5px 10px var(--light-shadow-light);
@@ -296,55 +303,65 @@
             box-shadow: inset 5px 5px 10px var(--light-inset-shadow-dark), inset -5px -5px 10px var(--light-inset-shadow-light);
         }
 
-        /* --- Styling untuk Modal (Preview & Download) --- */
+        /* --- Styling untuk Fitur Baru --- */
         .modal {
-            display: none; position: fixed; z-index: 2000; 
-            left: 0; top: 0; width: 100%; height: 100%; 
-            overflow: auto; background-color: rgba(0,0,0,0.7);
-            backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
+            display: none; 
+            position: fixed; 
+            z-index: 2000; 
+            left: 0;
+            top: 0;
+            width: 100%; 
+            height: 100%; 
+            overflow: auto; 
+            background-color: rgba(0,0,0,0.7);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
         }
         .modal-content {
-            margin: auto; display: block;
-            width: 80%; max-width: 700px;
-            position: absolute; top: 50%; left: 50%;
+            margin: auto;
+            display: block;
+            width: 80%;
+            max-width: 700px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
             transform: translate(-50%, -50%);
         }
         #modalImagePreview {
-            width: 100%; border-radius: 15px; border: 5px solid white;
+            width: 100%;
+            border-radius: 15px;
+            border: 5px solid white;
         }
         .modal-close-btn {
-            position: absolute; top: 15px; right: 35px;
-            color: #f1f1f1; font-size: 40px; font-weight: bold;
-            transition: 0.3s; cursor: pointer;
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            transition: 0.3s;
+            cursor: pointer;
         }
         .modal-close-btn:hover, .modal-close-btn:focus { color: #bbb; text-decoration: none; }
 
-        /* --- Styling untuk Modal Download & QR Code --- */
-        .download-modal-content {
-            padding: 30px; text-align: center;
-            background-color: var(--light-bg);
-            box-shadow: 10px 10px 20px var(--light-shadow-dark), -10px -10px 20px var(--light-shadow-light);
-            border-radius: 20px;
-            max-width: 400px;
+        .logo-options-grid {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            align-items: center;
+            gap: 15px;
         }
-        .download-modal-content h2 { font-size: 2.4rem; margin-bottom: 15px; }
-        .download-modal-content p { font-size: 1.5rem; margin-bottom: 25px; }
-        .qr-code-wrapper {
-            display: flex; justify-content: center; align-items: center;
-            padding: 15px; background: #ffffff;
-            border-radius: 12px;
-            box-shadow: inset 5px 5px 10px var(--light-inset-shadow-dark), inset -5px -5px 10px var(--light-inset-shadow-light);
-            margin-bottom: 30px;
+        .color-picker-container { display: flex; align-items: center; gap: 10px; }
+        .color-picker-label { font-size: 1.4rem; }
+        input[type="color"] {
+            -webkit-appearance: none; -moz-appearance: none; appearance: none;
+            width: 40px; height: 40px;
+            border: none; border-radius: 50%;
+            cursor: pointer; background-color: transparent;
+            box-shadow: 5px 5px 10px var(--light-shadow-dark), -5px -5px 10px var(--light-shadow-light);
         }
-        .download-copy-btn {
-             background: var(--light-accent); color: white;
-             padding: 12px; font-size: 1.5rem;
-             border-radius: 25px; text-decoration: none;
-             display: block;
-        }
-        .download-copy-btn:active {
-            box-shadow: inset 5px 5px 10px var(--light-inset-shadow-dark), inset -5px -5px 10px var(--light-inset-shadow-light);
-        }
+        input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
+        input[type="color"]::-webkit-color-swatch { border: none; border-radius: 50%; }
+        input[type="color"]::-moz-color-swatch { border: none; border-radius: 50%; }
 
         /* --- Responsive Design --- */
         @media only screen and (max-width: 900px) {
@@ -481,7 +498,7 @@
                 </div>
             
                 <div class="control-group">
-                    <h3 class="options-label">Logo & Date</h3>
+                    <h3 class="options-label">Logo</h3>
                     <div class="logo-options-grid">
                         <div class="logo-container">
                             <button id="engLogo" class="neumorphic-btn logoCustomBtn active">ENG</button>
@@ -490,9 +507,13 @@
                         </div>
                         <div class="color-picker-container">
                             <label for="logoColorPicker" class="color-picker-label">Color:</label>
-                            <input type="color" id="logoColorPicker" value="#000000">
+                            <input type="color" id="logoColorPicker" value="#E28585">
                         </div>
                     </div>
+                </div>
+            
+                <div class="control-group">
+                     <h3 class="options-label">Date Overlay</h3>
                      <div class="date-overlay">
                          <div class="date-option">
                              <input type="checkbox" id="dateCheckbox">
@@ -512,6 +533,10 @@
                     <button class="neumorphic-btn" id="downloadCopyBtn">Download</button>
                 </div>
             
+                <div id="qrCodeContainer" style="display: none; text-align: center; margin-top: 25px;">
+                    <h3 class="options-label">Scan to Download on Mobile</h3>
+                    <div id="qrcode" style="display: flex; justify-content: center; align-items: center; padding: 10px; background: white; border-radius: 8px; margin-top: 10px;"></div>
+                </div>
             </aside>
         </div>
     </main>
@@ -523,25 +548,12 @@
         </div>
     </div>
     
-    <div id="downloadModal" class="modal">
-        <div class="modal-content download-modal-content">
-            <span class="modal-close-btn">&times;</span>
-            <h2>Download Your Photo</h2>
-            <p>Scan the QR code with your phone or download directly to your computer.</p>
-            
-            <div id="qrCodeContainer" class="qr-code-wrapper">
-                </div>
-
-            <div class="final-actions-container" style="grid-template-columns: 1fr;"> <a href="#" id="finalDownloadLink" class="neumorphic-btn download-copy-btn" download="pictlord-photobooth.png">
-                    Download Image
-                </a>
-            </div>
-        </div>
-    </div>
-    
     <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/vanilla-picker@2.12.1/dist/vanilla-picker.min.js"></script>
     <script src="customize.js"></script>
+    <script src="canvas.js"></script>
+    <script src="main.js"></script>
     
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -588,6 +600,7 @@
             const previewModal = document.getElementById('previewModal');
             const previewBtn = document.getElementById('previewBtn');
             const modalImage = document.getElementById('modalImagePreview');
+            const closeModalBtn = document.querySelector('.modal-close-btn');
         
             if (previewBtn) {
                 previewBtn.addEventListener('click', () => {
@@ -600,55 +613,44 @@
                     }
                 });
             }
-        
-            // --- 4. Logika Modal Download & QR Code ---
-            const downloadModal = document.getElementById('downloadModal');
-            const openDownloadModalBtn = document.getElementById('downloadCopyBtn');
-            const qrCodeContainer = document.getElementById('qrCodeContainer');
-            const finalDownloadLink = document.getElementById('finalDownloadLink');
-
-            if (openDownloadModalBtn) {
-                openDownloadModalBtn.addEventListener('click', () => {
-                    const finalCanvas = document.querySelector('#photoPreview canvas');
-                    if (!finalCanvas) {
-                        alert('Gambar belum siap untuk diunduh!');
-                        return;
-                    }
-
-                    const imageDataUrl = finalCanvas.toDataURL('image/png');
-                    finalDownloadLink.href = imageDataUrl;
-                    
-                    qrCodeContainer.innerHTML = '';
-                    new QRCode(qrCodeContainer, {
-                        text: imageDataUrl,
-                        width: 200,
-                        height: 200,
-                        correctLevel: QRCode.CorrectLevel.L
-                    });
-
-                    downloadModal.style.display = 'block';
+            if(closeModalBtn) {
+                closeModalBtn.addEventListener('click', () => {
+                    previewModal.style.display = 'none';
                 });
             }
-
-            // --- 5. Logika Menutup Semua Modal ---
-            function setupModalClose(modalElement) {
-                if (!modalElement) return;
-                const closeBtn = modalElement.querySelector('.modal-close-btn');
-                if (closeBtn) {
-                    closeBtn.addEventListener('click', () => {
-                        modalElement.style.display = 'none';
-                    });
+            window.addEventListener('click', (event) => {
+                if (event.target == previewModal) {
+                    previewModal.style.display = 'none';
                 }
-                window.addEventListener('click', (event) => {
-                    if (event.target == modalElement) {
-                        modalElement.style.display = 'none';
+            });
+        
+            // --- 4. Logika QR Code & Download ---
+            const downloadBtn = document.getElementById('downloadCopyBtn');
+            const qrCodeContainer = document.getElementById('qrCodeContainer');
+            const qrcodeDiv = document.getElementById('qrcode');
+        
+            if (downloadBtn) {
+                downloadBtn.addEventListener('click', () => {
+                    const finalCanvas = document.querySelector('#photoPreview canvas');
+                    if (finalCanvas) {
+                        if (qrCodeContainer.style.display === 'none') {
+                            qrcodeDiv.innerHTML = '';
+                            new QRCode(qrcodeDiv, {
+                                text: finalCanvas.toDataURL('image/png'),
+                                width: 128,
+                                height: 128,
+                                correctLevel: QRCode.CorrectLevel.H
+                            });
+                            qrCodeContainer.style.display = 'block';
+                        }
+                        // Fungsi download asli dari file customize.js akan tetap berjalan
+                    } else {
+                        alert('Silakan buat gambar terlebih dahulu!');
                     }
                 });
             }
-            setupModalClose(previewModal);
-            setupModalClose(downloadModal);
         
-            // --- 6. Logika Tombol Share ---
+            // --- 5. Logika Tombol Share ---
             const shareBtn = document.getElementById('shareBtn');
             if (shareBtn) {
                 shareBtn.addEventListener('click', async () => {
@@ -657,15 +659,29 @@
                         text: 'Coba deh photobooth online keren ini! Aku baru aja bikin foto ciamik di sini. ✨',
                         url: window.location.origin 
                     };
+            
                     try {
                         if (navigator.share) {
-                           await navigator.share(shareData);
+                            await navigator.share(shareData);
                         } else {
-                            alert('Fitur share tidak didukung di browser ini.');
+                            alert('Browser Anda tidak mendukung fitur share. Silakan salin link secara manual.');
                         }
                     } catch (err) {
-                        console.error('Error sharing:', err);
+                        console.error('Error saat sharing:', err);
                     }
+                });
+            }
+        
+            // --- 6. Logika untuk Kustomisasi Warna Logo ---
+            const logoColorPicker = document.getElementById('logoColorPicker');
+            if (logoColorPicker) {
+                logoColorPicker.addEventListener('input', () => {
+                    // Panggil fungsi redraw canvas Anda dari customize.js/canvas.js di sini
+                    // Contoh:
+                    // if (typeof redrawCanvasWithOptions === 'function') {
+                    //     redrawCanvasWithOptions(); 
+                    // }
+                    console.log('Warna logo baru dipilih:', logoColorPicker.value);
                 });
             }
         });
