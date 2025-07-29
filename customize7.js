@@ -23,11 +23,12 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 
     // =========================================================================
-    // 2. SELEKTOR ELEMEN DOM
+    // 2. SELEKTOR ELEMEN DOM & VARIABEL GLOBAL
     // =========================================================================
     const photoCustomPreview = document.getElementById('photoPreview');
     const controlsPanel = document.querySelector('.controls-panel');
     const storedImages = JSON.parse(sessionStorage.getItem('photoArray'));
+    let currentCanvas = null; // [PERBAIKAN] Variabel untuk menyimpan kanvas aktif
 
     if (!storedImages) {
         console.error("Data foto tidak ditemukan di sessionStorage.");
@@ -42,9 +43,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const stackedCanvas = document.createElement('canvas');
         const ctx = stackedCanvas.getContext('2d');
         
-        // --- PERUBAHAN DI SINI: Layout diubah kembali ke 2x2 ---
         const columns = 2, rows = 2;
-        const imageGridSize = rows * columns; // Total 4 foto
+        const imageGridSize = rows * columns;
         const canvasWidth = 900, canvasHeight = 1352;
         const borderWidth = 30, spacing = 12, bottomPadding = 100;
 
@@ -97,6 +97,7 @@ document.addEventListener('DOMContentLoaded', function() {
         await drawSticker(ctx, stackedCanvas, customizationOptions.sticker);
         
         updatePreview(stackedCanvas);
+        currentCanvas = stackedCanvas; // [PERBAIKAN] Menyimpan kanvas yang sudah jadi ke variabel
         return stackedCanvas;
     }
 
@@ -161,17 +162,22 @@ document.addEventListener('DOMContentLoaded', function() {
     
     function clipAndDrawImage(ctx, img, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight, shapeType) { ctx.save(); ctx.beginPath(); if (shapeType === 'circle') { ctx.arc(dx + dWidth / 2, dy + dHeight / 2, Math.min(dWidth, dHeight) / 2, 0, Math.PI * 2); } else if (shapeType === 'rounded') { const r = 30; ctx.moveTo(dx + r, dy); ctx.lineTo(dx + dWidth - r, dy); ctx.quadraticCurveTo(dx + dWidth, dy, dx + dWidth, dy + r); ctx.lineTo(dx + dWidth, dy + dHeight - r); ctx.quadraticCurveTo(dx + dWidth, dy + dHeight, dx + dWidth - r, dy + dHeight); ctx.lineTo(dx + r, dy + dHeight); ctx.quadraticCurveTo(dx, dy + dHeight, dx, dy + dHeight - r); ctx.lineTo(dx, dy + r); ctx.quadraticCurveTo(dx, dy, dx + r, dy); } else if (shapeType === 'heart') { ctx.moveTo(dx + dWidth / 2, dy + dHeight); ctx.bezierCurveTo(dx + dWidth * 1.25, dy + dHeight * 0.7, dx + dWidth * 0.9, dy - dHeight * 0.1, dx + dWidth / 2, dy + dHeight * 0.25); ctx.bezierCurveTo(dx + dWidth * 0.1, dy - dHeight * 0.1, dx - dWidth * 0.25, dy + dHeight * 0.7, dx + dWidth / 2, dy + dHeight); ctx.closePath(); } else { ctx.rect(dx, dy, dWidth, dHeight); } ctx.clip(); ctx.drawImage(img, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight); ctx.restore(); }
 
-    async function downloadFinalImage() {
+    // [PERBAIKAN] Fungsi unduh yang lebih efisien dan tidak perlu async
+    function downloadFinalImage() {
         console.log("Mempersiapkan gambar untuk diunduh...");
-        const finalCanvas = await redrawCanvas();
-        if (finalCanvas) {
-            const imageData = finalCanvas.toDataURL('image/png');
+        // Cek apakah kanvas sudah siap
+        if (currentCanvas) {
+            const imageData = currentCanvas.toDataURL('image/png');
             const link = document.createElement('a');
             link.href = imageData;
-            link.download = 'pictlord.png';
+            link.download = 'pictlord_final.png'; // Anda bisa mengubah nama file default
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
+        } else {
+            // Beri tahu pengguna jika terjadi kesalahan
+            console.error("Canvas belum siap untuk diunduh.");
+            alert("Terjadi kesalahan, gambar belum siap. Coba ubah salah satu opsi lalu unduh lagi.");
         }
     }
     
