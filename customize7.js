@@ -4,22 +4,11 @@ document.addEventListener('DOMContentLoaded', function() {
     // 1. PUSAT PENGATURAN / STATE MANAGEMENT
     // =========================================================================
     const customizationOptions = {
-        frame: {
-            type: 'color',
-            value: '#FFFFFF',
-            image: null
-        },
+        frame: { type: 'color', value: '#FFFFFF', image: null },
         photoShape: 'default',
         sticker: null,
-        logo: {
-            lang: 'ENG',
-            text: 'pictlord',
-            color: '#000000'
-        },
-        date: {
-            show: false,
-            showTime: false
-        }
+        logo: { lang: 'ENG', text: 'pictlord', color: '#000000' },
+        date: { show: false, showTime: false }
     };
 
     // =========================================================================
@@ -28,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const photoCustomPreview = document.getElementById('photoPreview');
     const controlsPanel = document.querySelector('.controls-panel');
     const storedImages = JSON.parse(sessionStorage.getItem('photoArray'));
-    let currentCanvas = null; // [PERBAIKAN] Variabel untuk menyimpan kanvas aktif
+    let currentCanvas = null; // Variabel untuk menyimpan kanvas aktif
 
     if (!storedImages) {
         console.error("Data foto tidak ditemukan di sessionStorage.");
@@ -43,7 +32,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const stackedCanvas = document.createElement('canvas');
         const ctx = stackedCanvas.getContext('2d');
         
-        const columns = 2, rows = 2;
+        // --- Layout 2x2 untuk 4 foto ---
+        const columns = 2, rows = 2; 
         const imageGridSize = rows * columns;
         const canvasWidth = 900, canvasHeight = 1352;
         const borderWidth = 30, spacing = 12, bottomPadding = 100;
@@ -97,7 +87,7 @@ document.addEventListener('DOMContentLoaded', function() {
         await drawSticker(ctx, stackedCanvas, customizationOptions.sticker);
         
         updatePreview(stackedCanvas);
-        currentCanvas = stackedCanvas; // [PERBAIKAN] Menyimpan kanvas yang sudah jadi ke variabel
+        currentCanvas = stackedCanvas;
         return stackedCanvas;
     }
 
@@ -162,22 +152,35 @@ document.addEventListener('DOMContentLoaded', function() {
     
     function clipAndDrawImage(ctx, img, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight, shapeType) { ctx.save(); ctx.beginPath(); if (shapeType === 'circle') { ctx.arc(dx + dWidth / 2, dy + dHeight / 2, Math.min(dWidth, dHeight) / 2, 0, Math.PI * 2); } else if (shapeType === 'rounded') { const r = 30; ctx.moveTo(dx + r, dy); ctx.lineTo(dx + dWidth - r, dy); ctx.quadraticCurveTo(dx + dWidth, dy, dx + dWidth, dy + r); ctx.lineTo(dx + dWidth, dy + dHeight - r); ctx.quadraticCurveTo(dx + dWidth, dy + dHeight, dx + dWidth - r, dy + dHeight); ctx.lineTo(dx + r, dy + dHeight); ctx.quadraticCurveTo(dx, dy + dHeight, dx, dy + dHeight - r); ctx.lineTo(dx, dy + r); ctx.quadraticCurveTo(dx, dy, dx + r, dy); } else if (shapeType === 'heart') { ctx.moveTo(dx + dWidth / 2, dy + dHeight); ctx.bezierCurveTo(dx + dWidth * 1.25, dy + dHeight * 0.7, dx + dWidth * 0.9, dy - dHeight * 0.1, dx + dWidth / 2, dy + dHeight * 0.25); ctx.bezierCurveTo(dx + dWidth * 0.1, dy - dHeight * 0.1, dx - dWidth * 0.25, dy + dHeight * 0.7, dx + dWidth / 2, dy + dHeight); ctx.closePath(); } else { ctx.rect(dx, dy, dWidth, dHeight); } ctx.clip(); ctx.drawImage(img, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight); ctx.restore(); }
 
-    // [PERBAIKAN] Fungsi unduh yang lebih efisien dan tidak perlu async
+    // [FIX iOS] Fungsi unduh yang sudah diperbaiki
     function downloadFinalImage() {
         console.log("Mempersiapkan gambar untuk diunduh...");
-        // Cek apakah kanvas sudah siap
-        if (currentCanvas) {
-            const imageData = currentCanvas.toDataURL('image/png');
+        if (!currentCanvas) {
+            console.error("Canvas belum siap untuk diunduh.");
+            alert("Terjadi kesalahan, gambar belum siap. Coba ubah salah satu opsi lalu unduh lagi.");
+            return;
+        }
+
+        const imageData = currentCanvas.toDataURL('image/png');
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+
+        if (isIOS) {
+            console.log("Perangkat iOS terdeteksi, membuka gambar di tab baru.");
+            const newWindow = window.open();
+            if (newWindow) {
+                newWindow.document.write('<html><head><title>Simpan Gambar Anda</title></head><body style="margin:0; background:#eee; text-align:center;"><p style="font-family:-apple-system, BlinkMacSystemFont, sans-serif; padding:1em;">Tekan dan tahan pada gambar, lalu pilih "Add to Photos" atau "Save Image".</p><img src="' + imageData + '" style="max-width:100%; box-shadow:0 0 10px rgba(0,0,0,0.2);"></body></html>');
+                newWindow.document.close();
+            } else {
+                alert("Gagal membuka tab baru. Mohon izinkan pop-up untuk situs ini dan coba lagi.");
+            }
+        } else {
+            console.log("Perangkat non-iOS, memulai unduhan langsung.");
             const link = document.createElement('a');
             link.href = imageData;
-            link.download = 'pictlord_final.png'; // Anda bisa mengubah nama file default
+            link.download = 'pictlord_4_photos.png'; // Nama file untuk 4 foto
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
-        } else {
-            // Beri tahu pengguna jika terjadi kesalahan
-            console.error("Canvas belum siap untuk diunduh.");
-            alert("Terjadi kesalahan, gambar belum siap. Coba ubah salah satu opsi lalu unduh lagi.");
         }
     }
     
@@ -197,7 +200,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 const style = window.getComputedStyle(button);
                 const bgImage = style.backgroundImage;
                 if (bgImage && bgImage !== 'none') {
-                    const imageUrl = bgImage.slice(5, -2).replace(/"/g, ""); // Membersihkan URL
+                    const imageUrl = bgImage.slice(5, -2).replace(/"/g, "");
                     customizationOptions.frame.type = 'image';
                     customizationOptions.frame.value = imageUrl;
                     const img = new Image();
@@ -213,7 +216,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 customizationOptions.photoShape = (shape === 'soft') ? 'rounded' : (shape === 'none') ? 'default' : shape;
             } else if (button.classList.contains('buttonStickers')) {
                 const stickerName = buttonId.replace('Sticker', '').toLowerCase();
-                // FIX: Menyesuaikan nama stiker 'classicB'
                 const finalStickerName = (stickerName === 'classicb') ? 'classicbsticker' : stickerName;
                 customizationOptions.sticker = (finalStickerName === 'none') ? null : ((customizationOptions.sticker === finalStickerName) ? null : finalStickerName);
             } else if (button.classList.contains('logoCustomBtn')) {
@@ -222,8 +224,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 const textMap = { 'ENG': 'pictlord', 'KOR': 'ㅔㅑㅊ시ㅐㄱㅇ', 'CN': '照相亭' };
                 customizationOptions.logo.text = textMap[lang] || '';
             } else if (buttonId === 'customBack') {
-                // --- PERUBAHAN DI SINI: Tombol Retake disesuaikan untuk 4 foto ---
-                window.location.href = 'canvas4.html';
+                window.location.href = 'canvas4.html'; // Arahkan ke halaman 4 foto
                 needsRedraw = false;
             } else if (buttonId === 'downloadCopyBtn') {
                 downloadFinalImage();
