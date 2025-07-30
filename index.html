@@ -77,9 +77,9 @@
         .hamburger-menu.active .bar.bottom { transform: translateY(0) rotate(-45deg); }
         
         .btn { display: inline-flex; align-items: center; justify-content: center; gap: 12px; padding: 14px 28px; border-radius: var(--border-radius-inner); font-size: 1.6rem; font-weight: 600; text-decoration: none; cursor: pointer; border: none; color: var(--text-light); background: var(--bg-color); transition: var(--transition-smooth); box-shadow: 6px 6px 12px var(--shadow-dark), -6px -6px 12px var(--shadow-light); }
-        .btn:hover { color: var(--primary); transform: translateY(-3px); }
+        .btn:hover { color: var(--primary); transform: translateY(-3px); box-shadow: 8px 8px 16px var(--shadow-dark), -8px -8px 16px var(--shadow-light); }
         .btn.primary { color: #ffffff; background: var(--primary); }
-        .page-section { padding: 8rem 0; }
+        .page-section { padding: 8rem 0; overflow-x: hidden; /* Tambahkan ini agar animasi dari samping tidak menyebabkan scroll horizontal */ }
         .section-title { font-size: 4rem; font-weight: 800; text-align: center; margin-bottom: 1.5rem; color: var(--text-color); }
         .section-subtitle { font-size: 1.8rem; color: var(--text-light); text-align: center; max-width: 700px; margin: 0 auto 5rem auto; }
         #hero { display: flex; align-items: center; justify-content: center; text-align: center; min-height: 100vh; padding: 4rem 0; position: relative; overflow: hidden; }
@@ -146,6 +146,8 @@
         
         .about-grid { display: grid; grid-template-columns: 1fr; gap: 5rem; align-items: center; } .about-text { text-align: center; max-width: 700px; margin: 0 auto; } .about-text h3 { font-size: 2.8rem; color: var(--primary); margin-bottom: 1rem; }
         .steps-container, .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 3rem; }
+        .step-card, .feature-card, .testimonial-card { transition: transform 0.3s ease-out, box-shadow 0.3s ease-out; }
+        .step-card:hover, .feature-card:hover, .testimonial-card:hover { transform: translateY(-10px); box-shadow: 12px 12px 24px var(--shadow-dark), -12px -12px 24px var(--shadow-light); }
         .step-card, .feature-card { background: var(--bg-color); padding: 35px 30px; text-align: center; border-radius: var(--border-radius-main); box-shadow: 10px 10px 20px var(--shadow-dark), -10px -10px 20px var(--shadow-light); }
         .step-icon, .feature-icon { font-size: 3rem; margin-bottom: 2rem; color: var(--primary); }
         .step-card h3, .feature-card h4 { font-size: 1.8rem; font-weight: 600; margin-bottom: 1rem; color: var(--text-color); }
@@ -160,7 +162,7 @@
         .faq-item { background: var(--bg-color); border-radius: var(--border-radius-inner); box-shadow: 8px 8px 16px var(--shadow-dark), -8px -8px 16px var(--shadow-light); overflow: hidden; transition: var(--transition-smooth); }
         .faq-item[open] { box-shadow: inset 8px 8px 16px var(--shadow-dark), inset -8px -8px 16px var(--shadow-light); }
         .faq-question { padding: 2rem 2.5rem; font-weight: 600; font-size: 1.7rem; cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; }
-        .faq-question::-webkit-details-marker { display: none; } .faq-arrow { color: var(--primary); font-size: 1.6rem; transition: transform 0.3s ease; } .faq-item[open] .faq-arrow { transform: rotate(180deg); }
+        .faq-question::-webkit-details-marker { display: none; } .faq-arrow { color: var(--primary); font-size: 1.6rem; transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1); } .faq-item[open] .faq-arrow { transform: rotate(180deg); }
         .faq-answer { padding: 0 2.5rem 2rem; color: var(--text-light); font-size: 1.5rem; line-height: 1.8; text-align: left; }
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: flex; align-items: center; justify-content: center; z-index: 1001; opacity: 0; visibility: hidden; transition: opacity 0.4s ease, visibility 0.4s ease; backdrop-filter: blur(5px); }
         .modal-overlay.is-visible { opacity: 1; visibility: visible; }
@@ -259,86 +261,86 @@
                 <img src="/assets/preview-img/preview2.png" alt="Contoh strip photobooth 4" class="preview-4">
             </div>
             <div class="container hero-content">
-                <a href="https://instagram.com/off.xlord" target="_blank" class="instagram-badge" data-aos="fade-up" data-aos-delay="100">
+                <a href="https://instagram.com/off.xlord" target="_blank" class="instagram-badge" data-aos="fade-down">
                     <i class="fab fa-instagram"></i>
                     <div class="badge-text-container">
                         <span class="badge-text is-visible">Ikuti kami di Instagram</span>
                         <span class="badge-text">Bagikan momenmu & tag kami!</span>
                     </div>
                 </a>
-                <h1 class="hero-header" data-aos="fade-up" data-aos-delay="200">Abadikan Momen, Ciptakan Kenangan.</h1>
-                <p class="hero-subheader" data-aos="fade-up" data-aos-delay="300">Photobooth online gratis dengan desain profesional yang dinamis. Buat dan unduh strip foto seru berkualitas tinggi secara instan.</p>
-                <a href="layout.html" class="btn primary" data-aos="fade-up" data-aos-delay="400">MULAI SEKARANG &nbsp; <i class="fas fa-camera"></i></a>
+                <h1 class="hero-header" data-aos="flip-down" data-aos-delay="200">Abadikan Momen, Ciptakan Kenangan.</h1>
+                <p class="hero-subheader" data-aos="fade-up" data-aos-delay="400">Photobooth online gratis dengan desain profesional yang dinamis. Buat dan unduh strip foto seru berkualitas tinggi secara instan.</p>
+                <a href="layout.html" class="btn primary" data-aos="zoom-in" data-aos-delay="600">MULAI SEKARANG &nbsp; <i class="fas fa-camera"></i></a>
             </div>
         </section>
         
         <section id="about" class="page-section">
-             <div class="container" data-aos="fade-up">
-                <h2 class="section-title">Tentang pictlord</h2>
-                <p class="section-subtitle">kami adalah alat berbasis peramban yang dapat disesuaikan dan dapat Anda gunakan kapan saja, di mana saja. Pengguna dapat mengambil foto instan bergaya photobooth, memasang  bingkai dalam lebih dari 100 warna, menambahkan stiker digital, dan mengunduh strip foto beresolusi tinggi langsung dari perangkat apa pun. Tidak perlu instalasi atau akun. Dirancang untuk performa, kesederhanaan, dan fleksibilitas kreatif, ini adalah alat lengkap untuk menciptakan pengalaman foto yang dapat dibagikan secara daring.</p>
-                <div class="about-grid">
+             <div class="container">
+                <h2 class="section-title" data-aos="fade-down">Tentang pictlord</h2>
+                <p class="section-subtitle" data-aos="fade-up" data-aos-delay="100">kami adalah alat berbasis peramban yang dapat disesuaikan dan dapat Anda gunakan kapan saja, di mana saja. Pengguna dapat mengambil foto instan bergaya photobooth, memasang  bingkai dalam lebih dari 100 warna, menambahkan stiker digital, dan mengunduh strip foto beresolusi tinggi langsung dari perangkat apa pun. Tidak perlu instalasi atau akun. Dirancang untuk performa, kesederhanaan, dan fleksibilitas kreatif, ini adalah alat lengkap untuk menciptakan pengalaman foto yang dapat dibagikan secara daring.</p>
+                <div class="about-grid" data-aos="zoom-in" data-aos-delay="200">
                     <div class="about-text">
                         <h3></h3>
                         <p></p>
                         <p></p>
                     </div>
-                    </div>
+                </div>
             </div>
         </section>
 
          <section id="how-it-works" class="page-section">
-            <div class="container" data-aos="fade-up">
-                <h2 class="section-title">Hanya 3 Langkah Mudah</h2>
-                <p class="section-subtitle">Proses yang simpel untuk hasil yang maksimal.</p>
+            <div class="container">
+                <h2 class="section-title" data-aos="fade-down">Hanya 3 Langkah Mudah</h2>
+                <p class="section-subtitle" data-aos="fade-up" data-aos-delay="100">Proses yang simpel untuk hasil yang maksimal.</p>
                 <div class="steps-container">
                     <div class="step-card" data-aos="fade-right"><div class="step-icon"><i class="fas fa-camera-retro"></i></div><h3>1. Ambil Foto</h3><p>Aktifkan kameramu, pasang pose terbaikmu, dan biarkan kami menangkap 4 momen spesialmu.</p></div>
-                    <div class="step-card" data-aos="fade-up"><div class="step-icon"><i class="fas fa-magic-wand-sparkles"></i></div><h3>2. Kreasikan</h3><p>Pilih dari ratusan warna bingkai, filter aesthetic, dan stiker lucu untuk menghias fotomu.</p></div>
-                    <div class="step-card" data-aos="fade-left"><div class="step-icon"><i class="fas fa-share-alt"></i></div><h3>3. Simpan & Bagikan</h3><p>Unduh strip fotomu dalam kualitas tinggi atau langsung bagikan ke media sosial favoritmu.</p></div>
+                    <div class="step-card" data-aos="flip-up" data-aos-delay="150"><div class="step-icon"><i class="fas fa-magic-wand-sparkles"></i></div><h3>2. Kreasikan</h3><p>Pilih dari ratusan warna bingkai, filter aesthetic, dan stiker lucu untuk menghias fotomu.</p></div>
+                    <div class="step-card" data-aos="fade-left" data-aos-delay="300"><div class="step-icon"><i class="fas fa-share-alt"></i></div><h3>3. Simpan & Bagikan</h3><p>Unduh strip fotomu dalam kualitas tinggi atau langsung bagikan ke media sosial favoritmu.</p></div>
                 </div>
             </div>
         </section>
         
         <section id="features" class="page-section">
-            <div class="container" data-aos="fade-up">
-                <h2 class="section-title">Fitur Andalan Kami</h2>
-                <p class="section-subtitle">Kami menyediakan semua yang Anda butuhkan untuk membuat photobooth yang sempurna.</p>
+            <div class="container">
+                <h2 class="section-title" data-aos="fade-down">Fitur Andalan Kami</h2>
+                <p class="section-subtitle" data-aos="fade-up" data-aos-delay="100">Kami menyediakan semua yang Anda butuhkan untuk membuat photobooth yang sempurna.</p>
                 <div class="features-grid">
-                    <div class="feature-card" data-aos="fade-up" data-aos-delay="0"><div class="feature-icon"><i class="fas fa-palette"></i></div><h4>Ratusan Warna Bingkai</h4><p>Sesuaikan warna bingkai strip fotomu agar cocok dengan gayamu. Pilihan tak terbatas!</p></div>
-                    <div class="feature-card" data-aos="fade-up" data-aos-delay="100"><div class="feature-icon"><i class="fas fa-icons"></i></div><h4>Filter & Stiker Lucu</h4><p>Tambahkan sentuhan personal dengan koleksi filter aesthetic dan stiker yang terus kami perbarui.</p></div>
-                    <div class="feature-card" data-aos="fade-up" data-aos-delay="200"><div class="feature-icon"><i class="fas fa-bolt"></i></div><h4>Instan & Tanpa Login</h4><p>Tidak perlu mendaftar atau login. Langsung gunakan dan dapatkan hasilnya dalam sekejap.</p></div>
-                    <div class="feature-card" data-aos="fade-up" data-aos-delay="300"><div class="feature-icon"><i class="fas fa-gem"></i></div><h4>Kualitas Tinggi</h4><p>Unduh fotomu dalam resolusi tinggi yang siap dicetak atau dipajang di media sosial.</p></div>
+                    <div class="feature-card" data-aos="flip-left" data-aos-delay="100"><div class="feature-icon"><i class="fas fa-palette"></i></div><h4>Ratusan Warna Bingkai</h4><p>Sesuaikan warna bingkai strip fotomu agar cocok dengan gayamu. Pilihan tak terbatas!</p></div>
+                    <div class="feature-card" data-aos="flip-right" data-aos-delay="200"><div class="feature-icon"><i class="fas fa-icons"></i></div><h4>Filter & Stiker Lucu</h4><p>Tambahkan sentuhan personal dengan koleksi filter aesthetic dan stiker yang terus kami perbarui.</p></div>
+                    <div class="feature-card" data-aos="flip-left" data-aos-delay="300"><div class="feature-icon"><i class="fas fa-bolt"></i></div><h4>Instan & Tanpa Login</h4><p>Tidak perlu mendaftar atau login. Langsung gunakan dan dapatkan hasilnya dalam sekejap.</p></div>
+                    <div class="feature-card" data-aos="flip-right" data-aos-delay="400"><div class="feature-icon"><i class="fas fa-gem"></i></div><h4>Kualitas Tinggi</h4><p>Unduh fotomu dalam resolusi tinggi yang siap dicetak atau dipajang di media sosial.</p></div>
                 </div>
             </div>
         </section>
 
         <section id="testimonials" class="page-section">
             <div class="container">
-                <div class="testimonial-header" data-aos="fade-up">
+                <div class="testimonial-header" data-aos="fade-in">
                     <div>
                         <h2 class="section-title" style="text-align: left; margin-bottom: 0;">Kata Mereka</h2>
                         <p class="section-subtitle" style="text-align: left; margin: 0; max-width: none;">Suara dari komunitas kreatif kami.</p>
                     </div>
-                    <button class="btn" id="add-testimonial-btn"><i class="fas fa-plus"></i> Beri Testimoni</button>
+                    <button class="btn" id="add-testimonial-btn" data-aos="zoom-in-left"><i class="fas fa-plus"></i> Beri Testimoni</button>
                 </div>
-                <div class="testimonial-grid" id="testimonial-grid" data-aos="fade-up" data-aos-delay="200"></div>
+                <div class="testimonial-grid" id="testimonial-grid"></div>
             </div>
         </section>
         
         <section id="faq" class="page-section">
-            <div class="container" data-aos="fade-up">
-                <h2 class="section-title">Tanya Jawab Umum</h2>
-                <p class="section-subtitle">Punya pertanyaan? Mungkin jawabannya ada di sini.</p>
+            <div class="container">
+                <h2 class="section-title" data-aos="fade-down">Tanya Jawab Umum</h2>
+                <p class="section-subtitle" data-aos="fade-up" data-aos-delay="100">Punya pertanyaan? Mungkin jawabannya ada di sini.</p>
                 <div class="faq-container">
-                    <details class="faq-item" data-aos="fade-up"><summary class="faq-question">Apakah layanan ini benar-benar gratis?<i class="fas fa-chevron-down faq-arrow"></i></summary><p class="faq-answer">Tentu saja! pictlord 100% gratis untuk digunakan. Anda bisa membuat dan mengunduh photostrip sebanyak yang Anda mau tanpa biaya apa pun.</p></details>
-                    <details class="faq-item" data-aos="fade-up"><summary class="faq-question">Apakah foto saya aman?<i class="fas fa-chevron-down faq-arrow"></i></summary><p class="faq-answer">Sangat aman. Kami tidak pernah menyimpan foto Anda di server kami. Semua proses pengambilan dan pengeditan foto dilakukan langsung di browser Anda. Setelah Anda menutup halaman, foto tersebut hilang.</p></details>
-                    <details class="faq-item" data-aos="fade-up"><summary class="faq-question">Bisakah saya menggunakannya di HP?<i class="fas fa-chevron-down faq-arrow"></i></summary><p class="faq-answer">Ya! pictlord dirancang untuk berfungsi dengan baik di semua perangkat, baik itu desktop, tablet, maupun mobile, selama perangkat Anda memiliki kamera dan browser modern.</p></details>
-                    <details class="faq-item" data-aos="fade-up"><summary class="faq-question">Bagaimana cara mengganti warna bingkai?<i class="fas fa-chevron-down faq-arrow"></i></summary><p class="faq-answer">Setelah mengambil 4 foto, Anda akan masuk ke halaman editor. Di sana, Anda akan menemukan color picker yang memungkinkan Anda memilih dari jutaan warna untuk bingkai foto Anda.</p></details>
+                    <details class="faq-item" data-aos="slide-up"><summary class="faq-question">Apakah layanan ini benar-benar gratis?<i class="fas fa-chevron-down faq-arrow"></i></summary><p class="faq-answer">Tentu saja! pictlord 100% gratis untuk digunakan. Anda bisa membuat dan mengunduh photostrip sebanyak yang Anda mau tanpa biaya apa pun.</p></details>
+                    <details class="faq-item" data-aos="slide-up" data-aos-delay="100"><summary class="faq-question">Apakah foto saya aman?<i class="fas fa-chevron-down faq-arrow"></i></summary><p class="faq-answer">Sangat aman. Kami tidak pernah menyimpan foto Anda di server kami. Semua proses pengambilan dan pengeditan foto dilakukan langsung di browser Anda. Setelah Anda menutup halaman, foto tersebut hilang.</p></details>
+                    <details class="faq-item" data-aos="slide-up" data-aos-delay="200"><summary class="faq-question">Bisakah saya menggunakannya di HP?<i class="fas fa-chevron-down faq-arrow"></i></summary><p class="faq-answer">Ya! pictlord dirancang untuk berfungsi dengan baik di semua perangkat, baik itu desktop, tablet, maupun mobile, selama perangkat Anda memiliki kamera dan browser modern.</p></details>
+                    <details class="faq-item" data-aos="slide-up" data-aos-delay="300"><summary class="faq-question">Bagaimana cara mengganti warna bingkai?<i class="fas fa-chevron-down faq-arrow"></i></summary><p class="faq-answer">Setelah mengambil 4 foto, Anda akan masuk ke halaman editor. Di sana, Anda akan menemukan color picker yang memungkinkan Anda memilih dari jutaan warna untuk bingkai foto Anda.</p></details>
                 </div>
             </div>
         </section>
 
         <section id="contact" class="page-section">
-            <div class="container" style="text-align: center;" data-aos="fade-up">
+            <div class="container" style="text-align: center;" data-aos="zoom-out">
                 <h2 class="section-title">Hubungi Kami</h2>
                 <p class="section-subtitle">Punya pertanyaan, saran, atau hanya ingin menyapa? Kami akan senang mendengar dari Anda!</p>
                 <button class="btn primary" id="open-contact-modal-btn"><i class="fas fa-paper-plane"></i> &nbsp; Kirim Pesan</button>
@@ -395,8 +397,9 @@
 document.addEventListener('DOMContentLoaded', () => {
     AOS.init({
         duration: 800,
-        once: false,
-        offset: 50,
+        once: false, // Animasi akan berulang setiap kali di-scroll
+        offset: 120,
+        easing: 'ease-out-sine'
     });
     
     // =================================================================
@@ -589,29 +592,37 @@ document.addEventListener('DOMContentLoaded', () => {
     const testimonialForm = document.getElementById('testimonial-form');
 
     if (testimonialGrid && testimonialForm) {
-        // Fungsi untuk membuat elemen kartu testimoni dari objek data
-        const createTestimonialCard = (data) => {
+        const createTestimonialCard = (data, delay = 0) => {
             const card = document.createElement('div');
             card.className = 'testimonial-card';
-            card.setAttribute('data-aos', 'fade-up');
+            card.setAttribute('data-aos', 'fade-up'); // Menggunakan fade-up untuk testimoni agar tetap rapi
+            card.setAttribute('data-aos-delay', delay);
             const ratingHTML = Array.from({length: 5}, (_, i) => `<i class="fas fa-star" style="color: ${i < data.rating ? 'var(--star-color)' : 'var(--text-light)'}; opacity: ${i < data.rating ? 1 : 0.3};"></i>`).join('');
             card.innerHTML = `<div class="testimonial-rating">${ratingHTML}</div><p class="testimonial-text">"${data.text}"</p><div class="author-details"><div class="author-name">${data.name}</div><div class="author-position">${data.position}</div></div>`;
             return card;
         };
 
-        // Fungsi untuk memuat testimoni dari Firebase
         const loadTestimonials = () => {
-            // Mengambil 6 testimoni terakhir berdasarkan timestamp
-            testimonialsRef.orderByChild('timestamp').limitToLast(6).on('child_added', (snapshot) => {
-                const newTestimonial = snapshot.val();
-                const newCard = createTestimonialCard(newTestimonial);
-                testimonialGrid.prepend(newCard); // prepend() agar testimoni terbaru muncul di paling atas
-                AOS.refresh(); // Refresh AOS untuk mengaktifkan animasi pada kartu baru
+            testimonialsRef.orderByChild('timestamp').limitToLast(6).on('value', (snapshot) => {
+                testimonialGrid.innerHTML = ''; 
+                let testimonials = [];
+                snapshot.forEach(childSnapshot => {
+                    testimonials.push(childSnapshot.val());
+                });
+
+                testimonials.reverse(); 
+                
+                testimonials.forEach((testimonial, index) => {
+                    const delay = index * 100; // Delay lebih singkat
+                    const newCard = createTestimonialCard(testimonial, delay);
+                    testimonialGrid.appendChild(newCard);
+                });
+
+                // AOS tidak perlu di-refresh secara manual di sini karena sudah otomatis mendeteksi elemen baru saat scroll
             });
         };
-        loadTestimonials(); // Panggil fungsi untuk memuat data awal
+        loadTestimonials();
 
-        // Mengatur interaksi rating bintang pada form
         const starContainer = testimonialForm.querySelector('.star-rating-input');
         if (starContainer) {
             const stars = starContainer.querySelectorAll('i');
@@ -632,7 +643,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
         
-        // Event listener untuk mengirim form testimoni
         testimonialForm.addEventListener('submit', e => {
             e.preventDefault();
             const name = document.getElementById('testimonial-name').value.trim();
@@ -645,16 +655,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            // Objek data testimoni baru
             const newTestimonialData = {
                 name: name,
                 position: position,
                 text: text,
                 rating: rating,
-                timestamp: firebase.database.ServerValue.TIMESTAMP // Gunakan timestamp server
+                timestamp: firebase.database.ServerValue.TIMESTAMP
             };
 
-            // Kirim data ke Firebase
             testimonialsRef.push(newTestimonialData)
                 .then(() => {
                     showToast(`Terima kasih atas testimoninya, ${name}!`);
