@@ -217,7 +217,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 customizationOptions.logo.text = textMap[lang] || '';
             } else if (buttonId === 'customBack') {
                 // --- PERUBAHAN DI SINI: Tombol Retake disesuaikan untuk 4 foto ---
-                window.location.href = 'canvas4.html';
+                window.location.href = 'canvas7.html';
                 needsRedraw = false;
             } else if (buttonId === 'downloadCopyBtn') {
                 downloadFinalImage();
