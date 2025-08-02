@@ -59,7 +59,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        /* CSS yang sudah ada tidak diubah, hanya ditambahkan styling untuk Toast dan sedikit penyesuaian */
         :root {
             --light-bg: #e0e5ec; --light-text: #555; --light-shadow-dark: #a3b1c6;
             --light-shadow-light: #ffffff; --light-accent: #E28585;
@@ -133,7 +132,6 @@
         .buttonBgFrames { background-size: cover; background-position: center; }
         .btnShapeSize, .stickerIconSize { width: 22px; height: 22px; }
         #colorPickerBtn { background: conic-gradient(red, orange, yellow, green, cyan, blue, violet, red); }
-        /* ... Sisa CSS spesifik untuk tombol tidak diubah ... */
         #pinkBtnFrame { background-color: #FFC2D1; } #blueBtnFrame { background-color: #CAF0F8; } #yellowBtnFrame { background-color: #FFF8A5; } #matchaBtnFrame { background-color: #90a955; } #purpleBtnFrame { background-color: #c19ee0; } #brownBtnFrame { background-color: #DDBEA9; } #redBtnFrame { background-color: #780000; } #whiteBtnFrame { background-color: #FFFFFF; border: 1px solid #ccc; } #blackBtnFrame { background-color: #000000; } #pinkGlitter { background-image: url(assets/frame-backgrounds/pink-glitter.jpg); background-size: cover; } #pinkPlaid { background-image: url(assets/frame-backgrounds/pink-plaid.jpg); } #bluePlaid { background-image: url(assets/frame-backgrounds/blue-plaid.jpg); background-size: cover; } #black-cq { background-image: url(assets/frame-backgrounds/black-couqutte.jpg); background-size: 200%; } #white-cq { background-image: url(assets/frame-backgrounds/white-couquette.jpg); background-size: 200%; } #pinkLeather { background-image: url(assets/frame-backgrounds/pink-diamond-leather.jpg); background-size: 200%; } #brownKnittedFrame { background-image: url(assets/frame-backgrounds/brown-knitted.jpg); background-size: cover; } #hotPinkKnittedFrame { background-image: url(assets/frame-backgrounds/hot-pink-knitted.jpg); background-size: cover; } #redKnittedFrame { background-image: url(assets/frame-backgrounds/red-knitted.jpg); background-size: cover; } #pinkKnittedFrame { background-image: url(assets/frame-backgrounds/pink-knitted.jpg); background-size: cover; } #redStripesFrame { background-image: url(assets/frame-backgrounds/red-stripes.jpg); background-size: 190%; } #greenStripesFrame { background-image: url(assets/frame-backgrounds/green-stripes.jpg); background-size: 190%; } #blueStripesFrame { background-image: url(assets/frame-backgrounds/blue-stripes.jpg); background-size: 190%; } #vsPinkFrame { background-image: url(assets/frame-backgrounds/vs-pink.jpg); background-size: cover; } #vsYellowFrame { background-image: url(assets/frame-backgrounds/vs-yellow.jpg); background-size: cover; } #blueYellowSquares { background-image: url(assets/frame-backgrounds/blue-yellow-squares.jpg); background-size: cover; } #blueWhiteSquares { background-image: url(assets/frame-backgrounds/blue-white-squares.jpg); background-size: cover; } #brownLeopard { background-image: url(assets/frame-backgrounds/brown-leopard.jpg); background-size: cover; } #cowPrint { background-image: url(assets/frame-backgrounds/cow-print.jpg); background-size: cover; } #redLeather { background-image: url(assets/frame-backgrounds/red-leather.jpg); background-size: cover; } #pinkGumamela { background-image: url(assets/frame-backgrounds/pink-gumamela.jpg); background-size: 150%; } #pinkLiliesFrame { background-image: url(assets/frame-backgrounds/pink-lilies.jpg); background-size: cover; } #whiteKnitted { background-image: url(assets/frame-backgrounds/white-knitted-cloth.jpg); background-size: cover; } #ribbonSweaterFrame { background-image: url(assets/frame-backgrounds/ribbon-sweater.jpg); background-size: cover; } #ribbonDenim { background-image: url(assets/frame-backgrounds/ribbon-denim.jpg); background-size: 120%; } #blackPinkRibbon { background-image: url(assets/frame-backgrounds/black-pink-ribbon.jpg); background-size: cover; } #fourLockers { background-image: url(assets/frame-backgrounds/4-lockers.jpg); background-size: cover; } #gridPaperFrame { background-image: url(assets/frame-backgrounds/grid-paper.jpg); background-size: 200%; } #crumpledPaper { background-image: url(assets/frame-backgrounds/crumpled-paper.jpg); background-size: 190%; } #roughTextureFrame { background-image: url(assets/frame-backgrounds/rough-texture.jpg); background-size: 190%; } #blueBackdrop { background-image: url(assets/frame-backgrounds/blue-backdrop.jpg); background-size: 190%; } #greenHills { background-image: url(assets/frame-backgrounds/green-hills.jpg); background-size: 190%; } #sandShells { background-image: url(assets/frame-backgrounds/sand-shells.jpg); background-size: 190%; } #waterBeach { background-image: url(assets/frame-backgrounds/water.jpg); background-size: 190%; } #cocoTrees { background-image: url(assets/frame-backgrounds/coco-trees.jpg); background-size: 190%; } #stardustFrame { background-image: url(assets/frame-backgrounds/stardust.jpg); background-size: 200%; } #roseCardFrame { background-image: url(assets/frame-backgrounds/rose-card.jpg); background-size: cover; } #princessVintageFrame { background-image: url(assets/frame-backgrounds/princess-vintage.jpg); background-size: cover; } #redRosesPaintFrame { background-image: url(assets/frame-backgrounds/red-roses-paint.jpg); background-size: 190%; } #grayTrashFrame { background-image: url(assets/frame-backgrounds/gray-trash.jpg); background-size: 190%; } #blackTrashFrame { background-image: url(assets/frame-backgrounds/black-trash.jpg); background-size: 190%; } #whiteTrashFrame { background-image: url(assets/frame-backgrounds/white-trash.jpg); background-size: 180%; } #partyDrapeFrame { background-image: url(assets/frame-backgrounds/party-drape.jpg); background-size: cover; } #partyDotsFrame { background-image: url(assets/frame-backgrounds/party-dots.jpg); background-size: 210%; } #blingDenimFrame { background-image: url(assets/frame-backgrounds/bling-denim.jpg); background-size: 210%; }
         .logo-container { display: flex; gap: 10px; }
         .logoCustomBtn { padding: 8px 15px; border-radius: 20px; font-size: 1.4rem; }
@@ -196,7 +194,6 @@
         input[type="color"]::-webkit-color-swatch { border: none; border-radius: 50%; }
         input[type="color"]::-moz-color-swatch { border: none; border-radius: 50%; }
 
-        /* CSS BARU UNTUK TOAST NOTIFICATION */
         #toastNotif {
             visibility: hidden; min-width: 250px; background-color: #333; color: #fff;
             text-align: center; border-radius: 8px; padding: 16px; position: fixed;
@@ -288,7 +285,7 @@
                         <i class="fas fa-print"></i> Cetak
                     </button>
                 </div>
-                </aside>
+            </aside>
         </div>
     </main>
 
@@ -305,7 +302,6 @@
             <h3 style="font-size: 2rem; margin-bottom: 15px;">Unduh Foto Anda</h3>
             
             <div id="qrCodeImageContainer" style="padding: 10px; background: white; border-radius: 8px; margin: 0 auto 25px; width: 220px; height: 220px; display: flex; align-items: center; justify-content: center;">
-                <img id="qrImage" src="" alt="QR Code" style="width: 200px; height: 200px;">
             </div>
     
             <button class="neumorphic-btn" id="finalDownloadBtn" style="width: 100%; padding: 12px; font-size: 1.5rem; border-radius: 25px; background: var(--light-accent); color: white;">
@@ -314,6 +310,7 @@
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vanilla-picker@2.12.1/dist/vanilla-picker.min.js"></script>
     <script src="customize.js"></script>
     <script src="canvas.js"></script>
@@ -322,7 +319,6 @@
     <script>
     document.addEventListener('DOMContentLoaded', () => {
 
-        // --- Logika Lama (Theme, Buttons, Preview, Share, Color Picker) tetap dipertahankan ---
         const themeToggle = document.getElementById('theme-toggle');
         const applyTheme = (theme) => { document.body.classList.toggle('dark-mode', theme === 'dark'); };
         themeToggle.addEventListener('click', () => {
@@ -384,21 +380,18 @@
             });
         }
 
-        // --- LOGIKA BARU (Toast, Tombol Cetak, Modal QR) ---
-
         const cetakBtn = document.getElementById('cetakBtn');
         const qrModal = document.getElementById('qrModal');
         const finalDownloadBtn = document.getElementById('finalDownloadBtn');
         const toastNotif = document.getElementById('toastNotif');
+        const qrCodeContainer = document.getElementById('qrCodeImageContainer');
 
-        // 1. Fungsi untuk menampilkan notifikasi Toast
         function showToast(message) {
             toastNotif.textContent = message;
             toastNotif.classList.add('show');
             setTimeout(() => { toastNotif.classList.remove('show'); }, 3000);
         }
 
-        // 2. Event listener untuk tombol Cetak
         if (cetakBtn) {
             cetakBtn.addEventListener('click', () => {
                 const finalCanvas = document.querySelector('#photoPreview canvas');
@@ -407,33 +400,32 @@
                     return;
                 }
 
-                // Tampilkan notifikasi toast
                 showToast('✅ Berhasil! Silakan scan QR code.');
 
-                // Siapkan dan tampilkan modal
-                const qrImage = document.getElementById('qrImage');
-                const qrContainer = document.getElementById('qrCodeImageContainer');
-                const imageData = finalCanvas.toDataURL('image/png');
-                const apiUrl = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(imageData)}&size=200x200&format=png`;
-                
-                qrContainer.innerHTML = '<p>Membuat QR Code...</p>'; // Tampilkan loading
+                qrCodeContainer.innerHTML = '<p>Membuat QR Code...</p>';
                 qrModal.style.display = 'block';
 
-                const img = new Image();
-                img.src = apiUrl;
-                img.style.width = '200px';
-                img.style.height = '200px';
-                img.onload = () => {
-                    qrContainer.innerHTML = ''; // Hapus loading
-                    qrContainer.appendChild(img); // Tampilkan gambar QR
-                };
-                img.onerror = () => {
-                    qrContainer.innerHTML = '<p>Gagal memuat QR Code.</p>';
-                }
+                finalCanvas.toBlob(function(blob) {
+                    if (blob === null) {
+                        qrCodeContainer.innerHTML = "<p>Gagal membuat data gambar.</p>";
+                        return;
+                    }
+                    const objectURL = URL.createObjectURL(blob);
+                    
+                    qrCodeContainer.innerHTML = '';
+                    
+                    new QRCode(qrCodeContainer, {
+                        text: objectURL,
+                        width: 200,
+                        height: 200,
+                        colorDark : "#000000",
+                        colorLight : "#ffffff",
+                        correctLevel : QRCode.CorrectLevel.H
+                    });
+                }, 'image/png');
             });
         }
 
-        // 3. Event listener untuk tombol Unduh di dalam modal
         if (finalDownloadBtn) {
             finalDownloadBtn.addEventListener('click', () => {
                 const finalCanvas = document.querySelector('#photoPreview canvas');
@@ -442,12 +434,11 @@
                     link.download = 'pictlord-photobooth-' + Date.now() + '.png';
                     link.href = finalCanvas.toDataURL('image/png');
                     link.click();
-                    qrModal.style.display = 'none'; // Tutup modal setelah mengunduh
+                    qrModal.style.display = 'none';
                 }
             });
         }
         
-        // 4. Logika untuk menutup semua modal
         window.addEventListener('click', (event) => {
             if (event.target == previewModal) previewModal.style.display = "none";
             if (event.target == qrModal) qrModal.style.display = "none";
