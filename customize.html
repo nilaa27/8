@@ -52,10 +52,11 @@
       ]
     }
     </script>
-    
+
     <link rel="canonical" href="https://pict.xlord.web.id/customize.html">
     <link rel="icon" href="images/pictlord logo.png">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
         /* --- Root Variables & Theme --- */
@@ -78,7 +79,7 @@
             --light-inset-shadow-dark: rgba(36, 42, 48, 0.6);
             --light-inset-shadow-light: rgba(54, 62, 72, 1);
         }
-        
+
         /* --- Base & Animations --- */
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(20px); }
@@ -108,9 +109,9 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            
+
             /* --- EFEK BLUR TRANSPARAN --- */
-            background-color: rgba(56, 64, 72, 0.7); 
+            background-color: rgba(56, 64, 72, 0.7);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
 
@@ -148,13 +149,13 @@
         .dark-mode #moon-icon { display: block; }
 
         /* Light mode header style */
-        body:not(.dark-mode) #main-header { 
+        body:not(.dark-mode) #main-header {
             background-color: rgba(240, 242, 245, 0.75);
-            border: 1px solid rgba(0, 0, 0, 0.1); 
+            border: 1px solid rgba(0, 0, 0, 0.1);
         }
         body:not(.dark-mode) .side-logo { color: #333; }
         body:not(.dark-mode) #theme-toggle { background-color: #e4e6eb; color: #333; }
-        
+
         /* --- Main Layout --- */
         #main-section { width: 100%; max-width: 1200px; }
         .customize-container {
@@ -204,7 +205,7 @@
             margin-bottom: 15px;
             display: block;
         }
-        
+
         /* --- Neumorphic Buttons & Controls --- */
         .neumorphic-btn {
             border: none; background: var(--light-bg); color: var(--light-text);
@@ -233,10 +234,8 @@
         .buttonBgFrames { background-size: cover; background-position: center; }
         .btnShapeSize, .stickerIconSize { width: 22px; height: 22px; }
 
-        /* --- Specific Controls Styling --- */
-        #colorPickerBtn {
-            background: conic-gradient(red, orange, yellow, green, cyan, blue, violet, red);
-        }
+        /* --- Specific Controls Styling (tidak berubah) --- */
+        #colorPickerBtn { background: conic-gradient(red, orange, yellow, green, cyan, blue, violet, red); }
         #pinkBtnFrame { background-color: #FFC2D1; }
         #blueBtnFrame { background-color: #CAF0F8; }
         #yellowBtnFrame { background-color: #FFF8A5; }
@@ -246,7 +245,6 @@
         #redBtnFrame { background-color: #780000; }
         #whiteBtnFrame { background-color: #FFFFFF; border: 1px solid #ccc; }
         #blackBtnFrame { background-color: #000000; }
-
         #pinkGlitter { background-image: url(assets/frame-backgrounds/pink-glitter.jpg); background-size: cover; }
         #pinkPlaid { background-image: url(assets/frame-backgrounds/pink-plaid.jpg); }
         #bluePlaid { background-image: url(assets/frame-backgrounds/blue-plaid.jpg); background-size: cover; }
@@ -296,7 +294,7 @@
         /* Logo and Date Checkbox */
         .logo-container { display: flex; gap: 10px; }
         .logoCustomBtn { padding: 8px 15px; border-radius: 20px; font-size: 1.4rem; }
-        
+
         .date-overlay {
             display: flex;
             align-items: center;
@@ -324,37 +322,61 @@
             transform: translate(-50%, -50%);
         }
 
-        /* --- Final Action Buttons --- */
+        /* --- FINAL ACTION BUTTONS (REVISI) --- */
         .final-actions-container {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
             margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
         }
-        .final-actions-container button {
+
+        .download-action-container {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .final-actions-container button, .download-action-container button {
             padding: 12px;
             font-size: 1.5rem;
             border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+        .final-actions-container button:hover, .download-action-container button:hover {
+            transform: translateY(-2px);
+        }
+        .final-actions-container button:active, .download-action-container button:active {
+            transform: scale(0.95);
+        }
+        .final-actions-container button .fas, .download-action-container button .fas {
+            margin-right: 8px;
         }
 
         #downloadCopyBtn {
+             width: 100%;
              background: var(--light-accent); color: white;
              box-shadow: 5px 5px 10px var(--light-shadow-dark), -5px -5px 10px var(--light-shadow-light);
         }
         #downloadCopyBtn:active {
             box-shadow: inset 5px 5px 10px var(--light-inset-shadow-dark), inset -5px -5px 10px var(--light-inset-shadow-light);
         }
+        #downloadCopyBtn:hover {
+             background-color: #c46767;
+             box-shadow: 5px 5px 10px var(--light-shadow-dark), -5px -5px 10px var(--light-shadow-light);
+        }
 
         /* --- Styling untuk Fitur Baru --- */
         .modal {
-            display: none; 
-            position: fixed; 
-            z-index: 2000; 
+            display: none;
+            position: fixed;
+            z-index: 2000;
             left: 0;
             top: 0;
-            width: 100%; 
-            height: 100%; 
-            overflow: auto; 
+            width: 100%;
+            height: 100%;
+            overflow: auto;
             background-color: rgba(0,0,0,0.7);
             backdrop-filter: blur(5px);
             -webkit-backdrop-filter: blur(5px);
@@ -438,7 +460,7 @@
 
             <aside class="controls-panel">
                 <h1>Customize Your Photo</h1>
-    
+
                 <div class="control-group">
                     <h3 class="options-label">Frame Color</h3>
                     <div class="custom-buttons-container">
@@ -499,7 +521,7 @@
                         <button id="blingDenimFrame" class="neumorphic-btn buttonBgFrames"></button>
                     </div>
                 </div>
-    
+
                 <div class="control-group">
                     <h3 class="options-label">Photo Shape</h3>
                     <div class="custom-buttons-container">
@@ -509,7 +531,7 @@
                         <button id="heartFrameShape" class="neumorphic-btn buttonShapes"><img src="assets/frame-shapes/heartShape.png" alt="Heart Frame" class="btnShapeSize"></button>
                     </div>
                 </div>
-    
+
                 <div class="control-group">
                     <h3 class="options-label">Stickers</h3>
                     <div class="custom-buttons-container">
@@ -538,7 +560,7 @@
                         <button id="classicBSticker" class="neumorphic-btn buttonStickers classicStickers"><img src="assets/stickers/classic4.png" alt="Classic B" class="stickerIconSize"/></button>
                     </div>
                 </div>
-            
+
                 <div class="control-group">
                     <h3 class="options-label">Logo</h3>
                     <div class="logo-options-grid">
@@ -553,7 +575,7 @@
                         </div>
                     </div>
                 </div>
-            
+
                 <div class="control-group">
                      <h3 class="options-label">Date Overlay</h3>
                      <div class="date-overlay">
@@ -567,14 +589,25 @@
                          </div>
                      </div>
                 </div>
-            
+
                 <div class="final-actions-container">
-                    <button class="neumorphic-btn" id="customBack">Retake</button>
-                    <button class="neumorphic-btn" id="previewBtn">Preview</button>
-                    <button class="neumorphic-btn" id="shareBtn">Share</button>
-                    <button class="neumorphic-btn" id="downloadCopyBtn">Download</button>
+                    <button class="neumorphic-btn" id="customBack">
+                        <i class="fas fa-undo"></i> Retake
+                    </button>
+                    <button class="neumorphic-btn" id="previewBtn">
+                        <i class="fas fa-eye"></i> Preview
+                    </button>
+                    <button class="neumorphic-btn" id="shareBtn">
+                        <i class="fas fa-share-alt"></i> Share
+                    </button>
                 </div>
-            
+
+                <div class="download-action-container">
+                    <button class="neumorphic-btn" id="downloadCopyBtn">
+                        <i class="fas fa-download"></i> Download
+                    </button>
+                </div>
+
                 <div id="qrCodeContainer" style="display: none; text-align: center; margin-top: 25px;">
                     <h3 class="options-label">Scan to Download on Mobile</h3>
                     <div id="qrcode" style="display: flex; justify-content: center; align-items: center; padding: 10px; background: white; border-radius: 8px; margin-top: 10px;"></div>
@@ -589,17 +622,17 @@
             <img id="modalImagePreview" src="" alt="Image Preview">
         </div>
     </div>
-    
+
     <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/vanilla-picker@2.12.1/dist/vanilla-picker.min.js"></script>
     <script src="customize.js"></script>
     <script src="canvas.js"></script>
     <script src="main.js"></script>
-    
+
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-    
+
             // --- 1. Theme Manager Script ---
             const themeToggle = document.getElementById('theme-toggle');
             const applyTheme = (theme) => {
@@ -613,15 +646,15 @@
             });
             const savedTheme = localStorage.getItem('theme') || 'dark';
             applyTheme(savedTheme);
-            
+
             // --- 2. Script untuk Active Button States ---
             const buttonContainers = document.querySelectorAll('.custom-buttons-container, .logo-container');
             buttonContainers.forEach(container => {
                 container.addEventListener('click', (e) => {
                     const clickedButton = e.target.closest('button');
                     if (!clickedButton) return;
-                    
-                    if (!clickedButton.closest('.stickers-container')) { 
+
+                    if (!clickedButton.closest('.stickers-container')) {
                          const buttonsInGroup = container.querySelectorAll('button');
                          buttonsInGroup.forEach(btn => btn.classList.remove('active'));
                          clickedButton.classList.add('active');
@@ -637,16 +670,16 @@
                     }
                 });
             });
-        
+
             // --- 3. Logika Modal Preview ---
             const previewModal = document.getElementById('previewModal');
             const previewBtn = document.getElementById('previewBtn');
             const modalImage = document.getElementById('modalImagePreview');
             const closeModalBtn = document.querySelector('.modal-close-btn');
-        
+
             if (previewBtn) {
                 previewBtn.addEventListener('click', () => {
-                    const finalCanvas = document.querySelector('#photoPreview canvas'); 
+                    const finalCanvas = document.querySelector('#photoPreview canvas');
                     if (finalCanvas) {
                         modalImage.src = finalCanvas.toDataURL('image/png');
                         previewModal.style.display = 'block';
@@ -665,12 +698,12 @@
                     previewModal.style.display = 'none';
                 }
             });
-        
+
             // --- 4. Logika QR Code & Download ---
             const downloadBtn = document.getElementById('downloadCopyBtn');
             const qrCodeContainer = document.getElementById('qrCodeContainer');
             const qrcodeDiv = document.getElementById('qrcode');
-        
+
             if (downloadBtn) {
                 downloadBtn.addEventListener('click', () => {
                     const finalCanvas = document.querySelector('#photoPreview canvas');
@@ -691,7 +724,7 @@
                     }
                 });
             }
-        
+
             // --- 5. Logika Tombol Share ---
             const shareBtn = document.getElementById('shareBtn');
             if (shareBtn) {
@@ -699,9 +732,9 @@
                     const shareData = {
                         title: 'Pictlord Photobooth',
                         text: 'Coba deh photobooth online keren ini! Aku baru aja bikin foto ciamik di sini. ✨',
-                        url: window.location.origin 
+                        url: window.location.origin
                     };
-            
+
                     try {
                         if (navigator.share) {
                             await navigator.share(shareData);
@@ -713,7 +746,7 @@
                     }
                 });
             }
-        
+
             // --- 6. Logika untuk Kustomisasi Warna Logo ---
             const logoColorPicker = document.getElementById('logoColorPicker');
             if (logoColorPicker) {
@@ -721,7 +754,7 @@
                     // Panggil fungsi redraw canvas Anda dari customize.js/canvas.js di sini
                     // Contoh:
                     // if (typeof redrawCanvasWithOptions === 'function') {
-                    //     redrawCanvasWithOptions(); 
+                    //     redrawCanvasWithOptions();
                     // }
                     console.log('Warna logo baru dipilih:', logoColorPicker.value);
                 });
