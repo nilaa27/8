@@ -109,12 +109,9 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-
-            /* --- EFEK BLUR TRANSPARAN --- */
             background-color: rgba(56, 64, 72, 0.7);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-
             border-radius: 50px;
             animation: fadeInUp 0.5s ease-out;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
@@ -353,8 +350,9 @@
         .final-actions-container button .fas, .download-action-container button .fas {
             margin-right: 8px;
         }
-
-        #generateBtn { /* Mengganti #downloadCopyBtn */
+        
+        /* INI CSS UNTUK TOMBOL DOWNLOAD/CETAK ASLI ANDA, HANYA GANTI NAMA ID */
+        #generateBtn {
              width: 100%;
              background: var(--light-accent); color: white;
              box-shadow: 5px 5px 10px var(--light-shadow-dark), -5px -5px 10px var(--light-shadow-light);
@@ -618,172 +616,185 @@
             <img id="modalImagePreview" src="" alt="Image Preview">
         </div>
     </div>
-    
+
     <div id="downloadModal" class="modal">
         <div class="modal-content" style="max-width: 320px; text-align: center; padding: 30px; background-color: var(--light-bg); border-radius: 20px; box-shadow: 10px 10px 20px var(--light-shadow-dark), -10px -10px 20px var(--light-shadow-light);">
             <span class="modal-close-btn">&times;</span>
             <h3 style="font-size: 1.8rem; margin-bottom: 15px; color: var(--light-text);">Unduh Gambar Anda</h3>
             <p style="font-size: 1.4rem; margin-bottom: 20px; color: var(--light-text);">Scan QR code di bawah ini atau klik tombol unduh.</p>
-            <img id="qrCodeImage" src="" alt="QR Code" style="width: 200px; height: 200px; margin: 0 auto 25px; border-radius: 10px; background: white; padding: 10px;">
+            <img id="qrCodeImage" src="" alt="QR Code" style="width: 200px; height: 200px; margin: 0 auto 25px; border-radius: 10px; background: white; padding: 10px; object-fit: contain;">
             <a href="#" id="finalDownloadBtn" download="pictlord-photo.png" class="neumorphic-btn" style="width: 100%; padding: 12px; font-size: 1.5rem; border-radius: 25px; text-decoration: none; background: var(--light-accent); color: white;">
                 <i class="fas fa-download"></i> Unduh Sekarang
             </a>
         </div>
     </div>
-
+    
     <script src="https://cdn.jsdelivr.net/npm/vanilla-picker@2.12.1/dist/vanilla-picker.min.js"></script>
     <script src="customize.js"></script>
     <script src="canvas.js"></script>
     <script src="main.js"></script>
 
     <script>
-    document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- 1. Theme Manager Script ---
+            const themeToggle = document.getElementById('theme-toggle');
+            const applyTheme = (theme) => {
+                document.body.classList.toggle('dark-mode', theme === 'dark');
+            };
+            themeToggle.addEventListener('click', () => {
+                const isDarkMode = document.body.classList.contains('dark-mode');
+                const newTheme = isDarkMode ? 'light' : 'dark';
+                localStorage.setItem('theme', newTheme);
+                applyTheme(newTheme);
+            });
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            applyTheme(savedTheme);
 
-        // --- 1. Theme Manager Script (Tidak Berubah) ---
-        const themeToggle = document.getElementById('theme-toggle');
-        const applyTheme = (theme) => {
-            document.body.classList.toggle('dark-mode', theme === 'dark');
-        };
-        themeToggle.addEventListener('click', () => {
-            const isDarkMode = document.body.classList.contains('dark-mode');
-            const newTheme = isDarkMode ? 'light' : 'dark';
-            localStorage.setItem('theme', newTheme);
-            applyTheme(newTheme);
-        });
-        const savedTheme = localStorage.getItem('theme') || 'dark';
-        applyTheme(savedTheme);
-
-        // --- 2. Script untuk Active Button States (Tidak Berubah) ---
-        const buttonContainers = document.querySelectorAll('.custom-buttons-container, .logo-container');
-        buttonContainers.forEach(container => {
-            container.addEventListener('click', (e) => {
-                const clickedButton = e.target.closest('button');
-                if (!clickedButton) return;
-                
-                if (!clickedButton.closest('.stickers-container')) {
-                     const buttonsInGroup = container.querySelectorAll('button');
-                     buttonsInGroup.forEach(btn => btn.classList.remove('active'));
-                     clickedButton.classList.add('active');
-                } else {
-                    if(clickedButton.id === 'noneSticker') {
-                        const stickerButtons = container.querySelectorAll('button');
-                        stickerButtons.forEach(btn => btn.classList.remove('active'));
-                        clickedButton.classList.add('active');
+            // --- 2. Script untuk Active Button States ---
+            const buttonContainers = document.querySelectorAll('.custom-buttons-container, .logo-container');
+            buttonContainers.forEach(container => {
+                container.addEventListener('click', (e) => {
+                    const clickedButton = e.target.closest('button');
+                    if (!clickedButton) return;
+                    if (!clickedButton.closest('.stickers-container')) {
+                         const buttonsInGroup = container.querySelectorAll('button');
+                         buttonsInGroup.forEach(btn => btn.classList.remove('active'));
+                         clickedButton.classList.add('active');
                     } else {
-                        document.getElementById('noneSticker')?.classList.remove('active');
-                        clickedButton.classList.toggle('active');
+                        if(clickedButton.id === 'noneSticker') {
+                            const stickerButtons = container.querySelectorAll('button');
+                            stickerButtons.forEach(btn => btn.classList.remove('active'));
+                            clickedButton.classList.add('active');
+                        } else {
+                            document.getElementById('noneSticker')?.classList.remove('active');
+                            clickedButton.classList.toggle('active');
+                        }
                     }
-                }
+                });
             });
-        });
 
-        // --- 3. Logika Modal Preview (Tidak Berubah) ---
-        const previewModal = document.getElementById('previewModal');
-        const previewBtn = document.getElementById('previewBtn');
-        const modalImage = document.getElementById('modalImagePreview');
-        const closeModalBtn = document.querySelector('#previewModal .modal-close-btn');
+            // --- 3. Logika Modal Preview ---
+            const previewModal = document.getElementById('previewModal');
+            const previewBtn = document.getElementById('previewBtn');
+            const modalImage = document.getElementById('modalImagePreview');
+            const closePreviewModalBtn = document.querySelector('#previewModal .modal-close-btn');
 
-        if (previewBtn) {
-            previewBtn.addEventListener('click', () => {
-                const finalCanvas = document.querySelector('#photoPreview canvas');
-                if (finalCanvas) {
-                    modalImage.src = finalCanvas.toDataURL('image/png');
-                    previewModal.style.display = 'block';
-                } else {
-                    alert('Silakan buat gambar terlebih dahulu!');
-                }
-            });
-        }
-        if (closeModalBtn) {
-            closeModalBtn.addEventListener('click', () => {
-                previewModal.style.display = 'none';
-            });
-        }
-
-        // --- 4. LOGIKA BARU UNTUK MODAL DOWNLOAD & QR CODE ---
-        const generateBtn = document.getElementById('generateBtn');
-        const downloadModal = document.getElementById('downloadModal');
-        const closeDownloadModalBtn = document.querySelector('#downloadModal .modal-close-btn');
-        const qrCodeImg = document.getElementById('qrCodeImage');
-        const finalDownloadBtn = document.getElementById('finalDownloadBtn');
-
-        if (generateBtn) {
-            generateBtn.addEventListener('click', () => {
-                const finalCanvas = document.querySelector('#photoPreview canvas');
-                if (!finalCanvas) {
-                    alert('Gambar belum siap. Mohon selesaikan kustomisasi Anda.');
-                    return;
-                }
-
-                // Dapatkan data gambar dari canvas
-                const imageDataUrl = finalCanvas.toDataURL('image/png');
-
-                // Hasilkan URL untuk API QR Server
-                // Kita perlu mengenkode data URL gambar agar aman dikirim sebagai parameter
-                const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(imageDataUrl)}`;
-                
-                // Atur sumber gambar QR Code dan link download
-                qrCodeImg.src = qrApiUrl;
-                finalDownloadBtn.href = imageDataUrl;
-                
-                // Tampilkan alert dan modal
-                alert('Silakan scan untuk mengunduh gambar.');
-                downloadModal.style.display = 'block';
-            });
-        }
-
-        // Logika untuk menutup modal download
-        if (closeDownloadModalBtn) {
-            closeDownloadModalBtn.addEventListener('click', () => {
-                downloadModal.style.display = 'none';
-            });
-        }
-
-        // --- 5. Logika Tombol Share (Tidak Berubah) ---
-        const shareBtn = document.getElementById('shareBtn');
-        if (shareBtn) {
-            shareBtn.addEventListener('click', async () => {
-                const shareData = {
-                    title: 'Pictlord Photobooth',
-                    text: 'Coba deh photobooth online keren ini! Aku baru aja bikin foto ciamik di sini. ✨',
-                    url: window.location.origin
-                };
-
-                try {
-                    if (navigator.share) {
-                        await navigator.share(shareData);
+            if (previewBtn) {
+                previewBtn.addEventListener('click', () => {
+                    const finalCanvas = document.querySelector('#photoPreview canvas');
+                    if (finalCanvas) {
+                        modalImage.src = finalCanvas.toDataURL('image/png');
+                        previewModal.style.display = 'block';
                     } else {
-                        alert('Browser Anda tidak mendukung fitur share. Silakan salin link secara manual.');
+                        alert('Silakan buat gambar terlebih dahulu!');
                     }
-                } catch (err) {
-                    console.error('Error saat sharing:', err);
+                });
+            }
+            if(closePreviewModalBtn) {
+                closePreviewModalBtn.addEventListener('click', () => {
+                    previewModal.style.display = 'none';
+                });
+            }
+
+            // --- 4. LOGIKA YANG DIPERBAIKI UNTUK MODAL DOWNLOAD & QR CODE ---
+            const generateBtn = document.getElementById('generateBtn');
+            const downloadModal = document.getElementById('downloadModal');
+            const closeDownloadModalBtn = document.querySelector('#downloadModal .modal-close-btn');
+            const qrCodeImg = document.getElementById('qrCodeImage');
+            const finalDownloadBtn = document.getElementById('finalDownloadBtn');
+
+            if (generateBtn) {
+                generateBtn.addEventListener('click', () => {
+                    const finalCanvas = document.querySelector('#photoPreview canvas');
+                    
+                    if (!finalCanvas || finalCanvas.width === 0) {
+                        alert('Gambar belum siap atau kanvas kosong. Selesaikan dulu fotomu ya!');
+                        return;
+                    }
+
+                    alert('Silakan scan untuk mengunduh gambar. QR Code sedang dibuat...');
+                    downloadModal.style.display = 'block';
+                    qrCodeImg.src = "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=loading...";
+                    finalDownloadBtn.style.display = 'none'; 
+
+                    setTimeout(() => {
+                        try {
+                            const imageDataUrl = finalCanvas.toDataURL('image/png');
+
+                            if (imageDataUrl.length < 200) {
+                                throw new Error("Data gambar tidak valid atau kosong.");
+                            }
+
+                            const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(imageDataUrl)}`;
+                            
+                            qrCodeImg.src = qrApiUrl;
+                            finalDownloadBtn.href = imageDataUrl;
+                            
+                            qrCodeImg.onload = () => {
+                                console.log("QR Code berhasil dimuat.");
+                                finalDownloadBtn.style.display = 'flex';
+                            };
+                            qrCodeImg.onerror = () => {
+                                console.error("Gagal memuat QR Code dari API.");
+                                alert("Maaf, gagal membuat QR Code. Silakan unduh langsung.");
+                                qrCodeImg.alt = "Gagal memuat QR Code";
+                                finalDownloadBtn.style.display = 'flex';
+                            };
+
+                        } catch (error) {
+                            console.error("Terjadi kesalahan:", error);
+                            alert("Terjadi kesalahan. Pastikan gambar sudah ada di kanvas.");
+                            downloadModal.style.display = 'none';
+                        }
+                    }, 100);
+                });
+            }
+
+            if (closeDownloadModalBtn) {
+                closeDownloadModalBtn.addEventListener('click', () => {
+                    downloadModal.style.display = 'none';
+                });
+            }
+
+            // --- 5. Logika Tombol Share ---
+            const shareBtn = document.getElementById('shareBtn');
+            if (shareBtn) {
+                shareBtn.addEventListener('click', async () => {
+                    const shareData = {
+                        title: 'Pictlord Photobooth',
+                        text: 'Coba deh photobooth online keren ini! Aku baru aja bikin foto ciamik di sini. ✨',
+                        url: window.location.origin
+                    };
+                    try {
+                        if (navigator.share) {
+                            await navigator.share(shareData);
+                        } else {
+                            alert('Browser Anda tidak mendukung fitur share. Silakan salin link secara manual.');
+                        }
+                    } catch (err) {
+                        console.error('Error saat sharing:', err);
+                    }
+                });
+            }
+
+            // --- 6. Logika untuk Kustomisasi Warna Logo ---
+            const logoColorPicker = document.getElementById('logoColorPicker');
+            if (logoColorPicker) {
+                logoColorPicker.addEventListener('input', () => {
+                    console.log('Warna logo baru dipilih:', logoColorPicker.value);
+                });
+            }
+            
+            // --- Penutup Umum untuk Semua Modal ---
+            window.addEventListener('click', (event) => {
+                if (event.target == previewModal) {
+                    previewModal.style.display = 'none';
+                }
+                if (event.target == downloadModal) {
+                    downloadModal.style.display = 'none';
                 }
             });
-        }
-
-        // --- 6. Logika untuk Kustomisasi Warna Logo (Tidak Berubah) ---
-        const logoColorPicker = document.getElementById('logoColorPicker');
-        if (logoColorPicker) {
-            logoColorPicker.addEventListener('input', () => {
-                // Panggil fungsi redraw canvas Anda dari customize.js/canvas.js di sini
-                // Contoh:
-                // if (typeof redrawCanvasWithOptions === 'function') {
-                //     redrawCanvasWithOptions();
-                // }
-                console.log('Warna logo baru dipilih:', logoColorPicker.value);
-            });
-        }
-        
-        // --- Penutup Umum untuk Semua Modal ---
-        window.addEventListener('click', (event) => {
-            if (event.target == previewModal) {
-                previewModal.style.display = 'none';
-            }
-            if (event.target == downloadModal) {
-                downloadModal.style.display = 'none';
-            }
         });
-    });
     </script>
 </body>
 </html>
