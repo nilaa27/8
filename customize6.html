@@ -54,8 +54,9 @@
     </script>
     
     <link rel="canonical" href="https://pict.xlord.web.id/customize.html">
-    <link rel="icon" href="images/pictlord logo.png">
+    <link rel="icon" href="images/photobooth-new-logo.png">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
         /* --- Root Variables & Theme --- */
@@ -321,20 +322,38 @@
             transform: translate(-50%, -50%);
         }
 
-        /* --- Final Action Buttons --- */
+        /* --- FINAL ACTION BUTTONS (REVISI) --- */
         .final-actions-container {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
             margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
         }
-        .final-actions-container button {
+
+        .download-action-container {
+            margin-top: 15px;
+        }
+        
+        .final-actions-container button, .download-action-container button {
             padding: 12px;
             font-size: 1.5rem;
             border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+        .final-actions-container button:hover, .download-action-container button:hover {
+            transform: translateY(-2px);
+        }
+        .final-actions-container button:active, .download-action-container button:active {
+            transform: scale(0.95);
+        }
+        .final-actions-container button .fas, .download-action-container button .fas {
+            margin-right: 8px;
         }
 
         #downloadCopyBtn {
+             width: 100%;
              background: var(--light-accent); color: white;
              box-shadow: 5px 5px 10px var(--light-shadow-dark), -5px -5px 10px var(--light-shadow-light);
         }
@@ -566,10 +585,21 @@
                 </div>
             
                 <div class="final-actions-container">
-                    <button class="neumorphic-btn" id="customBack">Retake</button>
-                    <button class="neumorphic-btn" id="previewBtn">Preview</button>
-                    <button class="neumorphic-btn" id="shareBtn">Share</button>
-                    <button class="neumorphic-btn" id="downloadCopyBtn">Download</button>
+                    <button class="neumorphic-btn" id="customBack">
+                        <i class="fas fa-undo"></i> Retake
+                    </button>
+                    <button class="neumorphic-btn" id="previewBtn">
+                        <i class="fas fa-eye"></i> Preview
+                    </button>
+                    <button class="neumorphic-btn" id="shareBtn">
+                        <i class="fas fa-share-alt"></i> Share
+                    </button>
+                </div>
+                
+                <div class="download-action-container">
+                    <button class="neumorphic-btn" id="downloadCopyBtn">
+                        <i class="fas fa-download"></i> Download
+                    </button>
                 </div>
             
                 <div id="qrCodeContainer" style="display: none; text-align: center; margin-top: 25px;">
@@ -588,12 +618,10 @@
     </div>
     
     <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
-
     <script src="js/vanilla-picker.min.js"></script>
     <script src="js/customize6.js"></script>
     <script src="js/canvas.js"></script>
     <script src="js/main.js"></script>
-    
     <script src="/update.js"></script>
 </body>
 </html>
