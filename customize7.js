@@ -224,7 +224,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 const textMap = { 'ENG': 'pictlord', 'KOR': 'ㅔㅑㅊ시ㅐㄱㅇ', 'CN': '照相亭' };
                 customizationOptions.logo.text = textMap[lang] || '';
             } else if (buttonId === 'customBack') {
-                window.location.href = 'canvas4.html'; // Arahkan ke halaman 4 foto
+                window.location.href = 'canvas7.html'; // Arahkan ke halaman 4 foto
                 needsRedraw = false;
             } else if (buttonId === 'downloadCopyBtn') {
                 downloadFinalImage();
