@@ -109,9 +109,12 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+
+            /* --- EFEK BLUR TRANSPARAN --- */
             background-color: rgba(56, 64, 72, 0.7);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
+
             border-radius: 50px;
             animation: fadeInUp 0.5s ease-out;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
@@ -145,6 +148,7 @@
         .dark-mode #sun-icon { display: none; }
         .dark-mode #moon-icon { display: block; }
 
+        /* Light mode header style */
         body:not(.dark-mode) #main-header {
             background-color: rgba(240, 242, 245, 0.75);
             border: 1px solid rgba(0, 0, 0, 0.1);
@@ -230,7 +234,7 @@
         .buttonBgFrames { background-size: cover; background-position: center; }
         .btnShapeSize, .stickerIconSize { width: 22px; height: 22px; }
 
-        /* --- Specific Controls Styling --- */
+        /* --- Specific Controls Styling (tidak berubah) --- */
         #colorPickerBtn { background: conic-gradient(red, orange, yellow, green, cyan, blue, violet, red); }
         #pinkBtnFrame { background-color: #FFC2D1; }
         #blueBtnFrame { background-color: #CAF0F8; }
@@ -241,33 +245,33 @@
         #redBtnFrame { background-color: #780000; }
         #whiteBtnFrame { background-color: #FFFFFF; border: 1px solid #ccc; }
         #blackBtnFrame { background-color: #000000; }
-        #pinkGlitter { background-image: url(assets/frame-backgrounds/pink-glitter.jpg); }
+        #pinkGlitter { background-image: url(assets/frame-backgrounds/pink-glitter.jpg); background-size: cover; }
         #pinkPlaid { background-image: url(assets/frame-backgrounds/pink-plaid.jpg); }
-        #bluePlaid { background-image: url(assets/frame-backgrounds/blue-plaid.jpg); }
+        #bluePlaid { background-image: url(assets/frame-backgrounds/blue-plaid.jpg); background-size: cover; }
         #black-cq { background-image: url(assets/frame-backgrounds/black-couqutte.jpg); background-size: 200%; }
         #white-cq { background-image: url(assets/frame-backgrounds/white-couquette.jpg); background-size: 200%; }
         #pinkLeather { background-image: url(assets/frame-backgrounds/pink-diamond-leather.jpg); background-size: 200%; }
-        #brownKnittedFrame { background-image: url(assets/frame-backgrounds/brown-knitted.jpg); }
-        #hotPinkKnittedFrame { background-image: url(assets/frame-backgrounds/hot-pink-knitted.jpg); }
-        #redKnittedFrame { background-image: url(assets/frame-backgrounds/red-knitted.jpg); }
-        #pinkKnittedFrame { background-image: url(assets/frame-backgrounds/pink-knitted.jpg); }
+        #brownKnittedFrame { background-image: url(assets/frame-backgrounds/brown-knitted.jpg); background-size: cover; }
+        #hotPinkKnittedFrame { background-image: url(assets/frame-backgrounds/hot-pink-knitted.jpg); background-size: cover; }
+        #redKnittedFrame { background-image: url(assets/frame-backgrounds/red-knitted.jpg); background-size: cover; }
+        #pinkKnittedFrame { background-image: url(assets/frame-backgrounds/pink-knitted.jpg); background-size: cover; }
         #redStripesFrame { background-image: url(assets/frame-backgrounds/red-stripes.jpg); background-size: 190%; }
         #greenStripesFrame { background-image: url(assets/frame-backgrounds/green-stripes.jpg); background-size: 190%; }
         #blueStripesFrame { background-image: url(assets/frame-backgrounds/blue-stripes.jpg); background-size: 190%; }
-        #vsPinkFrame { background-image: url(assets/frame-backgrounds/vs-pink.jpg); }
-        #vsYellowFrame { background-image: url(assets/frame-backgrounds/vs-yellow.jpg); }
-        #blueYellowSquares { background-image: url(assets/frame-backgrounds/blue-yellow-squares.jpg); }
-        #blueWhiteSquares { background-image: url(assets/frame-backgrounds/blue-white-squares.jpg); }
-        #brownLeopard { background-image: url(assets/frame-backgrounds/brown-leopard.jpg); }
-        #cowPrint { background-image: url(assets/frame-backgrounds/cow-print.jpg); }
-        #redLeather { background-image: url(assets/frame-backgrounds/red-leather.jpg); }
+        #vsPinkFrame { background-image: url(assets/frame-backgrounds/vs-pink.jpg); background-size: cover; }
+        #vsYellowFrame { background-image: url(assets/frame-backgrounds/vs-yellow.jpg); background-size: cover; }
+        #blueYellowSquares { background-image: url(assets/frame-backgrounds/blue-yellow-squares.jpg); background-size: cover; }
+        #blueWhiteSquares { background-image: url(assets/frame-backgrounds/blue-white-squares.jpg); background-size: cover; }
+        #brownLeopard { background-image: url(assets/frame-backgrounds/brown-leopard.jpg); background-size: cover; }
+        #cowPrint { background-image: url(assets/frame-backgrounds/cow-print.jpg); background-size: cover; }
+        #redLeather { background-image: url(assets/frame-backgrounds/red-leather.jpg); background-size: cover; }
         #pinkGumamela { background-image: url(assets/frame-backgrounds/pink-gumamela.jpg); background-size: 150%; }
-        #pinkLiliesFrame { background-image: url(assets/frame-backgrounds/pink-lilies.jpg); }
-        #whiteKnitted { background-image: url(assets/frame-backgrounds/white-knitted-cloth.jpg); }
-        #ribbonSweaterFrame { background-image: url(assets/frame-backgrounds/ribbon-sweater.jpg); }
+        #pinkLiliesFrame { background-image: url(assets/frame-backgrounds/pink-lilies.jpg); background-size: cover; }
+        #whiteKnitted { background-image: url(assets/frame-backgrounds/white-knitted-cloth.jpg); background-size: cover; }
+        #ribbonSweaterFrame { background-image: url(assets/frame-backgrounds/ribbon-sweater.jpg); background-size: cover; }
         #ribbonDenim { background-image: url(assets/frame-backgrounds/ribbon-denim.jpg); background-size: 120%; }
-        #blackPinkRibbon { background-image: url(assets/frame-backgrounds/black-pink-ribbon.jpg); }
-        #fourLockers { background-image: url(assets/frame-backgrounds/4-lockers.jpg); }
+        #blackPinkRibbon { background-image: url(assets/frame-backgrounds/black-pink-ribbon.jpg); background-size: cover; }
+        #fourLockers { background-image: url(assets/frame-backgrounds/4-lockers.jpg); background-size: cover; }
         #gridPaperFrame { background-image: url(assets/frame-backgrounds/grid-paper.jpg); background-size: 200%; }
         #crumpledPaper { background-image: url(assets/frame-backgrounds/crumpled-paper.jpg); background-size: 190%; }
         #roughTextureFrame { background-image: url(assets/frame-backgrounds/rough-texture.jpg); background-size: 190%; }
@@ -277,16 +281,15 @@
         #waterBeach { background-image: url(assets/frame-backgrounds/water.jpg); background-size: 190%; }
         #cocoTrees { background-image: url(assets/frame-backgrounds/coco-trees.jpg); background-size: 190%; }
         #stardustFrame { background-image: url(assets/frame-backgrounds/stardust.jpg); background-size: 200%; }
-        #roseCardFrame { background-image: url(assets/frame-backgrounds/rose-card.jpg); }
-        #princessVintageFrame { background-image: url(assets/frame-backgrounds/princess-vintage.jpg); }
+        #roseCardFrame { background-image: url(assets/frame-backgrounds/rose-card.jpg); background-size: cover; }
+        #princessVintageFrame { background-image: url(assets/frame-backgrounds/princess-vintage.jpg); background-size: cover; }
         #redRosesPaintFrame { background-image: url(assets/frame-backgrounds/red-roses-paint.jpg); background-size: 190%; }
         #grayTrashFrame { background-image: url(assets/frame-backgrounds/gray-trash.jpg); background-size: 190%; }
         #blackTrashFrame { background-image: url(assets/frame-backgrounds/black-trash.jpg); background-size: 190%; }
         #whiteTrashFrame { background-image: url(assets/frame-backgrounds/white-trash.jpg); background-size: 180%; }
-        #partyDrapeFrame { background-image: url(assets/frame-backgrounds/party-drape.jpg); }
+        #partyDrapeFrame { background-image: url(assets/frame-backgrounds/party-drape.jpg); background-size: cover; }
         #partyDotsFrame { background-image: url(assets/frame-backgrounds/party-dots.jpg); background-size: 210%; }
         #blingDenimFrame { background-image: url(assets/frame-backgrounds/bling-denim.jpg); background-size: 210%; }
-        .buttonBgFrames { background-size: cover; background-position: center; }
 
         /* Logo and Date Checkbox */
         .logo-container { display: flex; gap: 10px; }
@@ -319,7 +322,7 @@
             transform: translate(-50%, -50%);
         }
 
-        /* --- FINAL ACTION BUTTONS --- */
+        /* --- FINAL ACTION BUTTONS (REVISI) --- */
         .final-actions-container {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
@@ -364,7 +367,7 @@
              box-shadow: 5px 5px 10px var(--light-shadow-dark), -5px -5px 10px var(--light-shadow-light);
         }
 
-        /* --- Modal Styling (REVISED) --- */
+        /* --- Styling untuk Fitur Baru --- */
         .modal {
             display: none;
             position: fixed;
@@ -377,88 +380,33 @@
             background-color: rgba(0,0,0,0.7);
             backdrop-filter: blur(5px);
             -webkit-backdrop-filter: blur(5px);
-            align-items: center;
-            justify-content: center;
         }
         .modal-content {
-            background-color: var(--light-bg);
-            padding: 25px;
-            border-radius: 20px;
-            box-shadow: 10px 10px 20px var(--light-shadow-dark), -10px -10px 20px var(--light-shadow-light);
-            width: 90%;
-            max-width: 400px;
-            text-align: center;
-            position: relative;
+            margin: auto;
+            display: block;
+            width: 80%;
+            max-width: 700px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        #modalImagePreview {
+            width: 100%;
+            border-radius: 15px;
+            border: 5px solid white;
         }
         .modal-close-btn {
             position: absolute;
-            top: 10px;
-            right: 15px;
-            color: var(--light-text);
-            font-size: 30px;
+            top: 15px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
             font-weight: bold;
             transition: 0.3s;
             cursor: pointer;
         }
-        .modal-close-btn:hover, .modal-close-btn:focus { color: var(--light-accent); text-decoration: none; }
-        
-        #modalImagePreview {
-            width: 100%;
-            border-radius: 15px;
-            margin-bottom: 20px;
-        }
-        #modalShareView {
-            display: none; /* Hidden by default */
-        }
-        #modalQrCodeContainer {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 20px;
-            padding: 10px;
-            background-color: #fff;
-            border-radius: 8px;
-        }
-        
-        /* --- Social Share Buttons Styling --- */
-        #social-share-container {
-            padding-top: 20px;
-            border-top: 1px solid var(--light-shadow-dark);
-        }
-        .social-share-title {
-            font-size: 1.6rem;
-            font-weight: 500;
-            margin-bottom: 15px;
-        }
-        .social-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-        }
-        .social-btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            text-decoration: none;
-            color: white;
-            font-size: 2rem;
-            box-shadow: 5px 5px 10px var(--light-shadow-dark), -5px -5px 10px var(--light-shadow-light);
-            transition: all 0.2s ease-in-out;
-        }
-        .social-btn:hover {
-            transform: translateY(-3px);
-        }
-        .social-btn:active {
-            transform: scale(0.95);
-            box-shadow: inset 5px 5px 10px var(--light-inset-shadow-dark), inset -5px -5px 10px var(--light-inset-shadow-light);
-        }
-        .social-btn.whatsapp { background-color: #25D366; }
-        .social-btn.telegram { background-color: #0088cc; }
-        .social-btn.copy-link { background-color: #7f8c8d; }
-
+        .modal-close-btn:hover, .modal-close-btn:focus { color: #bbb; text-decoration: none; }
 
         .logo-options-grid {
             display: grid;
@@ -508,8 +456,7 @@
     <main id="main-section">
         <div class="customize-container">
             <div class="photo-preview-area" id="photoPreview">
-                <!-- Canvas will be generated here by canvas.js -->
-            </div>
+                </div>
 
             <aside class="controls-panel">
                 <h1>Customize Your Photo</h1>
@@ -660,6 +607,11 @@
                         <i class="fas fa-download"></i> Download
                     </button>
                 </div>
+
+                <div id="qrCodeContainer" style="display: none; text-align: center; margin-top: 25px;">
+                    <h3 class="options-label">Scan to Download on Mobile</h3>
+                    <div id="qrcode" style="display: flex; justify-content: center; align-items: center; padding: 10px; background: white; border-radius: 8px; margin-top: 10px;"></div>
+                </div>
             </aside>
         </div>
     </main>
@@ -667,26 +619,12 @@
     <div id="previewModal" class="modal">
         <div class="modal-content">
             <span class="modal-close-btn">&times;</span>
-            
-            <!-- This view is for the normal image preview -->
             <img id="modalImagePreview" src="" alt="Image Preview">
-
-            <!-- This view is for sharing (QR + Social buttons) -->
-            <div id="modalShareView">
-                <div id="modalQrCodeContainer"></div>
-                <div id="social-share-container">
-                    <h3 class="social-share-title">Bagikan via</h3>
-                    <div class="social-buttons">
-                        <a href="#" id="whatsapp-share" class="social-btn whatsapp" target="_blank"><i class="fab fa-whatsapp"></i></a>
-                        <a href="#" id="telegram-share" class="social-btn telegram" target="_blank"><i class="fab fa-telegram-plane"></i></a>
-                        <button id="copy-link-share" class="social-btn copy-link"><i class="fas fa-link"></i></button>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/vanilla-picker@2.12.1/dist/vanilla-picker.min.js"></script>
     <script src="customize.js"></script>
     <script src="canvas.js"></script>
@@ -709,7 +647,7 @@
             const savedTheme = localStorage.getItem('theme') || 'dark';
             applyTheme(savedTheme);
 
-            // --- 2. Active Button States Script ---
+            // --- 2. Script untuk Active Button States ---
             const buttonContainers = document.querySelectorAll('.custom-buttons-container, .logo-container');
             buttonContainers.forEach(container => {
                 container.addEventListener('click', (e) => {
@@ -733,110 +671,91 @@
                 });
             });
 
-            // --- 3. Modal Logic (REVISED) ---
+            // --- 3. Logika Modal Preview ---
             const previewModal = document.getElementById('previewModal');
             const previewBtn = document.getElementById('previewBtn');
-            const shareBtn = document.getElementById('shareBtn');
+            const modalImage = document.getElementById('modalImagePreview');
             const closeModalBtn = document.querySelector('.modal-close-btn');
 
-            const modalImage = document.getElementById('modalImagePreview');
-            const modalShareView = document.getElementById('modalShareView');
-            const modalQrContainer = document.getElementById('modalQrCodeContainer');
-
-            const openModal = () => previewModal.style.display = 'flex';
-            const closeModal = () => previewModal.style.display = 'none';
-
-            if(closeModalBtn) closeModalBtn.addEventListener('click', closeModal);
-            window.addEventListener('click', (event) => {
-                if (event.target == previewModal) closeModal();
-            });
-
-            // Preview Button Logic
             if (previewBtn) {
                 previewBtn.addEventListener('click', () => {
                     const finalCanvas = document.querySelector('#photoPreview canvas');
                     if (finalCanvas) {
-                        modalShareView.style.display = 'none'; // Hide share view
                         modalImage.src = finalCanvas.toDataURL('image/png');
-                        modalImage.style.display = 'block'; // Show image view
-                        openModal();
+                        previewModal.style.display = 'block';
                     } else {
                         alert('Silakan buat gambar terlebih dahulu!');
                     }
                 });
             }
-
-            // Share Button Logic
-            let currentShareLink = '';
-            if (shareBtn) {
-                shareBtn.addEventListener('click', () => {
-                    const finalCanvas = document.querySelector('#photoPreview canvas');
-                    if (!finalCanvas) {
-                        alert('Silakan buat gambar terlebih dahulu!');
-                        return;
-                    }
-
-                    const imageDataUrl = finalCanvas.toDataURL('image/png');
-                    const base64ImageData = btoa(imageDataUrl);
-
-                    const previewUrl = new URL('preview.html', window.location.href);
-                    previewUrl.searchParams.set('image', base64ImageData);
-                    currentShareLink = previewUrl.href;
-
-                    modalImage.style.display = 'none'; // Hide image view
-                    modalShareView.style.display = 'block'; // Show share view
-
-                    modalQrContainer.innerHTML = ''; // Clear previous QR
-                    new QRCode(modalQrContainer, {
-                        text: currentShareLink,
-                        width: 250,
-                        height: 250,
-                        correctLevel : QRCode.CorrectLevel.H
-                    });
-
-                    const shareText = encodeURIComponent("Lihat foto photobooth yang aku buat di Pictlord! ✨");
-                    document.getElementById('whatsapp-share').href = `https://api.whatsapp.com/send?text=${shareText}%20${encodeURIComponent(currentShareLink)}`;
-                    document.getElementById('telegram-share').href = `https://t.me/share/url?url=${encodeURIComponent(currentShareLink)}&text=${shareText}`;
-                    
-                    openModal();
+            if(closeModalBtn) {
+                closeModalBtn.addEventListener('click', () => {
+                    previewModal.style.display = 'none';
                 });
             }
-            
-            // --- 4. Download Button Logic ---
+            window.addEventListener('click', (event) => {
+                if (event.target == previewModal) {
+                    previewModal.style.display = 'none';
+                }
+            });
+
+            // --- 4. Logika QR Code & Download ---
             const downloadBtn = document.getElementById('downloadCopyBtn');
+            const qrCodeContainer = document.getElementById('qrCodeContainer');
+            const qrcodeDiv = document.getElementById('qrcode');
+
             if (downloadBtn) {
                 downloadBtn.addEventListener('click', () => {
                     const finalCanvas = document.querySelector('#photoPreview canvas');
                     if (finalCanvas) {
-                        const link = document.createElement('a');
-                        link.download = 'pictlord-photobooth.png';
-                        link.href = finalCanvas.toDataURL('image/png');
-                        link.click();
+                        if (qrCodeContainer.style.display === 'none') {
+                            qrcodeDiv.innerHTML = '';
+                            new QRCode(qrcodeDiv, {
+                                text: finalCanvas.toDataURL('image/png'),
+                                width: 128,
+                                height: 128,
+                                correctLevel: QRCode.CorrectLevel.H
+                            });
+                            qrCodeContainer.style.display = 'block';
+                        }
+                        // Fungsi download asli dari file customize.js akan tetap berjalan
                     } else {
                         alert('Silakan buat gambar terlebih dahulu!');
                     }
                 });
             }
 
-            // --- 5. Copy Link Logic ---
-            const copyLinkBtn = document.getElementById('copy-link-share');
-            if (copyLinkBtn) {
-                copyLinkBtn.addEventListener('click', () => {
-                    if (currentShareLink) {
-                        navigator.clipboard.writeText(currentShareLink).then(() => {
-                            alert('Link berhasil disalin!');
-                        }).catch(err => {
-                            console.error('Gagal menyalin link: ', err);
-                            alert('Gagal menyalin link.');
-                        });
+            // --- 5. Logika Tombol Share ---
+            const shareBtn = document.getElementById('shareBtn');
+            if (shareBtn) {
+                shareBtn.addEventListener('click', async () => {
+                    const shareData = {
+                        title: 'Pictlord Photobooth',
+                        text: 'Coba deh photobooth online keren ini! Aku baru aja bikin foto ciamik di sini. ✨',
+                        url: window.location.origin
+                    };
+
+                    try {
+                        if (navigator.share) {
+                            await navigator.share(shareData);
+                        } else {
+                            alert('Browser Anda tidak mendukung fitur share. Silakan salin link secara manual.');
+                        }
+                    } catch (err) {
+                        console.error('Error saat sharing:', err);
                     }
                 });
             }
 
-            // --- 6. Logo Color Customization Logic ---
+            // --- 6. Logika untuk Kustomisasi Warna Logo ---
             const logoColorPicker = document.getElementById('logoColorPicker');
             if (logoColorPicker) {
                 logoColorPicker.addEventListener('input', () => {
+                    // Panggil fungsi redraw canvas Anda dari customize.js/canvas.js di sini
+                    // Contoh:
+                    // if (typeof redrawCanvasWithOptions === 'function') {
+                    //     redrawCanvasWithOptions();
+                    // }
                     console.log('Warna logo baru dipilih:', logoColorPicker.value);
                 });
             }
