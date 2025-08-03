@@ -364,7 +364,7 @@
              box-shadow: 5px 5px 10px var(--light-shadow-dark), -5px -5px 10px var(--light-shadow-light);
         }
 
-        /* --- Modal Styling --- */
+        /* --- Modal Styling (REVISED) --- */
         .modal {
             display: none;
             position: fixed;
@@ -390,12 +390,6 @@
             text-align: center;
             position: relative;
         }
-        #modalImagePreview {
-            width: 100%;
-            border-radius: 15px;
-            display: block;
-            margin: 0 auto 20px;
-        }
         .modal-close-btn {
             position: absolute;
             top: 10px;
@@ -408,9 +402,26 @@
         }
         .modal-close-btn:hover, .modal-close-btn:focus { color: var(--light-accent); text-decoration: none; }
         
+        #modalImagePreview {
+            width: 100%;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+        #modalShareView {
+            display: none; /* Hidden by default */
+        }
+        #modalQrCodeContainer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: #fff;
+            border-radius: 8px;
+        }
+        
         /* --- Social Share Buttons Styling --- */
         #social-share-container {
-            margin-top: 20px;
             padding-top: 20px;
             border-top: 1px solid var(--light-shadow-dark);
         }
@@ -656,13 +667,20 @@
     <div id="previewModal" class="modal">
         <div class="modal-content">
             <span class="modal-close-btn">&times;</span>
+            
+            <!-- This view is for the normal image preview -->
             <img id="modalImagePreview" src="" alt="Image Preview">
-            <div id="social-share-container">
-                <h3 class="social-share-title">Bagikan via</h3>
-                <div class="social-buttons">
-                    <a href="#" id="whatsapp-share" class="social-btn whatsapp" target="_blank"><i class="fab fa-whatsapp"></i></a>
-                    <a href="#" id="telegram-share" class="social-btn telegram" target="_blank"><i class="fab fa-telegram-plane"></i></a>
-                    <button id="copy-link-share" class="social-btn copy-link"><i class="fas fa-link"></i></button>
+
+            <!-- This view is for sharing (QR + Social buttons) -->
+            <div id="modalShareView">
+                <div id="modalQrCodeContainer"></div>
+                <div id="social-share-container">
+                    <h3 class="social-share-title">Bagikan via</h3>
+                    <div class="social-buttons">
+                        <a href="#" id="whatsapp-share" class="social-btn whatsapp" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                        <a href="#" id="telegram-share" class="social-btn telegram" target="_blank"><i class="fab fa-telegram-plane"></i></a>
+                        <button id="copy-link-share" class="social-btn copy-link"><i class="fas fa-link"></i></button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -715,35 +733,75 @@
                 });
             });
 
-            // --- 3. Modal Logic ---
+            // --- 3. Modal Logic (REVISED) ---
             const previewModal = document.getElementById('previewModal');
             const previewBtn = document.getElementById('previewBtn');
-            const modalImage = document.getElementById('modalImagePreview');
+            const shareBtn = document.getElementById('shareBtn');
             const closeModalBtn = document.querySelector('.modal-close-btn');
-            const socialShareContainer = document.getElementById('social-share-container');
+
+            const modalImage = document.getElementById('modalImagePreview');
+            const modalShareView = document.getElementById('modalShareView');
+            const modalQrContainer = document.getElementById('modalQrCodeContainer');
 
             const openModal = () => previewModal.style.display = 'flex';
             const closeModal = () => previewModal.style.display = 'none';
 
+            if(closeModalBtn) closeModalBtn.addEventListener('click', closeModal);
+            window.addEventListener('click', (event) => {
+                if (event.target == previewModal) closeModal();
+            });
+
+            // Preview Button Logic
             if (previewBtn) {
                 previewBtn.addEventListener('click', () => {
                     const finalCanvas = document.querySelector('#photoPreview canvas');
                     if (finalCanvas) {
-                        socialShareContainer.style.display = 'none'; // Hide social share on normal preview
+                        modalShareView.style.display = 'none'; // Hide share view
                         modalImage.src = finalCanvas.toDataURL('image/png');
-                        modalImage.alt = "Image Preview";
-                        modalImage.style.display = 'block';
+                        modalImage.style.display = 'block'; // Show image view
                         openModal();
                     } else {
                         alert('Silakan buat gambar terlebih dahulu!');
                     }
                 });
             }
-            if(closeModalBtn) closeModalBtn.addEventListener('click', closeModal);
-            window.addEventListener('click', (event) => {
-                if (event.target == previewModal) closeModal();
-            });
 
+            // Share Button Logic
+            let currentShareLink = '';
+            if (shareBtn) {
+                shareBtn.addEventListener('click', () => {
+                    const finalCanvas = document.querySelector('#photoPreview canvas');
+                    if (!finalCanvas) {
+                        alert('Silakan buat gambar terlebih dahulu!');
+                        return;
+                    }
+
+                    const imageDataUrl = finalCanvas.toDataURL('image/png');
+                    const base64ImageData = btoa(imageDataUrl);
+
+                    const previewUrl = new URL('preview.html', window.location.href);
+                    previewUrl.searchParams.set('image', base64ImageData);
+                    currentShareLink = previewUrl.href;
+
+                    modalImage.style.display = 'none'; // Hide image view
+                    modalShareView.style.display = 'block'; // Show share view
+
+                    modalQrContainer.innerHTML = ''; // Clear previous QR
+                    new QRCode(modalQrContainer, {
+                        text: currentShareLink,
+                        width: 250,
+                        height: 250,
+                        correctLevel : QRCode.CorrectLevel.H
+                    });
+
+                    const shareText = encodeURIComponent("Lihat foto photobooth yang aku buat di Pictlord! ✨");
+                    document.getElementById('whatsapp-share').href = `https://api.whatsapp.com/send?text=${shareText}%20${encodeURIComponent(currentShareLink)}`;
+                    document.getElementById('telegram-share').href = `https://t.me/share/url?url=${encodeURIComponent(currentShareLink)}&text=${shareText}`;
+                    
+                    openModal();
+                });
+            }
+            
             // --- 4. Download Button Logic ---
             const downloadBtn = document.getElementById('downloadCopyBtn');
             if (downloadBtn) {
@@ -760,57 +818,12 @@
                 });
             }
 
-            // --- 5. Share Button Logic (NEW) ---
-            const shareBtn = document.getElementById('shareBtn');
-            if (shareBtn) {
-                shareBtn.addEventListener('click', () => {
-                    const finalCanvas = document.querySelector('#photoPreview canvas');
-                    if (!finalCanvas) {
-                        alert('Silakan buat gambar terlebih dahulu!');
-                        return;
-                    }
-
-                    // Get image data and encode it
-                    const imageDataUrl = finalCanvas.toDataURL('image/png');
-                    const base64ImageData = btoa(imageDataUrl);
-
-                    // Create the preview link
-                    const previewUrl = new URL('preview.html', window.location.href);
-                    previewUrl.searchParams.set('image', base64ImageData);
-                    const finalLink = previewUrl.href;
-
-                    // Generate QR Code
-                    modalImage.innerHTML = ''; // Clear previous content
-                    new QRCode(modalImage, {
-                        text: finalLink,
-                        width: 250,
-                        height: 250,
-                        colorDark : "#000000",
-                        colorLight : "#ffffff",
-                        correctLevel : QRCode.CorrectLevel.H
-                    });
-                    modalImage.style.display = 'block'; // Make sure the container is visible
-
-                    // Update social media links
-                    const shareText = encodeURIComponent("Lihat foto photobooth yang aku buat di Pictlord! ✨");
-                    document.getElementById('whatsapp-share').href = `https://api.whatsapp.com/send?text=${shareText}%20${encodeURIComponent(finalLink)}`;
-                    document.getElementById('telegram-share').href = `https://t.me/share/url?url=${encodeURIComponent(finalLink)}&text=${shareText}`;
-                    
-                    // Show social share buttons
-                    socialShareContainer.style.display = 'block';
-
-                    // Open the modal
-                    openModal();
-                });
-            }
-            
-            // --- 6. Copy Link Logic ---
+            // --- 5. Copy Link Logic ---
             const copyLinkBtn = document.getElementById('copy-link-share');
             if (copyLinkBtn) {
                 copyLinkBtn.addEventListener('click', () => {
-                    const qrCodeElement = modalImage.querySelector('canvas');
-                    if (qrCodeElement && qrCodeElement.title) {
-                        navigator.clipboard.writeText(qrCodeElement.title).then(() => {
+                    if (currentShareLink) {
+                        navigator.clipboard.writeText(currentShareLink).then(() => {
                             alert('Link berhasil disalin!');
                         }).catch(err => {
                             console.error('Gagal menyalin link: ', err);
@@ -820,13 +833,11 @@
                 });
             }
 
-            // --- 7. Logo Color Customization Logic ---
+            // --- 6. Logo Color Customization Logic ---
             const logoColorPicker = document.getElementById('logoColorPicker');
             if (logoColorPicker) {
                 logoColorPicker.addEventListener('input', () => {
                     console.log('Warna logo baru dipilih:', logoColorPicker.value);
-                    // This should trigger a redraw function from your canvas.js
-                    // e.g., if (typeof redrawCanvasWithOptions === 'function') redrawCanvasWithOptions();
                 });
             }
         });
