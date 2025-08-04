@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://pict.xlord.web.id/sitemap.xml
