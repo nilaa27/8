@@ -247,6 +247,15 @@
             background: linear-gradient(100deg, rgba(255,255,255,0) 20%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 80%);
             animation: shimmer 2.5s infinite linear;
         }
+        /* BARU: Styling untuk Timer */
+        #qrTimer {
+            margin-top: 20px;
+            font-size: 1.4rem;
+            color: var(--light-text);
+            opacity: 0.8;
+            font-weight: 500;
+            transition: opacity 0.3s;
+        }
         .qr-actions { display: flex; gap: 15px; margin-top: 25px; width: 100%; }
         .qr-actions button { flex: 1; padding: 10px 15px; border-radius: 15px; font-size: 1.4rem; font-weight: 600; }
         #downloadFromModalBtn { background-color: var(--light-accent); color: white; }
@@ -462,6 +471,9 @@
             <h2 class="qr-title">Scan to Download</h2>
             <p class="qr-subtitle">Buka kamera ponsel Anda dan pindai kode di bawah ini.</p>
             <div id="qrCodePopupContainer"></div>
+            
+            <div id="qrTimer"></div>
+
             <div class="qr-actions">
                 <button id="downloadFromModalBtn" class="neumorphic-btn"><i class="fas fa-download"></i> Download</button>
                 <button id="copyLinkBtn" class="neumorphic-btn"><i class="fas fa-copy"></i> Copy Link</button>
@@ -497,7 +509,9 @@
         document.addEventListener('DOMContentLoaded', () => {
             let currentQrLink = ''; 
             let currentImageData = '';
+            let qrTimerInterval = null; // BARU: Variabel untuk interval timer
 
+            // --- Deklarasi elemen ---
             const previewModal = document.getElementById('previewModal');
             const previewBtn = document.getElementById('previewBtn');
             const previewModalCloseBtn = previewModal.querySelector('.modal-close-btn');
@@ -507,9 +521,48 @@
             const qrCodePopupContainer = document.getElementById('qrCodePopupContainer');
             const copyLinkBtn = document.getElementById('copyLinkBtn');
             const downloadFromModalBtn = document.getElementById('downloadFromModalBtn');
+            const qrTimerElement = document.getElementById('qrTimer'); // BARU: Elemen timer
+
+            // BARU: Fungsi untuk memulai dan menghentikan timer
+            function startQrTimer(durationInSeconds) {
+                let timer = durationInSeconds;
+                qrTimerElement.style.display = 'block';
+
+                const updateTimer = () => {
+                    if (timer < 0) {
+                        clearInterval(qrTimerInterval);
+                        qrTimerElement.textContent = "Link telah kadaluarsa.";
+                        // Nonaktifkan tombol jika link sudah tidak valid
+                        copyLinkBtn.disabled = true;
+                        downloadFromModalBtn.disabled = true;
+                        return;
+                    }
+
+                    const minutes = Math.floor(timer / 60);
+                    let seconds = timer % 60;
+                    seconds = seconds < 10 ? '0' + seconds : seconds;
+                    
+                    qrTimerElement.innerHTML = `Link kamu kadaluarsa dalam <strong>${minutes}:${seconds}</strong>`;
+                    timer--;
+                };
+
+                updateTimer(); // Panggil sekali agar langsung tampil
+                qrTimerInterval = setInterval(updateTimer, 1000);
+            }
+
 
             function showModal(modal) { modal.style.display = 'block'; setTimeout(() => modal.classList.add('show'), 10); }
-            function hideModal(modal) { modal.classList.remove('show'); modal.style.display = 'none'; }
+            
+            // BARU: Modifikasi fungsi hideModal
+            function hideModal(modal) { 
+                modal.classList.remove('show'); 
+                modal.style.display = 'none'; 
+                // Hentikan timer saat modal ditutup
+                if (modal.id === 'qrModal' && qrTimerInterval) {
+                    clearInterval(qrTimerInterval);
+                    qrTimerElement.style.display = 'none'; // Sembunyikan elemen timer
+                }
+            }
             
             if(previewBtn) {
                 previewBtn.addEventListener('click', () => {
@@ -536,7 +589,7 @@
             }
 
             async function generateTemporaryLink(base64ImageData) {
-                const expirationTime = Date.now() + (5 * 60 * 1000);
+                const expirationTime = Date.now() + (5 * 60 * 1000); // 5 menit
                 const dataToStore = { imageData: base64ImageData, expiresAt: expirationTime };
                 const shortId = generateShortId(5);
                 await database.ref('images/' + shortId).set(dataToStore);
@@ -550,13 +603,17 @@
                     
                     showModal(qrModal);
                     qrCodePopupContainer.innerHTML = '<i class="fas fa-spinner fa-spin spinner"></i>';
+                    
+                    // BARU: Hentikan timer lama jika ada dan reset state
+                    if (qrTimerInterval) clearInterval(qrTimerInterval);
+                    qrTimerElement.style.display = 'none';
                     copyLinkBtn.disabled = true;
                     downloadFromModalBtn.disabled = true;
 
                     try {
                         currentImageData = finalCanvas.toDataURL('image/png', 1.0);
                         const link = document.createElement('a');
-                        link.download = `pictlord-strip-${Date.now()}.png`; // Nama file disesuaikan
+                        link.download = `pictlord-strip-${Date.now()}.png`;
                         link.href = currentImageData;
                         link.click();
                         
@@ -566,6 +623,10 @@
                         qrCodePopupContainer.innerHTML = `<img src="${qrApiUrl}" alt="Scan to download">`;
                         copyLinkBtn.disabled = false;
                         downloadFromModalBtn.disabled = false;
+
+                        // BARU: Mulai timer setelah QR code berhasil dibuat
+                        startQrTimer(299); // 5 menit (dikurangi 1 detik agar tampilan awal benar)
+
                     } catch (error) {
                         console.error('Gagal membuat link Firebase atau QR Code:', error);
                         qrCodePopupContainer.innerHTML = '<strong>Gagal membuat QR Code.</strong><br>Pastikan konfigurasi Firebase sudah benar & cek console (F12).';
@@ -575,7 +636,7 @@
 
             if(copyLinkBtn) {
                 copyLinkBtn.addEventListener('click', () => {
-                    if (currentQrLink) {
+                    if (currentQrLink && !copyLinkBtn.disabled) {
                         navigator.clipboard.writeText(currentQrLink).then(() => {
                             const originalBtnHTML = copyLinkBtn.innerHTML;
                             copyLinkBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
@@ -587,12 +648,12 @@
             
             if(downloadFromModalBtn) {
                 downloadFromModalBtn.addEventListener('click', () => {
-                    if (currentImageData) {
+                    if (currentImageData && !downloadFromModalBtn.disabled) {
                         const link = document.createElement('a');
-                        link.download = `pictlord-strip-retry-${Date.now()}.png`; // Nama file disesuaikan
+                        link.download = `pictlord-strip-retry-${Date.now()}.png`;
                         link.href = currentImageData;
                         link.click();
-                    } else { alert('Data gambar tidak ditemukan. Silakan coba buat ulang QR code.'); }
+                    } else { alert('Data gambar tidak ditemukan atau link sudah kadaluarsa.'); }
                 });
             }
         });
