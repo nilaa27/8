@@ -1,20 +1,65 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Take instant photobooth-style photos online with a modern Neumorphic design. Upload your own images, customize with filters, mirror your camera, and download high-quality photo strips instantly.">
-    <meta name="keywords" content="photobooth, online photobooth, mirror camera, neumorphic photobooth, webcamtoy, tiktok photobooth, dark mode photobooth, upload photo, picapica, digibooth, pictlord">
-    <title>Pictlord | ambil fotomu</title>
-    <link rel="canonical" href="https://pict.xlord.web.id">
-    <meta property="og:title" content="pictlord | Free Online Photobooth Anytime, Anywhere">
-    <meta property="og:description" content="Take instant photobooth-style photos online with a modern Neumorphic design. Upload your own images, customize with filters, mirror your camera, and download high-quality photo strips instantly.">
-    <meta property="og:image" content="assets/home-mockup.png">
-    <meta property="og:url" content="https://pict.xlord.web.id">
+    <meta name="description" content="Kreasikan foto photobooth online Anda. Pilih dari puluhan bingkai, warna, dan stiker untuk menciptakan strip foto unik milikmu.">
+    <meta name="keywords" content="photobooth, customize foto, edit foto, online photobooth, tiktok photobooth, picapica, digibooth, pictlord, firebase, qr code">
+    <title>Pictlord | Customize Foto Kamu</title>
+
+    <meta property="og:title" content="Pictlord | Photobooth Online Gratis">
+    <meta property="og:description" content="Ambil foto instan bergaya photobooth online. Kustomisasi dengan bingkai, stiker, dan unduh foto berkualitas tinggi secara instan.">
+    <meta property="og:image" content="https://pict.xlord.web.id/assets/home-mockup.png">
+    <meta property="og:url" content="https://pict.xlord.web.id/customize.html">
     <meta property="og:type" content="website">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Pictlord | Photobooth Online Gratis">
+    <meta name="twitter:description" content="Ambil foto instan bergaya photobooth online. Kustomisasi dengan bingkai, stiker, dan unduh foto berkualitas tinggi secara instan.">
+    <meta name="twitter:image" content="https://pict.xlord.web.id/assets/home-mockup.png">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebPage",
+          "name": "Customize Foto Kamu | Pictlord",
+          "description": "Kreasikan dan edit foto photobooth Anda dengan berbagai pilihan bingkai, warna, dan stiker.",
+          "url": "https://pict.xlord.web.id/customize.html",
+          "isPartOf": {
+            "@type": "WebSite",
+            "url": "https://pict.xlord.web.id",
+            "name": "Pictlord"
+          }
+        },
+        {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Beranda",
+              "item": "https://pict.xlord.web.id"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Customize Foto",
+              "item": "https://pict.xlord.web.id/customize.html"
+            }
+          ]
+        }
+      ]
+    }
+    </script>
+
+    <link rel="canonical" href="https://pict.xlord.web.id/customize.html">
     <link rel="icon" href="images/pictlord logo.png">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <style>
+        /* --- Root Variables & Theme --- */
         :root {
             --light-bg: #e0e5ec;
             --light-text: #555;
@@ -35,16 +80,11 @@
             --light-inset-shadow-light: rgba(54, 62, 72, 1);
         }
 
-        /* --- Animations --- */
+        /* --- Base & Animations --- */
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        @keyframes zoomIn {
-            from { opacity: 0; transform: scale(0.8); }
-            to { opacity: 1; transform: scale(1); }
-        }
-
         * { box-sizing: border-box; margin: 0; padding: 0; }
         html { font-size: 62.5%; }
 
@@ -60,20 +100,25 @@
             padding: 20px;
         }
 
-        /* --- Header --- */
+        /* --- Header / Navbar --- */
         #main-header {
             width: 95%;
-            max-width: 500px;
-            margin: 2rem auto;
+            max-width: 1100px;
+            margin: 0 auto 2rem;
             padding: 8px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background-color: #384048;
+            background-color: rgba(56, 64, 72, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             border-radius: 50px;
             animation: fadeInUp 0.5s ease-out;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
             border: 1px solid rgba(255, 255, 255, 0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 1000;
         }
 
         .side-logo {
@@ -86,180 +131,359 @@
 
         .side-logo span { color: #20c997; }
 
-        .header-buttons { display: flex; align-items: center; }
-        
         #theme-toggle {
-            width: 40px; height: 40px; border-radius: 50%; border: none;
-            cursor: pointer; display: flex; justify-content: center; align-items: center;
+            width: 40px; height: 40px; border-radius: 50%;
+            border: none; cursor: pointer; display: flex;
+            justify-content: center; align-items: center;
             background-color: #2d343c; color: #e0e5ec;
             transition: background-color 0.2s ease, transform 0.2s ease;
         }
-
-        #theme-toggle:active { transform: scale(0.95); background-color: rgba(0, 0, 0, 0.4); }
-
-        #theme-toggle svg {
-            width: 20px; height: 20px; stroke: currentColor;
-            stroke-width: 2; transition: opacity 0.3s ease;
-        }
-
+        #theme-toggle:active { transform: scale(0.95); }
+        #theme-toggle svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; }
         #sun-icon { display: block; }
         #moon-icon { display: none; }
         .dark-mode #sun-icon { display: none; }
         .dark-mode #moon-icon { display: block; }
 
-        body:not(.dark-mode) #main-header { background-color: #f0f2f5; border: 1px solid rgba(0, 0, 0, 0.1); }
+        body:not(.dark-mode) #main-header {
+            background-color: rgba(240, 242, 245, 0.75);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
         body:not(.dark-mode) .side-logo { color: #333; }
         body:not(.dark-mode) #theme-toggle { background-color: #e4e6eb; color: #333; }
 
-        /* --- Main Content --- */
-        #main-section { display: flex; justify-content: center; align-items: center; width: 100%; }
-        .canvas-centered { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2rem; }
-        
-        /* --- Camera & Photos --- */
-        .camera-container {
-            display: flex; flex-direction: row; justify-content: center;
-            align-items: flex-start; gap: 20px; flex-wrap: wrap;
-            animation: fadeInUp 0.5s ease-out 0.1s; animation-fill-mode: both;
+        /* --- Main Layout --- */
+        #main-section { width: 100%; max-width: 1200px; }
+        .customize-container {
+            display: flex;
+            gap: 30px;
+            width: 100%;
         }
-        #videoContainer {
-            position: relative; width: 100%; max-width: 640px; border-radius: 20px;
-            overflow: hidden;
-            box-shadow: inset 5px 5px 15px var(--light-shadow-dark), inset -5px -5px 15px var(--light-shadow-light);
-            background: #000;
+        .photo-preview-area {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding-top: 2rem;
+            animation: fadeInUp 0.5s ease-out 0.1s;
+            animation-fill-mode: both;
         }
-        video { width: 100%; display: block; border-radius: 20px; transition: transform 0.4s ease; }
-        video.mirrored { transform: scaleX(-1); }
-        
-        #photoContainer { display: flex; flex-direction: column; gap: 15px; }
-        
-        .photo-wrapper {
-            position: relative; cursor: pointer; border-radius: 12px;
-            animation: zoomIn 0.4s ease-out; overflow: hidden;
+        #photoPreview canvas {
+            max-width: 100%;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 10px 10px 20px var(--light-shadow-dark), -10px -10px 20px var(--light-shadow-light);
         }
 
-        .photo {
-            width: 160px; height: 120px; object-fit: cover;
-            box-shadow: 5px 5px 10px var(--light-shadow-dark), -5px -5px 10px var(--light-shadow-light);
-            display: block; transition: filter 0.3s ease;
-        }
-        
-        .photo-placeholder {
-            width: 160px; height: 120px; border-radius: 12px;
-            box-shadow: inset 3px 3px 7px var(--light-shadow-dark), inset -3px -3px 7px var(--light-shadow-light);
-            display: flex; justify-content: center; align-items: center;
-            font-size: 1.4rem; color: var(--light-text);
-            opacity: 0.7;
-        }
-
-        .photo-overlay {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background-color: rgba(0, 0, 0, 0.6); color: white;
-            display: flex; justify-content: center; align-items: center;
-            font-size: 2rem; font-weight: 500; opacity: 0;
-            transition: opacity 0.3s ease; pointer-events: none;
+        /* --- Controls Panel Sidebar --- */
+        .controls-panel {
+            flex-basis: 400px;
+            background-color: var(--light-bg);
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 10px 10px 20px var(--light-shadow-dark), -10px -10px 20px var(--light-shadow-light);
+            animation: fadeInUp 0.5s ease-out 0.2s;
+            animation-fill-mode: both;
+            max-height: calc(100vh - 120px);
+            overflow-y: auto;
         }
 
-        .photo-wrapper:hover .photo-overlay { opacity: 1; }
-        .photo-wrapper:hover .photo { filter: brightness(0.6); }
-        
-        /* --- UI Elements & Buttons --- */
+        .controls-panel h1 {
+            font-size: 2.2rem;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        .options-label {
+            font-size: 1.6rem;
+            font-weight: 500;
+            margin-top: 20px;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        /* --- Neumorphic Buttons & Controls --- */
         .neumorphic-btn {
             border: none; background: var(--light-bg); color: var(--light-text);
             font-family: 'Poppins', sans-serif; font-weight: 500; cursor: pointer;
             transition: all 0.2s ease-in-out;
             box-shadow: 5px 5px 10px var(--light-shadow-dark), -5px -5px 10px var(--light-shadow-light);
-            display: flex; align-items: center; justify-content: center; gap: 8px;
+            display: flex; align-items: center; justify-content: center;
+            gap: 8px;
         }
         .neumorphic-btn:hover { color: var(--light-accent); }
         .neumorphic-btn:active, .neumorphic-btn.active {
-            box-shadow: inset 5px 5px 10px var(--light-shadow-dark), inset -5px -5px 10px var(--light-shadow-light);
-            color: var(--light-accent); transform: scale(0.98);
+            box-shadow: inset 5px 5px 10px var(--light-inset-shadow-dark), inset -5px -5px 10px var(--light-inset-shadow-light);
+            color: var(--light-accent);
+            transform: scale(0.98);
         }
-        .neumorphic-btn:disabled {
-            opacity: 0.6; cursor: not-allowed; color: var(--light-text);
-            box-shadow: inset 2px 2px 5px var(--light-shadow-dark), inset -2px -2px 5px var(--light-shadow-light);
+        .neumorphic-btn[disabled] {
+            cursor: not-allowed;
+            opacity: 0.7;
         }
-        .neumorphic-btn img { width: 20px; filter: var(--icon-filter); }
 
-        .action-buttons { display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; }
-        #startBtn, #doneBtn, #uploadBtn { font-size: 1.6rem; padding: 12px 25px; border-radius: 30px; }
-        #doneBtn { display: none; }
-        #mirrorBtn { width: 50px; height: 50px; border-radius: 50%; }
-        
-        /* --- Controls & Options --- */
-        #progressCounter { font-size: 2.2rem; font-weight: 600; }
-        .controls-panel {
-            display: flex; flex-direction: column; gap: 20px; align-items: center;
-            padding: 20px; border-radius: 20px; background: var(--light-bg);
+        .custom-buttons-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .buttonFrames, .buttonBgFrames, .buttonShapes, .buttonStickers {
+            width: 40px; height: 40px; border-radius: 50%;
+        }
+        .buttonBgFrames { background-size: cover; background-position: center; }
+        .btnShapeSize, .stickerIconSize { width: 22px; height: 22px; }
+
+        /* --- Specific Controls Styling --- */
+        #colorPickerBtn { background: conic-gradient(red, orange, yellow, green, cyan, blue, violet, red); }
+        #pinkBtnFrame { background-color: #FFC2D1; }
+        #blueBtnFrame { background-color: #CAF0F8; }
+        #yellowBtnFrame { background-color: #FFF8A5; }
+        #matchaBtnFrame { background-color: #90a955; }
+        #purpleBtnFrame { background-color: #c19ee0; }
+        #brownBtnFrame { background-color: #DDBEA9; }
+        #redBtnFrame { background-color: #780000; }
+        #whiteBtnFrame { background-color: #FFFFFF; border: 1px solid #ccc; }
+        #blackBtnFrame { background-color: #000000; }
+        #pinkGlitter { background-image: url(assets/frame-backgrounds/pink-glitter.jpg); background-size: cover; }
+        #pinkPlaid { background-image: url(assets/frame-backgrounds/pink-plaid.jpg); }
+        #bluePlaid { background-image: url(assets/frame-backgrounds/blue-plaid.jpg); background-size: cover; }
+        #black-cq { background-image: url(assets/frame-backgrounds/black-couqutte.jpg); background-size: 200%; }
+        #white-cq { background-image: url(assets/frame-backgrounds/white-couquette.jpg); background-size: 200%; }
+        #pinkLeather { background-image: url(assets/frame-backgrounds/pink-diamond-leather.jpg); background-size: 200%; }
+        #brownKnittedFrame { background-image: url(assets/frame-backgrounds/brown-knitted.jpg); background-size: cover; }
+        #hotPinkKnittedFrame { background-image: url(assets/frame-backgrounds/hot-pink-knitted.jpg); background-size: cover; }
+        #redKnittedFrame { background-image: url(assets/frame-backgrounds/red-knitted.jpg); background-size: cover; }
+        #pinkKnittedFrame { background-image: url(assets/frame-backgrounds/pink-knitted.jpg); background-size: cover; }
+        #redStripesFrame { background-image: url(assets/frame-backgrounds/red-stripes.jpg); background-size: 190%; }
+        #greenStripesFrame { background-image: url(assets/frame-backgrounds/green-stripes.jpg); background-size: 190%; }
+        #blueStripesFrame { background-image: url(assets/frame-backgrounds/blue-stripes.jpg); background-size: 190%; }
+        #vsPinkFrame { background-image: url(assets/frame-backgrounds/vs-pink.jpg); background-size: cover; }
+        #vsYellowFrame { background-image: url(assets/frame-backgrounds/vs-yellow.jpg); background-size: cover; }
+        #blueYellowSquares { background-image: url(assets/frame-backgrounds/blue-yellow-squares.jpg); background-size: cover; }
+        #blueWhiteSquares { background-image: url(assets/frame-backgrounds/blue-white-squares.jpg); background-size: cover; }
+        #brownLeopard { background-image: url(assets/frame-backgrounds/brown-leopard.jpg); background-size: cover; }
+        #cowPrint { background-image: url(assets/frame-backgrounds/cow-print.jpg); background-size: cover; }
+        #redLeather { background-image: url(assets/frame-backgrounds/red-leather.jpg); background-size: cover; }
+        #pinkGumamela { background-image: url(assets/frame-backgrounds/pink-gumamela.jpg); background-size: 150%; }
+        #pinkLiliesFrame { background-image: url(assets/frame-backgrounds/pink-lilies.jpg); background-size: cover; }
+        #whiteKnitted { background-image: url(assets/frame-backgrounds/white-knitted-cloth.jpg); background-size: cover; }
+        #ribbonSweaterFrame { background-image: url(assets/frame-backgrounds/ribbon-sweater.jpg); background-size: cover; }
+        #ribbonDenim { background-image: url(assets/frame-backgrounds/ribbon-denim.jpg); background-size: 120%; }
+        #blackPinkRibbon { background-image: url(assets/frame-backgrounds/black-pink-ribbon.jpg); background-size: cover; }
+        #fourLockers { background-image: url(assets/frame-backgrounds/4-lockers.jpg); background-size: cover; }
+        #gridPaperFrame { background-image: url(assets/frame-backgrounds/grid-paper.jpg); background-size: 200%; }
+        #crumpledPaper { background-image: url(assets/frame-backgrounds/crumpled-paper.jpg); background-size: 190%; }
+        #roughTextureFrame { background-image: url(assets/frame-backgrounds/rough-texture.jpg); background-size: 190%; }
+        #blueBackdrop { background-image: url(assets/frame-backgrounds/blue-backdrop.jpg); background-size: 190%; }
+        #greenHills { background-image: url(assets/frame-backgrounds/green-hills.jpg); background-size: 190%; }
+        #sandShells { background-image: url(assets/frame-backgrounds/sand-shells.jpg); background-size: 190%; }
+        #waterBeach { background-image: url(assets/frame-backgrounds/water.jpg); background-size: 190%; }
+        #cocoTrees { background-image: url(assets/frame-backgrounds/coco-trees.jpg); background-size: 190%; }
+        #stardustFrame { background-image: url(assets/frame-backgrounds/stardust.jpg); background-size: 200%; }
+        #roseCardFrame { background-image: url(assets/frame-backgrounds/rose-card.jpg); background-size: cover; }
+        #princessVintageFrame { background-image: url(assets/frame-backgrounds/princess-vintage.jpg); background-size: cover; }
+        #redRosesPaintFrame { background-image: url(assets/frame-backgrounds/red-roses-paint.jpg); background-size: 190%; }
+        #grayTrashFrame { background-image: url(assets/frame-backgrounds/gray-trash.jpg); background-size: 190%; }
+        #blackTrashFrame { background-image: url(assets/frame-backgrounds/black-trash.jpg); background-size: 190%; }
+        #whiteTrashFrame { background-image: url(assets/frame-backgrounds/white-trash.jpg); background-size: 180%; }
+        #partyDrapeFrame { background-image: url(assets/frame-backgrounds/party-drape.jpg); background-size: cover; }
+        #partyDotsFrame { background-image: url(assets/frame-backgrounds/party-dots.jpg); background-size: 210%; }
+        #blingDenimFrame { background-image: url(assets/frame-backgrounds/bling-denim.jpg); background-size: 210%; }
+
+        /* --- Logo and Date Checkbox --- */
+        .logo-container { display: flex; gap: 10px; }
+        .logoCustomBtn { padding: 8px 15px; border-radius: 20px; font-size: 1.4rem; }
+
+        .date-overlay {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .date-option { display: flex; align-items: center; gap: 8px; }
+        .date-option label { font-size: 1.4rem; cursor: pointer; }
+        .date-option input[type="checkbox"] {
+            appearance: none; -webkit-appearance: none;
+            width: 20px; height: 20px;
+            background: var(--light-bg); border-radius: 5px;
+            box-shadow: inset 2px 2px 5px var(--light-inset-shadow-dark), inset -2px -2px 5px var(--light-inset-shadow-light);
+            cursor: pointer; position: relative;
+        }
+        .date-option input[type="checkbox"]:checked {
+            background-color: var(--light-accent);
+        }
+        .date-option input[type="checkbox"]:checked::before {
+            content: '✔';
+            font-size: 14px;
+            color: white;
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        /* --- FINAL ACTION BUTTONS --- */
+        .final-actions-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .download-action-container {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .final-actions-container button, .download-action-container button {
+            padding: 12px;
+            font-size: 1.5rem;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+        .final-actions-container button:hover, .download-action-container button:hover {
+            transform: translateY(-2px);
+        }
+        .final-actions-container button:active, .download-action-container button:active {
+            transform: scale(0.95);
+        }
+        .final-actions-container button .fas, .download-action-container button .fas {
+            margin-right: 8px;
+        }
+
+        #downloadCopyBtn {
+             width: 100%;
+             background: var(--light-accent); color: white;
+             box-shadow: 5px 5px 10px var(--light-shadow-dark), -5px -5px 10px var(--light-shadow-light);
+        }
+        #downloadCopyBtn:active {
+            box-shadow: inset 5px 5px 10px var(--light-inset-shadow-dark), inset -5px -5px 10px var(--light-inset-shadow-light);
+        }
+        #downloadCopyBtn:hover {
+             background-color: #c46767;
+             box-shadow: 5px 5px 10px var(--light-shadow-dark), -5px -5px 10px var(--light-shadow-light);
+        }
+
+        /* --- Styling untuk Fitur Modal --- */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.7);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+        .modal-content {
+            margin: auto;
+            display: block;
+            width: 80%;
+            max-width: 700px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        #modalImagePreview {
+            width: 100%;
+            border-radius: 15px;
+            border: 5px solid white;
+        }
+        .modal-close-btn {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+        .modal-close-btn:hover, .modal-close-btn:focus { color: #bbb; text-decoration: none; }
+
+        /* --- Styling untuk Modal QR Code --- */
+        .qr-modal-content {
+            max-width: 400px; /* Buat modal lebih kecil */
+            text-align: center;
+            padding: 30px;
+            background: var(--light-bg);
+            border-radius: 20px;
+        }
+        .qr-title {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            color: var(--light-text);
+        }
+        .qr-subtitle {
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            color: var(--light-text);
+        }
+        #qrCodePopupContainer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background: white;
+            border-radius: 12px;
+            margin-top: 10px;
+            min-height: 190px; /* Ukuran container QR */
+        }
+        #qrCodePopupContainer .spinner {
+            font-size: 40px;
+            color: var(--light-accent);
+        }
+
+        .qr-close-btn {
+            color: #555; /* Ubah warna tombol close agar terlihat di background terang */
+        }
+        .dark-mode .qr-close-btn {
+            color: #f1f1f1; /* Warna tombol close di dark mode */
+        }
+
+        /* --- Logo Grid & Color Picker --- */
+        .logo-options-grid {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            align-items: center;
+            gap: 15px;
+        }
+        .color-picker-container { display: flex; align-items: center; gap: 10px; }
+        .color-picker-label { font-size: 1.4rem; }
+        input[type="color"] {
+            -webkit-appearance: none; -moz-appearance: none; appearance: none;
+            width: 40px; height: 40px;
+            border: none; border-radius: 50%;
+            cursor: pointer; background-color: transparent;
             box-shadow: 5px 5px 10px var(--light-shadow-dark), -5px -5px 10px var(--light-shadow-light);
-            animation: fadeInUp 0.5s ease-out 0.2s; animation-fill-mode: both;
         }
-        .filter-container { display: flex; gap: 15px; justify-content: center; align-items: center; flex-wrap: wrap; }
-        .filterBtn { width: 45px; height: 45px; border-radius: 50%; }
-        #normalFilterId, #sepiaFilterId, #bnwFilterId, #vintageFilterId, #grayFilterId, #smoothFilterId { background-size: cover; }
-        #normalFilterId { background-image: url(assets/normal-icon.jpg); } #sepiaFilterId { background-image: url(assets/sepiaBg.jpg); }
-        #bnwFilterId { background-image: url(assets/bnw-icon.jpg); } #vintageFilterId { background-image: url(assets/vintage-icon.jpg); }
-        #grayFilterId { background-image: url(assets/grayscale-icon.jpg); } #smoothFilterId { background-image: url(assets/smooth-icon.jpg); }
-        
-        .custom-select {
-            padding: 8px 15px; border-radius: 10px; border: none; background: var(--light-bg);
-            box-shadow: inset 3px 3px 7px var(--light-shadow-dark), inset -3px -3px 7px var(--light-shadow-light);
-            color: var(--light-text); font-size: 1.4rem; -webkit-appearance: none; appearance: none; cursor: pointer;
-        }
+        input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
+        input[type="color"]::-webkit-color-swatch { border: none; border-radius: 50%; }
+        input[type="color"]::-moz-color-swatch { border: none; border-radius: 50%; }
 
-        /* --- Overlays & Modals --- */
-        #countdownText, #flash, #blackScreen { position: absolute; z-index: 10; }
-        #countdownText {
-            top: 50%; left: 50%; transform: translate(-50%, -50%);
-            font-size: 10rem; font-weight: 600; color: rgba(255, 255, 255, 0.8);
-            display: none; text-shadow: 2px 2px 10px rgba(0,0,0,0.5); animation: zoomIn 0.3s ease-in-out;
-        }
-        #flash { top: 0; left: 0; width: 100vw; height: 100vh; background: white; opacity: 0; transition: opacity 0.2s; pointer-events: none; z-index: 999; }
-        #blackScreen {
-            top: 0; left: 0; width: 100%; height: 100%; background: #1a1a1a;
-            border-radius: 20px; display: flex; align-items: center; justify-content: center;
-            color: white; font-size: 1.8rem; transition: opacity 1s ease-in-out;
-        }
-        
-        #retake-notification {
-            position: fixed; top: 20px; left: 50%;
-            display: flex; align-items: center; gap: 12px;
-            background-color: #1C1C1E; color: rgba(255, 255, 255, 0.9);
-            padding: 12px 20px; border-radius: 50px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-            z-index: 1001; font-size: 1.4rem; font-weight: 500;
-            opacity: 0;
-            transform: translate(-50%, -50px) scale(0.95);
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease;
-            pointer-events: none;
-        }
-
-        #retake-notification.show {
-            opacity: 1; transform: translate(-50%, 0) scale(1);
-            pointer-events: auto;
-        }
-        
         /* --- Responsive Design --- */
-        @media only screen and (max-width: 1024px) {
-            .camera-container { flex-direction: column; align-items: center; }
-            #photoContainer { flex-direction: row; margin-top: 20px; width: 100%; justify-content: center; flex-wrap: wrap; }
-            .photo, .photo-placeholder { width: 120px; height: 90px; }
+        @media only screen and (max-width: 900px) {
+            .customize-container { flex-direction: column; align-items: center; }
+            .controls-panel { flex-basis: auto; width: 100%; max-width: 500px; max-height: none; }
+            #photoPreview canvas { max-width: 80%; }
         }
         @media only screen and (max-width: 540px) {
-            html { font-size: 55%; } body { padding: 10px; }
-            #photoContainer { gap: 10px; } .photo, .photo-placeholder { width: 100px; height: 75px; }
-            #countdownText { font-size: 8rem; }
+            html { font-size: 55%; }
+            body { padding: 10px; }
+            #main-header { top: 10px; }
+            .controls-panel { padding: 15px; }
+            #photoPreview canvas { max-width: 100%; }
         }
     </style>
 </head>
 <body>
-    <div id="retake-notification">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="22px" height="22px">
-            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
-        </svg>
-        <span>Untuk foto ulang, klik foto yang ingin diganti.</span>
-    </div>
-
     <header id="main-header">
         <a href="#" class="side-logo">pict<span>lord</span></a>
         <div class="header-buttons">
@@ -271,259 +495,349 @@
     </header>
 
     <main id="main-section">
-        <div class="canvas-centered">
-            <div class="camera-container">
-                <div id="videoContainer">
-                    <video id="video" autoplay playsinline class="mirrored"></video>
-                    <div id="flash"></div>
-                    <div id="blackScreen">Waiting for camera access...</div>
-                    <div id="countdownText">3</div>
-                </div>
-                <div id="photoContainer"></div>
-            </div>
-            
-            <p id="progressCounter">0/2</p>
-
-            <div class="controls-panel">
-                <div class="filter-container">
-                    <button id="mirrorBtn" class="neumorphic-btn active"> <img src="images/mirror-icon.svg" alt="Mirror Icon"> </button>
-                    <button id="vintageFilterId" class="neumorphic-btn filterBtn" data-filter="vintage"></button>
-                    <button id="grayFilterId" class="neumorphic-btn filterBtn" data-filter="gray"></button>
-                    <button id="smoothFilterId" class="neumorphic-btn filterBtn" data-filter="smooth"></button>
-                    <button id="bnwFilterId" class="neumorphic-btn filterBtn" data-filter="grayscale"></button>
-                    <button id="sepiaFilterId" class="neumorphic-btn filterBtn" data-filter="sepia"></button>
-                    <button id="normalFilterId" class="neumorphic-btn filterBtn active" data-filter="none"></button>
+        <div class="customize-container">
+            <div class="photo-preview-area" id="photoPreview">
                 </div>
 
-                <div>
-                    <select name="timerOptions" id="timerOptions" class="custom-select">
-                        <option value="3">3 Second Timer</option>
-                        <option value="5">5 Second Timer</option>
-                        <option value="10">10 Second Timer</option>
-                    </select>
+            <aside class="controls-panel">
+                <h1>Customize Your Photo</h1>
+
+                <div class="control-group">
+                    <h3 class="options-label">Frame Color</h3>
+                    <div class="custom-buttons-container">
+                        <button id="colorPickerBtn" class="neumorphic-btn buttonFrames"></button>
+                        <button id="pinkBtnFrame" class="neumorphic-btn buttonFrames"></button>
+                        <button id="blueBtnFrame" class="neumorphic-btn buttonFrames"></button>
+                        <button id="yellowBtnFrame" class="neumorphic-btn buttonFrames"></button>
+                        <button id="matchaBtnFrame" class="neumorphic-btn buttonFrames"></button>
+                        <button id="purpleBtnFrame" class="neumorphic-btn buttonFrames"></button>
+                        <button id="brownBtnFrame" class="neumorphic-btn buttonFrames"></button>
+                        <button id="redBtnFrame" class="neumorphic-btn buttonFrames"></button>
+                        <button id="whiteBtnFrame" class="neumorphic-btn buttonFrames"></button>
+                        <button id="blackBtnFrame" class="neumorphic-btn buttonFrames"></button>
+                        <button id="pinkGlitter" class="neumorphic-btn buttonBgFrames"></button>
+                        <button id="pinkPlaid" class="neumorphic-btn buttonBgFrames"></button>
+                        <button id="bluePlaid" class="neumorphic-btn buttonBgFrames"></button>
+                        <button id="black-cq" class="neumorphic-btn buttonBgFrames"></button>
+                        <button id="white-cq" class="neumorphic-btn buttonBgFrames"></button>
+                        <button id="pinkLeather" class="neumorphic-btn buttonBgFrames"></button>
+                        <button id="brownKnittedFrame" class="neumorphic-btn buttonBgFrames"></button>
+                        <button id="hotPinkKnittedFrame" class="neumorphic-btn buttonBgFrames"></button>
+                        <button id="redKnittedFrame" class="neumorphic-btn buttonBgFrames"></button>
+                        <button id="pinkKnittedFrame" class="neumorphic-btn buttonBgFrames"></button>
+                        <button id="redStripesFrame" class="neumorphic-btn buttonBgFrames"></button>
+                        <button id="greenStripesFrame" class="neumorphic-btn buttonBgFrames"></button>
+                        <button id="blueStripesFrame" class="neumorphic-btn buttonBgFrames"></button>
+                        <button id="vsPinkFrame" class="neumorphic-btn buttonBgFrames"></button>
+                        <button id="vsYellowFrame" class="neumorphic-btn buttonBgFrames"></button>
+                        <button id="blueYellowSquares" class="neumorphic-btn buttonBgFrames"></button>
+                        <button id="blueWhiteSquares" class="neumorphic-btn buttonBgFrames"></button>
+                        <button id="brownLeopard" class="neumorphic-btn buttonBgFrames"></button>
+                        <button id="cowPrint" class="neumorphic-btn buttonBgFrames"></button>
+                        <button id="redLeather" class="neumorphic-btn buttonBgFrames"></button>
+                        <button id="pinkGumamela" class="neumorphic-btn buttonBgFrames"></button>
+                        <button id="pinkLiliesFrame" class="neumorphic-btn buttonBgFrames"></button>
+                        <button id="whiteKnitted" class="neumorphic-btn buttonBgFrames"></button>
+                        <button id="ribbonSweaterFrame" class="neumorphic-btn buttonBgFrames"></button>
+                        <button id="ribbonDenim" class="neumorphic-btn buttonBgFrames"></button>
+                        <button id="blackPinkRibbon" class="neumorphic-btn buttonBgFrames"></button>
+                        <button id="fourLockers" class="neumorphic-btn buttonBgFrames"></button>
+                        <button id="gridPaperFrame" class="neumorphic-btn buttonBgFrames"></button>
+                        <button id="crumpledPaper" class="neumorphic-btn buttonBgFrames"></button>
+                        <button id="roughTextureFrame" class="neumorphic-btn buttonBgFrames"></button>
+                        <button id="blueBackdrop" class="neumorphic-btn buttonBgFrames"></button>
+                        <button id="greenHills" class="neumorphic-btn buttonBgFrames"></button>
+                        <button id="sandShells" class="neumorphic-btn buttonBgFrames"></button>
+                        <button id="waterBeach" class="neumorphic-btn buttonBgFrames"></button>
+                        <button id="cocoTrees" class="neumorphic-btn buttonBgFrames"></button>
+                        <button id="stardustFrame" class="neumorphic-btn buttonBgFrames"></button>
+                        <button id="roseCardFrame" class="neumorphic-btn buttonBgFrames"></button>
+                        <button id="princessVintageFrame" class="neumorphic-btn buttonBgFrames"></button>
+                        <button id="redRosesPaintFrame" class="neumorphic-btn buttonBgFrames"></button>
+                        <button id="grayTrashFrame" class="neumorphic-btn buttonBgFrames"></button>
+                        <button id="blackTrashFrame" class="neumorphic-btn buttonBgFrames"></button>
+                        <button id="whiteTrashFrame" class="neumorphic-btn buttonBgFrames"></button>
+                        <button id="partyDrapeFrame" class="neumorphic-btn buttonBgFrames"></button>
+                        <button id="partyDotsFrame" class="neumorphic-btn buttonBgFrames"></button>
+                        <button id="blingDenimFrame" class="neumorphic-btn buttonBgFrames"></button>
+                    </div>
                 </div>
-                
-                <div class="action-buttons">
-                    <input type="file" id="uploadInput" accept="image/*" style="display:none;">
-                    <button id="uploadBtn" class="neumorphic-btn"> <img src="assets/icons/upload-icon.png" alt="Upload Icon"> Upload </button>
-                    <button id="startBtn" class="neumorphic-btn">START</button>
-                    <button id="doneBtn" class="neumorphic-btn">DONE</button>
+
+                <div class="control-group">
+                    <h3 class="options-label">Photo Shape</h3>
+                    <div class="custom-buttons-container">
+                        <button id="noneFrameShape" class="neumorphic-btn buttonShapes"><img src="assets/frame-shapes/noneShape.png" alt="None" class="btnShapeSize"></button>
+                        <button id="softFrameShape" class="neumorphic-btn buttonShapes"><img src="assets/frame-shapes/squareShape.png" alt="Soft Edge Frame" class="btnShapeSize"></button>
+                        <button id="circleFrameShape" class="neumorphic-btn buttonShapes"><img src="assets/frame-shapes/circleShape.png" alt="Circle Frame" class="btnShapeSize"></button>
+                        <button id="heartFrameShape" class="neumorphic-btn buttonShapes"><img src="assets/frame-shapes/heartShape.png" alt="Heart Frame" class="btnShapeSize"></button>
+                    </div>
                 </div>
-            </div>
+
+                <div class="control-group">
+                    <h3 class="options-label">Stickers</h3>
+                    <div class="custom-buttons-container">
+                        <button id="noneSticker" class="neumorphic-btn buttonStickers"><img src="assets/frame-shapes/noneShape.png" alt="None" class="stickerIconSize"></button>
+                        <button id="bunnySticker" class="neumorphic-btn buttonStickers"><img src="assets/stickers/bunny1.png" alt="Bunny" class="stickerIconSize"/></button>
+                        <button id="luckySticker" class="neumorphic-btn buttonStickers new-sticker"><img src="assets/stickers/lucky1.png" alt="Lucky" class="stickerIconSize"/></button>
+                        <button id="kissSticker" class="neumorphic-btn buttonStickers"><img src="assets/stickers/kiss1.png" alt="Kiss" class="stickerIconSize"/></button>
+                        <button id="sweetSticker" class="neumorphic-btn buttonStickers"><img src="assets/stickers/sweet1.png" alt="Sweet" class="stickerIconSize"/></button>
+                        <button id="ribbonSticker" class="neumorphic-btn buttonStickers"><img src="assets/stickers/ribbon1.png" alt="Ribbon" class="stickerIconSize"/></button>
+                        <button id="sparkleSticker" class="neumorphic-btn buttonStickers"><img src="assets/stickers/sparkle2.png" alt="Sparkle" class="stickerIconSize"/></button>
+                        <button id="pearlSticker" class="neumorphic-btn buttonStickers"><img src="assets/stickers/pearl2.png" alt="Pearl" class="stickerIconSize"/></button>
+                        <button id="softSticker" class="neumorphic-btn buttonStickers"><img src="assets/stickers/soft5.png" alt="Soft" class="stickerIconSize"/></button>
+                        <button id="confettiSticker" class="neumorphic-btn buttonStickers"><img src="assets/stickers/confetti/confetti.png" alt="Confetti" class="stickerIconSize"/></button>
+                        <button id="ribbonCoquetteSticker" class="neumorphic-btn buttonStickers"><img src="assets/stickers/ribboncq4.png" alt="Ribbon Coquette" class="stickerIconSize"/></button>
+                        <button id="blueRibbonCoquetteSticker" class="neumorphic-btn buttonStickers"><img src="assets/stickers/blueRibbon2.png" alt="Blue Ribbon" class="stickerIconSize"/></button>
+                        <button id="blackStarSticker" class="neumorphic-btn buttonStickers"><img src="assets/stickers/blackStar5.png" alt="Black Star" class="stickerIconSize"/></button>
+                        <button id="yellowChickenSticker" class="neumorphic-btn buttonStickers"><img src="assets/stickers/yellowChicken1.png" alt="Yellow Chicken" class="stickerIconSize"/></button>
+                        <button id="brownBearSticker" class="neumorphic-btn buttonStickers"><img src="assets/stickers/brownyBear6.png" alt="Brown Bear" class="stickerIconSize"/></button>
+                        <button id="lotsHeartSticker" class="neumorphic-btn buttonStickers"><img src="assets/stickers/lotsHeart8.png" alt="Heart" class="stickerIconSize"/></button>
+                        <button id="tabbyCatSticker" class="neumorphic-btn buttonStickers"><img src="assets/stickers/tabbyCat6.png" alt="Tabby Cat" class="stickerIconSize"/></button>
+                        <button id="ballerinaCappuccinoSticker" class="neumorphic-btn buttonStickers"><img src="assets/stickers/ballerinaCappuccino/balerinaCappuccino3.png" alt="Cat" class="stickerIconSize"/></button>
+                        <button id="doggyWhiteSticker" class="neumorphic-btn buttonStickers"><img src="assets/stickers/doggyWhite/doggyWhite1.png" alt="Dog" class="stickerIconSize"/></button>
+                        <button id="sakuraBlossomSticker" class="neumorphic-btn buttonStickers"><img src="assets/stickers/sakuraBlossom/sakuraBlossom6.png" alt="Sakura" class="stickerIconSize"/></button>
+                        <button id="myGirlsSticker" class="neumorphic-btn buttonStickers"><img src="assets/stickers/myGirls/myGirls12.png" alt="Girls" class="stickerIconSize"/></button>
+                        <button id="classicSticker" class="neumorphic-btn buttonStickers classicStickers"><img src="assets/stickers/classic1.png" alt="Classic" class="stickerIconSize"/></button>
+                        <button id="classicBSticker" class="neumorphic-btn buttonStickers classicStickers"><img src="assets/stickers/classic4.png" alt="Classic B" class="stickerIconSize"/></button>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <h3 class="options-label">Logo</h3>
+                    <div class="logo-options-grid">
+                        <div class="logo-container">
+                            <button id="engLogo" class="neumorphic-btn logoCustomBtn active">ENG</button>
+                            <button id="korLogo" class="neumorphic-btn logoCustomBtn">KOR</button>
+                            <button id="cnLogo" class="neumorphic-btn logoCustomBtn">CN</button>
+                        </div>
+                        <div class="color-picker-container">
+                            <label for="logoColorPicker" class="color-picker-label">Color:</label>
+                            <input type="color" id="logoColorPicker" value="#E28585">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                     <h3 class="options-label">Date Overlay</h3>
+                     <div class="date-overlay">
+                         <div class="date-option">
+                             <input type="checkbox" id="dateCheckbox">
+                             <label for="dateCheckbox">Add Date</label>
+                         </div>
+                         <div class="date-option">
+                             <input type="checkbox" id="dateTimeCheckbox">
+                             <label for="dateTimeCheckbox">Add Time</label>
+                         </div>
+                     </div>
+                </div>
+
+                <div class="final-actions-container">
+                    <button class="neumorphic-btn" id="customBack">
+                        <i class="fas fa-undo"></i> Retake
+                    </button>
+                    <button class="neumorphic-btn" id="previewBtn">
+                        <i class="fas fa-eye"></i> Preview
+                    </button>
+                    <button class="neumorphic-btn" id="shareBtn">
+                        <i class="fas fa-share-alt"></i> Share
+                    </button>
+                </div>
+
+                <div class="download-action-container">
+                    <button class="neumorphic-btn" id="downloadCopyBtn">
+                        <i class="fas fa-qrcode"></i> Get QR / Download
+                    </button>
+                </div>
+            </aside>
         </div>
     </main>
 
+    <div id="previewModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close-btn">&times;</span>
+            <img id="modalImagePreview" src="" alt="Image Preview">
+        </div>
+    </div>
+
+    <div id="qrModal" class="modal">
+        <div class="modal-content qr-modal-content">
+            <span class="modal-close-btn qr-close-btn">&times;</span>
+            <h2 class="qr-title">Scan to Download</h2>
+            <p class="qr-subtitle">Buka kamera ponsel Anda dan pindai kode di bawah ini untuk mengunduh gambar.</p>
+            <div id="qrCodePopupContainer">
+                </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vanilla-picker@2.12.1/dist/vanilla-picker.min.js"></script>
+    
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+    <script src="customize.js"></script>
+    <script src="canvas.js"></script>
+    <script src="main.js"></script>
+
     <script>
+        // !!! PENTING: GANTI DENGAN KONFIGURASI PROYEK FIREBASE ANDA SENDIRI !!!
+        const firebaseConfig = {
+          apiKey: "AIza...",
+          authDomain: "your-project-id.firebaseapp.com",
+          databaseURL: "https://your-project-id-default-rtdb.firebaseio.com",
+          projectId: "your-project-id",
+          storageBucket: "your-project-id.appspot.com",
+          messagingSenderId: "...",
+          appId: "..."
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+
         document.addEventListener('DOMContentLoaded', () => {
-            // --- DOM Elements ---
-            const video = document.getElementById('video');
-            const mirrorBtn = document.getElementById('mirrorBtn');
-            const blackScreen = document.getElementById('blackScreen');
-            const countdownText = document.getElementById('countdownText');
-            const progressCounter = document.getElementById('progressCounter');
-            const startBtn = document.getElementById('startBtn');
-            const doneBtn = document.getElementById('doneBtn');
-            const uploadBtn = document.getElementById('uploadBtn');
-            const uploadInput = document.getElementById('uploadInput');
-            const flash = document.getElementById('flash');
-            const photoContainer = document.getElementById('photoContainer');
-            const filterButtons = document.querySelectorAll('.filterBtn');
+            
+            // --- 1. Theme Manager & Active Button States ---
             const themeToggle = document.getElementById('theme-toggle');
-            const notification = document.getElementById('retake-notification');
-
-            // --- State Variables ---
-            const canvas = document.createElement('canvas');
-            let images = [];
-            let isCapturing = false;
-            let isVideoMirrored = true;
-            const TOTAL_PHOTOS = 2; // <<< DIUBAH MENJADI 2
-
-            // --- Theme Manager ---
-            const applyTheme = (theme) => { document.body.classList.toggle('dark-mode', theme === 'dark'); };
+            const applyTheme = (theme) => {
+                document.body.classList.toggle('dark-mode', theme === 'dark');
+            };
             themeToggle.addEventListener('click', () => {
-                const newTheme = document.body.classList.contains('dark-mode') ? 'light' : 'dark';
+                const isDarkMode = document.body.classList.contains('dark-mode');
+                const newTheme = isDarkMode ? 'light' : 'dark';
                 localStorage.setItem('theme', newTheme);
                 applyTheme(newTheme);
             });
-            applyTheme(localStorage.getItem('theme') || 'dark');
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            applyTheme(savedTheme);
 
-            // --- Camera & Photobooth Logic ---
-            const startCamera = async () => {
-                try {
-                    const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } });
-                    video.srcObject = stream;
-                    video.onloadedmetadata = () => { video.play(); setTimeout(() => { blackScreen.style.opacity = 0; setTimeout(() => blackScreen.style.display = 'none', 1000); }, 500); };
-                } catch (err) { console.error("Camera Access Denied", err); blackScreen.textContent = "Please enable camera permissions."; }
-            };
-            
-            const showCountdown = async () => {
-                const selectedValue = parseInt(document.getElementById("timerOptions").value, 10);
-                countdownText.style.display = "block";
-                for (let count = selectedValue; count > 0; count--) {
-                    countdownText.textContent = count;
-                    countdownText.classList.remove("zoomIn"); void countdownText.offsetWidth; countdownText.classList.add("zoomIn");
-                    await new Promise(res => setTimeout(res, 1000));
-                }
-                countdownText.style.display = "none";
-            };
-
-            const capturePhoto = async () => {
-                flash.style.opacity = 1; setTimeout(() => flash.style.opacity = 0, 200);
-                if (video.videoWidth === 0) { console.error("Video not ready."); return null; }
-                const ctx = canvas.getContext('2d');
-                canvas.width = video.videoWidth; canvas.height = video.videoHeight;
-                if (isVideoMirrored) { ctx.translate(canvas.width, 0); ctx.scale(-1, 1); }
-                const videoFilters = window.getComputedStyle(video).filter;
-                if (videoFilters !== 'none') ctx.filter = videoFilters;
-                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-                await new Promise(res => setTimeout(res, 100));
-                return canvas.toDataURL('image/png');
-            };
-
-            const handlePhotoClick = (event) => {
-                if (isCapturing) return;
-                const wrapper = event.currentTarget;
-                const indexToReplace = parseInt(wrapper.dataset.index, 10);
-                images[indexToReplace] = null;
-                updatePhotoDisplay();
-            };
-
-            const updatePhotoDisplay = () => {
-                photoContainer.innerHTML = '';
-                while (images.length < TOTAL_PHOTOS) { images.push(null); }
-
-                images.forEach((imageData, index) => {
-                    if (imageData) {
-                        const wrapper = document.createElement('div');
-                        wrapper.classList.add('photo-wrapper');
-                        wrapper.dataset.index = index;
-                        wrapper.addEventListener('click', handlePhotoClick);
-
-                        const imgElement = document.createElement('img');
-                        imgElement.src = imageData;
-                        imgElement.classList.add('photo');
-
-                        const overlay = document.createElement('div');
-                        overlay.classList.add('photo-overlay');
-                        const overlayText = document.createElement('span');
-                        overlayText.textContent = 'Retake';
-                        overlay.appendChild(overlayText);
-
-                        wrapper.appendChild(imgElement);
-                        wrapper.appendChild(overlay);
-                        photoContainer.appendChild(wrapper);
-                    } else {
-                        const placeholder = document.createElement('div');
-                        placeholder.classList.add('photo-placeholder');
-                        photoContainer.appendChild(placeholder);
-                    }
-                });
-                
-                const photoCount = images.filter(img => img !== null).length;
-                progressCounter.textContent = `${photoCount}/${TOTAL_PHOTOS}`;
-                
-                startBtn.disabled = photoCount >= TOTAL_PHOTOS || isCapturing;
-                uploadBtn.disabled = photoCount >= TOTAL_PHOTOS || isCapturing;
-                doneBtn.style.display = (photoCount === TOTAL_PHOTOS) ? 'flex' : 'none';
-                if (!isCapturing && photoCount < TOTAL_PHOTOS) {
-                    startBtn.innerHTML = 'START';
-                }
-            };
-            
-            const startPhotoboothSession = async () => {
-                if (isCapturing || images.filter(img => img !== null).length >= TOTAL_PHOTOS) return;
-
-                isCapturing = true; 
-                startBtn.disabled = true;
-                uploadBtn.disabled = true;
-                startBtn.innerHTML = 'Capturing...';
-
-                for (let i = 0; i < TOTAL_PHOTOS; i++) {
-                    if (images[i] === null) {
-                        await showCountdown();
-                        const newImageData = await capturePhoto();
-                        if (newImageData) {
-                            images[i] = newImageData;
+            const buttonContainers = document.querySelectorAll('.custom-buttons-container, .logo-container');
+            buttonContainers.forEach(container => {
+                container.addEventListener('click', (e) => {
+                    const clickedButton = e.target.closest('button');
+                    if (!clickedButton) return;
+                    const parentControlGroup = clickedButton.closest('.control-group');
+                    const isStickerGroup = parentControlGroup && parentControlGroup.querySelector('.options-label').textContent === 'Stickers';
+                    if (isStickerGroup) {
+                         if(clickedButton.id === 'noneSticker') {
+                            const stickerButtons = container.querySelectorAll('button');
+                            stickerButtons.forEach(btn => btn.classList.remove('active'));
+                            clickedButton.classList.add('active');
+                        } else {
+                            document.getElementById('noneSticker')?.classList.remove('active');
+                            clickedButton.classList.toggle('active');
                         }
-                        updatePhotoDisplay();
+                    } else {
+                         const buttonsInGroup = container.querySelectorAll('button');
+                         buttonsInGroup.forEach(btn => btn.classList.remove('active'));
+                         clickedButton.classList.add('active');
                     }
-                }
-                
-                isCapturing = false;
-                updatePhotoDisplay();
-
-                if (images.filter(img => img !== null).length === TOTAL_PHOTOS) {
-                    notification.classList.add('show');
-                    setTimeout(() => {
-                        notification.classList.remove('show');
-                    }, 5000);
-                }
-            };
-
-            const handleImageUpload = (event) => {
-                const file = event.target.files[0];
-                if (!file || !file.type.startsWith("image/")) return;
-                
-                const indexToFill = images.findIndex(img => img === null);
-                if (indexToFill === -1) {
-                    alert("All photo slots are full. Click a photo to retake it first.");
-                    uploadInput.value = null; 
-                    return;
-                }
-                
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    images[indexToFill] = e.target.result;
-                    updatePhotoDisplay();
-                };
-                reader.readAsDataURL(file);
-                uploadInput.value = null;
-            };
-
-            // --- Event Listeners ---
-            startBtn.addEventListener('click', startPhotoboothSession);
-            uploadBtn.addEventListener('click', () => uploadInput.click());
-            uploadInput.addEventListener('change', handleImageUpload);
-            
-            mirrorBtn.addEventListener('click', () => {
-                isVideoMirrored = !isVideoMirrored;
-                video.classList.toggle('mirrored', isVideoMirrored);
-                mirrorBtn.classList.toggle('active', isVideoMirrored);
-            });
-            
-            filterButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    if (isCapturing) return;
-                    filterButtons.forEach(btn => btn.classList.remove('active'));
-                    button.classList.add('active');
-                    const filterValue = {
-                        'vintage': 'sepia(0.5) contrast(1.1) brightness(0.9)',
-                        'gray': 'grayscale(1)',
-                        'smooth': 'blur(1px) contrast(1.1)',
-                        'grayscale': 'grayscale(1)',
-                        'sepia': 'sepia(1)',
-                        'none': 'none'
-                    }[button.dataset.filter];
-                    video.style.filter = filterValue;
                 });
             });
+
+            // --- 2. Logika Modal Preview ---
+            const previewModal = document.getElementById('previewModal');
+            const previewBtn = document.getElementById('previewBtn');
+            const previewModalCloseBtn = previewModal.querySelector('.modal-close-btn');
+
+            if (previewBtn) {
+                previewBtn.addEventListener('click', () => {
+                    const finalCanvas = document.querySelector('#photoPreview canvas');
+                    if (finalCanvas) {
+                        modalImagePreview.src = finalCanvas.toDataURL('image/png', 1.0);
+                        previewModal.style.display = 'block';
+                    } else { alert('Silakan buat gambar terlebih dahulu!'); }
+                });
+            }
+            if(previewModalCloseBtn) { previewModalCloseBtn.addEventListener('click', () => { previewModal.style.display = 'none'; }); }
             
-            // ### INI BAGIAN YANG DIPERBAIKI ###
-            doneBtn.addEventListener('click', () => {
-                const photoCount = images.filter(img => img !== null).length;
-                if (photoCount === TOTAL_PHOTOS) {
-                    sessionStorage.setItem('photoArray', JSON.stringify(images));
-                    window.location.href = 'customize.html';
-                } else {
-                    alert(`Please take or upload ${TOTAL_PHOTOS} photos first.`);
-                }
+            // --- 3. LOGIKA UNTUK MODAL QR CODE ---
+            const downloadBtn = document.getElementById('downloadCopyBtn');
+            const qrModal = document.getElementById('qrModal');
+            const qrModalCloseBtn = qrModal.querySelector('.qr-close-btn');
+            const qrCodePopupContainer = document.getElementById('qrCodePopupContainer');
+            
+            // Event listener untuk menutup modal
+            qrModalCloseBtn.addEventListener('click', () => {
+                qrModal.style.display = 'none';
             });
 
-            window.addEventListener("beforeunload", () => { if (video.srcObject) { video.srcObject.getTracks().forEach(track => track.stop()); } });
+            // Menutup modal jika klik di luar area konten modal
+            window.addEventListener('click', (event) => {
+                if (event.target == previewModal) { previewModal.style.display = 'none'; }
+                if (event.target == qrModal) { qrModal.style.display = 'none'; }
+            });
 
-            // --- Initialization ---
-            startCamera();
-            updatePhotoDisplay();
+            // Fungsi untuk membuat link sementara di Firebase
+            async function generateTemporaryLink(base64ImageData) {
+                const expirationTime = Date.now() + (5 * 60 * 1000);
+                const dataToStore = {
+                    imageData: base64ImageData,
+                    expiresAt: expirationTime
+                };
+                const newImageRef = await database.ref('images').push(dataToStore);
+                const uniqueId = newImageRef.key;
+                return `${window.location.origin}/hasil.html?id=${uniqueId}`;
+            }
+
+            if (downloadBtn) {
+                downloadBtn.addEventListener('click', async () => {
+                    const finalCanvas = document.querySelector('#photoPreview canvas');
+                    if (!finalCanvas) {
+                        alert('Silakan buat gambar terlebih dahulu!');
+                        return;
+                    }
+                    
+                    // Tampilkan modal dan spinner
+                    qrModal.style.display = 'block';
+                    qrCodePopupContainer.innerHTML = '<i class="fas fa-spinner fa-spin spinner"></i>';
+
+                    try {
+                        const imageData = finalCanvas.toDataURL('image/png', 1.0);
+
+                        // 1. Trigger download langsung untuk pengguna desktop
+                        const link = document.createElement('a');
+                        link.download = `pictlord-${Date.now()}.png`;
+                        link.href = imageData;
+                        link.click();
+                        
+                        // 2. Buat link Firebase dan QR code di latar belakang
+                        const temporaryLink = await generateTemporaryLink(imageData);
+                        const qrApiUrl = `https://quickchart.io/qr?text=${encodeURIComponent(temporaryLink)}&ecLevel=H&margin=1&size=150`;
+
+                        // 3. Ganti spinner dengan gambar QR setelah selesai
+                        qrCodePopupContainer.innerHTML = `<img src="${qrApiUrl}" alt="Scan to download">`;
+
+                    } catch (error) {
+                        console.error('Gagal membuat link Firebase atau QR Code:', error);
+                        qrCodePopupContainer.innerHTML = '<strong>Gagal membuat QR Code.</strong><br>Pastikan konfigurasi Firebase sudah benar & cek console (F12) untuk error.';
+                    }
+                });
+            }
+
+            // --- 4. Logika Tombol Share & Warna Logo ---
+            const shareBtn = document.getElementById('shareBtn');
+            if (shareBtn) {
+                shareBtn.addEventListener('click', async () => {
+                    const shareData = {
+                        title: 'Pictlord Photobooth',
+                        text: 'Coba deh photobooth online keren ini! Aku baru aja bikin foto ciamik di sini. ✨',
+                        url: window.location.origin
+                    };
+                    try {
+                        if (navigator.share) { await navigator.share(shareData); } 
+                        else { alert('Browser Anda tidak mendukung fitur share. Silakan salin link secara manual.'); }
+                    } catch (err) { console.error('Error saat sharing:', err); }
+                });
+            }
+
+            const logoColorPicker = document.getElementById('logoColorPicker');
+            if (logoColorPicker) {
+                logoColorPicker.addEventListener('input', () => {
+                    console.log('Warna logo baru dipilih:', logoColorPicker.value);
+                    // Panggil fungsi redraw canvas Anda dari customize.js/canvas.js di sini jika diperlukan
+                });
+            }
         });
     </script>
 </body>
