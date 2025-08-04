@@ -623,6 +623,17 @@
         </div>
     </div>
 
+    <div id="shareModal" class="modal">
+        <div class="modal-content" style="max-width: 400px; text-align: center; background-color: var(--light-bg); padding: 25px; border-radius: 15px;">
+            <span class="modal-close-btn">&times;</span>
+            <h2 style="font-size: 2rem; margin-bottom: 15px; color: var(--light-text);">Share Your Photo</h2>
+            <p style="font-size: 1.4rem; margin-bottom: 20px; color: var(--light-text);">Scan this QR code with your phone to open and save the image.</p>
+            <div id="shareQrCodeContainer" style="padding: 10px; background: white; border-radius: 8px; display: inline-block;">
+                <!-- QR Code will be loaded here -->
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/vanilla-picker@2.12.1/dist/vanilla-picker.min.js"></script>
@@ -725,24 +736,46 @@
                 });
             }
 
-            // --- 5. Logika Tombol Share ---
+            // --- 5. Logika Tombol Share (DIUBAH) ---
             const shareBtn = document.getElementById('shareBtn');
-            if (shareBtn) {
-                shareBtn.addEventListener('click', async () => {
-                    const shareData = {
-                        title: 'Pictlord Photobooth',
-                        text: 'Coba deh photobooth online keren ini! Aku baru aja bikin foto ciamik di sini. ✨',
-                        url: window.location.origin
-                    };
+            const shareModal = document.getElementById('shareModal');
+            const shareQrCodeContainer = document.getElementById('shareQrCodeContainer');
+            
+            if (shareBtn && shareModal) {
+                const closeShareModalBtn = shareModal.querySelector('.modal-close-btn');
 
-                    try {
-                        if (navigator.share) {
-                            await navigator.share(shareData);
-                        } else {
-                            alert('Browser Anda tidak mendukung fitur share. Silakan salin link secara manual.');
-                        }
-                    } catch (err) {
-                        console.error('Error saat sharing:', err);
+                shareBtn.addEventListener('click', () => {
+                    const finalCanvas = document.querySelector('#photoPreview canvas');
+                    if (!finalCanvas) {
+                        alert('Silakan buat gambar terlebih dahulu!');
+                        return;
+                    }
+
+                    const imageData = finalCanvas.toDataURL('image/png');
+                    
+                    if (imageData.length > 4000) {
+                        console.warn("Data gambar sangat panjang, berpotensi menyebabkan masalah pada QR code/URL.");
+                    }
+
+                    const baseUrl = window.location.origin;
+                    const pageUrl = `${baseUrl}/qrcode.html?imageData=${encodeURIComponent(imageData)}`;
+
+                    const qrApiUrl = `https://quickchart.io/qr?text=${encodeURIComponent(pageUrl)}&ecLevel=H&margin=1&size=200&key=xlord`;
+                    
+                    shareQrCodeContainer.innerHTML = `<img src="${qrApiUrl}" alt="QR Code" style="width: 200px; height: 200px;">`;
+                    
+                    shareModal.style.display = 'block';
+                });
+
+                if(closeShareModalBtn) {
+                    closeShareModalBtn.addEventListener('click', () => {
+                        shareModal.style.display = 'none';
+                    });
+                }
+                
+                window.addEventListener('click', (event) => {
+                    if (event.target == shareModal) {
+                        shareModal.style.display = 'none';
                     }
                 });
             }
