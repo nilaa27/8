@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Kreasikan foto photobooth online Anda. Pilih dari puluhan bingkai, warna, dan stiker untuk menciptakan strip foto unik milikmu.">
-    <meta name="keywords" content="photobooth, customize foto, edit foto, online photobooth, tiktok photobooth, picapica, digibooth, pictlord">
+    <meta name="keywords" content="photobooth, customize foto, edit foto, online photobooth, tiktok photobooth, picapica, digibooth, pictlord, firebase">
     <title>Pictlord | Customize Foto Kamu</title>
 
     <meta property="og:title" content="Pictlord | Photobooth Online Gratis">
@@ -109,12 +109,9 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-
-            /* --- EFEK BLUR TRANSPARAN --- */
             background-color: rgba(56, 64, 72, 0.7);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-
             border-radius: 50px;
             animation: fadeInUp 0.5s ease-out;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
@@ -148,7 +145,6 @@
         .dark-mode #sun-icon { display: none; }
         .dark-mode #moon-icon { display: block; }
 
-        /* Light mode header style */
         body:not(.dark-mode) #main-header {
             background-color: rgba(240, 242, 245, 0.75);
             border: 1px solid rgba(0, 0, 0, 0.1);
@@ -234,7 +230,7 @@
         .buttonBgFrames { background-size: cover; background-position: center; }
         .btnShapeSize, .stickerIconSize { width: 22px; height: 22px; }
 
-        /* --- Specific Controls Styling (tidak berubah) --- */
+        /* --- Specific Controls Styling --- */
         #colorPickerBtn { background: conic-gradient(red, orange, yellow, green, cyan, blue, violet, red); }
         #pinkBtnFrame { background-color: #FFC2D1; }
         #blueBtnFrame { background-color: #CAF0F8; }
@@ -291,7 +287,7 @@
         #partyDotsFrame { background-image: url(assets/frame-backgrounds/party-dots.jpg); background-size: 210%; }
         #blingDenimFrame { background-image: url(assets/frame-backgrounds/bling-denim.jpg); background-size: 210%; }
 
-        /* Logo and Date Checkbox */
+        /* --- Logo and Date Checkbox --- */
         .logo-container { display: flex; gap: 10px; }
         .logoCustomBtn { padding: 8px 15px; border-radius: 20px; font-size: 1.4rem; }
 
@@ -322,7 +318,7 @@
             transform: translate(-50%, -50%);
         }
 
-        /* --- FINAL ACTION BUTTONS (REVISI) --- */
+        /* --- FINAL ACTION BUTTONS --- */
         .final-actions-container {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
@@ -622,28 +618,37 @@
             <img id="modalImagePreview" src="" alt="Image Preview">
         </div>
     </div>
-
-    <div id="shareModal" class="modal">
-        <div class="modal-content" style="max-width: 400px; text-align: center; background-color: var(--light-bg); padding: 25px; border-radius: 15px;">
-            <span class="modal-close-btn">&times;</span>
-            <h2 style="font-size: 2rem; margin-bottom: 15px; color: var(--light-text);">Share Your Photo</h2>
-            <p style="font-size: 1.4rem; margin-bottom: 20px; color: var(--light-text);">Scan this QR code with your phone to open and save the image.</p>
-            <div id="shareQrCodeContainer" style="padding: 10px; background: white; border-radius: 8px; display: inline-block;">
-                <!-- QR Code will be loaded here -->
-            </div>
-        </div>
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
-
+    
     <script src="https://cdn.jsdelivr.net/npm/vanilla-picker@2.12.1/dist/vanilla-picker.min.js"></script>
+    
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
     <script src="customize.js"></script>
     <script src="canvas.js"></script>
     <script src="main.js"></script>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
+        // --- Inisialisasi Firebase ---
+        // !!! PENTING: GANTI DENGAN KONFIGURASI PROYEK FIREBASE ANDA SENDIRI !!!
+        const firebaseConfig = {
+    apiKey: "AIzaSyCCaLXoaHFOuXRnHAvQzg9R0c1tfsTsTBU",
+    authDomain: "project-xlord.firebaseapp.com",
+    databaseURL: "https://project-xlord-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "project-xlord",
+    storageBucket: "project-xlord.appspot.com",
+    messagingSenderId: "847461816867",
+    appId: "1:847461816867:web:17071ba14ffe6a6099ef96",
+    measurementId: "G-344KX3B197"
+};
 
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+
+        document.addEventListener('DOMContentLoaded', () => {
+            
             // --- 1. Theme Manager Script ---
             const themeToggle = document.getElementById('theme-toggle');
             const applyTheme = (theme) => {
@@ -664,13 +669,12 @@
                 container.addEventListener('click', (e) => {
                     const clickedButton = e.target.closest('button');
                     if (!clickedButton) return;
+                    
+                    const parentControlGroup = clickedButton.closest('.control-group');
+                    const isStickerGroup = parentControlGroup && parentControlGroup.querySelector('.options-label').textContent === 'Stickers';
 
-                    if (!clickedButton.closest('.stickers-container')) {
-                         const buttonsInGroup = container.querySelectorAll('button');
-                         buttonsInGroup.forEach(btn => btn.classList.remove('active'));
-                         clickedButton.classList.add('active');
-                    } else {
-                        if(clickedButton.id === 'noneSticker') {
+                    if (isStickerGroup) {
+                         if(clickedButton.id === 'noneSticker') {
                             const stickerButtons = container.querySelectorAll('button');
                             stickerButtons.forEach(btn => btn.classList.remove('active'));
                             clickedButton.classList.add('active');
@@ -678,6 +682,10 @@
                             document.getElementById('noneSticker')?.classList.remove('active');
                             clickedButton.classList.toggle('active');
                         }
+                    } else {
+                         const buttonsInGroup = container.querySelectorAll('button');
+                         buttonsInGroup.forEach(btn => btn.classList.remove('active'));
+                         clickedButton.classList.add('active');
                     }
                 });
             });
@@ -692,91 +700,97 @@
                 previewBtn.addEventListener('click', () => {
                     const finalCanvas = document.querySelector('#photoPreview canvas');
                     if (finalCanvas) {
-                        modalImage.src = finalCanvas.toDataURL('image/png');
+                        modalImage.src = finalCanvas.toDataURL('image/png', 1.0);
                         previewModal.style.display = 'block';
-                    } else {
-                        alert('Silakan buat gambar terlebih dahulu!');
-                    }
+                    } else { alert('Silakan buat gambar terlebih dahulu!'); }
                 });
             }
-            if(closeModalBtn) {
-                closeModalBtn.addEventListener('click', () => {
-                    previewModal.style.display = 'none';
-                });
-            }
+            if(closeModalBtn) { closeModalBtn.addEventListener('click', () => { previewModal.style.display = 'none'; }); }
             window.addEventListener('click', (event) => {
-                if (event.target == previewModal) {
-                    previewModal.style.display = 'none';
-                }
+                if (event.target == previewModal) { previewModal.style.display = 'none'; }
             });
 
-            // --- 4. Logika QR Code & Download ---
+            // --- 4. LOGIKA BARU DENGAN FIREBASE ---
             const downloadBtn = document.getElementById('downloadCopyBtn');
             const qrCodeContainer = document.getElementById('qrCodeContainer');
             const qrcodeDiv = document.getElementById('qrcode');
 
-            if (downloadBtn) {
-                downloadBtn.addEventListener('click', () => {
-                    const finalCanvas = document.querySelector('#photoPreview canvas');
-                    if (finalCanvas) {
-                        if (qrCodeContainer.style.display === 'none') {
-                            qrcodeDiv.innerHTML = '';
-                            new QRCode(qrcodeDiv, {
-                                text: finalCanvas.toDataURL('image/png'),
-                                width: 128,
-                                height: 128,
-                                correctLevel: QRCode.CorrectLevel.H
-                            });
-                            qrCodeContainer.style.display = 'block';
-                        }
-                        // Fungsi download asli dari file customize.js akan tetap berjalan
-                    } else {
-                        alert('Silakan buat gambar terlebih dahulu!');
-                    }
-                });
+            /**
+             * Fungsi ini meng-upload data gambar ke Firebase dan mengembalikan URL unik.
+             * @param {string} base64ImageData - Data gambar dalam format Base64.
+             * @returns {Promise<string>} Sebuah Promise yang resolve dengan URL unik ke hasil.html.
+             */
+            async function generateTemporaryLink(base64ImageData) {
+                const expirationTime = Date.now() + (5 * 60 * 1000); // 5 menit dari sekarang
+                
+                const dataToStore = {
+                    imageData: base64ImageData,
+                    expiresAt: expirationTime
+                };
+
+                // 'push' akan membuat ID unik secara otomatis di bawah node 'images'
+                const newImageRef = await database.ref('images').push(dataToStore);
+                const uniqueId = newImageRef.key;
+
+                // Buat URL yang menunjuk ke hasil.html dengan ID unik dari Firebase
+                const uniqueUrl = `${window.location.origin}/hasil.html?id=${uniqueId}`;
+                
+                return uniqueUrl;
             }
 
-            // --- 5. Logika Tombol Share (DIUBAH) ---
-            const shareBtn = document.getElementById('shareBtn');
-            const shareModal = document.getElementById('shareModal');
-            const shareQrCodeContainer = document.getElementById('shareQrCodeContainer');
-            
-            if (shareBtn && shareModal) {
-                const closeShareModalBtn = shareModal.querySelector('.modal-close-btn');
+            if (downloadBtn) {
+                downloadBtn.innerHTML = '<i class="fas fa-qrcode"></i> Get QR / Download';
 
-                shareBtn.addEventListener('click', () => {
+                downloadBtn.addEventListener('click', async () => {
                     const finalCanvas = document.querySelector('#photoPreview canvas');
                     if (!finalCanvas) {
                         alert('Silakan buat gambar terlebih dahulu!');
                         return;
                     }
 
-                    const imageData = finalCanvas.toDataURL('image/png');
-                    
-                    if (imageData.length > 4000) {
-                        console.warn("Data gambar sangat panjang, berpotensi menyebabkan masalah pada QR code/URL.");
+                    downloadBtn.disabled = true;
+                    downloadBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating...';
+
+                    try {
+                        const imageData = finalCanvas.toDataURL('image/png', 1.0);
+                        const temporaryLink = await generateTemporaryLink(imageData);
+                        const qrApiUrl = `https://quickchart.io/qr?text=${encodeURIComponent(temporaryLink)}&ecLevel=H&margin=1&size=150&key=xlord`;
+
+                        qrcodeDiv.innerHTML = `<img src="${qrApiUrl}" alt="Scan to download">`;
+                        qrCodeContainer.style.display = 'block';
+
+                        // Juga trigger download langsung untuk pengguna desktop
+                        const link = document.createElement('a');
+                        link.download = `pictlord-${Date.now()}.png`;
+                        link.href = imageData;
+                        link.click();
+
+                    } catch (error) {
+                        console.error('Gagal membuat link Firebase:', error);
+                        alert('Terjadi kesalahan saat membuat link download. Cek koneksi internet dan konfigurasi Firebase Anda.');
+                    } finally {
+                        downloadBtn.disabled = false;
+                        downloadBtn.innerHTML = '<i class="fas fa-qrcode"></i> Get QR / Download';
                     }
-
-                    const baseUrl = window.location.origin;
-                    const pageUrl = `${baseUrl}/qrcode.html?imageData=${encodeURIComponent(imageData)}`;
-
-                    const qrApiUrl = `https://quickchart.io/qr?text=${encodeURIComponent(pageUrl)}&ecLevel=H&margin=1&size=200&key=xlord`;
-                    
-                    shareQrCodeContainer.innerHTML = `<img src="${qrApiUrl}" alt="QR Code" style="width: 200px; height: 200px;">`;
-                    
-                    shareModal.style.display = 'block';
                 });
+            }
 
-                if(closeShareModalBtn) {
-                    closeShareModalBtn.addEventListener('click', () => {
-                        shareModal.style.display = 'none';
-                    });
-                }
-                
-                window.addEventListener('click', (event) => {
-                    if (event.target == shareModal) {
-                        shareModal.style.display = 'none';
-                    }
+            // --- 5. Logika Tombol Share ---
+            const shareBtn = document.getElementById('shareBtn');
+            if (shareBtn) {
+                shareBtn.addEventListener('click', async () => {
+                    const shareData = {
+                        title: 'Pictlord Photobooth',
+                        text: 'Coba deh photobooth online keren ini! Aku baru aja bikin foto ciamik di sini. ✨',
+                        url: window.location.origin
+                    };
+                    try {
+                        if (navigator.share) {
+                            await navigator.share(shareData);
+                        } else {
+                            alert('Browser Anda tidak mendukung fitur share. Silakan salin link secara manual.');
+                        }
+                    } catch (err) { console.error('Error saat sharing:', err); }
                 });
             }
 
