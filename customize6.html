@@ -10,7 +10,7 @@
     <meta property="og:title" content="Pictlord | Photobooth Online Gratis">
     <meta property="og:description" content="Ambil foto instan bergaya photobooth online. Kustomisasi dengan bingkai, stiker, dan unduh foto berkualitas tinggi secara instan.">
     <meta property="og:image" content="https://pict.xlord.web.id/assets/home-mockup.png">
-    <meta property="og:url" content="https://pict.xlord.web.id/customize.html">
+    <meta property="og:url" content="https://pict.xlord.web.id/customize">
     <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Pictlord | Photobooth Online Gratis">
@@ -25,21 +25,21 @@
           "@type": "WebPage",
           "name": "Customize Foto Kamu | Pictlord",
           "description": "Kreasikan dan edit foto photobooth Anda dengan berbagai pilihan bingkai, warna, dan stiker.",
-          "url": "https://pict.xlord.web.id/customize.html",
+          "url": "https://pict.xlord.web.id/customize",
           "isPartOf": { "@type": "WebSite", "url": "https://pict.xlord.web.id", "name": "Pictlord" }
         },
         {
           "@type": "BreadcrumbList",
           "itemListElement": [
             { "@type": "ListItem", "position": 1, "name": "Beranda", "item": "https://pict.xlord.web.id" },
-            { "@type": "ListItem", "position": 2, "name": "Customize Foto", "item": "https://pict.xlord.web.id/customize.html" }
+            { "@type": "ListItem", "position": 2, "name": "Customize Foto", "item": "https://pict.xlord.web.id/customize" }
           ]
         }
       ]
     }
     </script>
     
-    <link rel="canonical" href="https://pict.xlord.web.id/customize.html">
+    <link rel="canonical" href="https://pict.xlord.web.id/customize">
     <link rel="icon" href="images/photobooth-new-logo.png">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -593,7 +593,7 @@
                 const dataToStore = { imageData: base64ImageData, expiresAt: expirationTime };
                 const shortId = generateShortId(5);
                 await database.ref('images/' + shortId).set(dataToStore);
-                return `${window.location.origin}/hasil.html?id=${shortId}`;
+                return `${window.location.origin}/hasil?id=${shortId}`;
             }
 
             if (downloadBtn) {
