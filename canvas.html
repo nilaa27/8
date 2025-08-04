@@ -527,7 +527,7 @@
             doneBtn.addEventListener('click', () => {
                 if (images.filter(img => img !== null).length === TOTAL_PHOTOS) {
                     sessionStorage.setItem('photoArray', JSON.stringify(images));
-                    window.location.href = 'customize.html';
+                    window.location.href = 'customize';
                 } else {
                     alert(`Please take or upload ${TOTAL_PHOTOS} photos first.`);
                 }
