@@ -85,12 +85,10 @@
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        /* BARU: Animasi untuk modal */
         @keyframes modalFadeInScale {
             from { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
             to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
         }
-        /* BARU: Animasi shimmer untuk QR code */
         @keyframes shimmer {
             0% { background-position: -400px 0; }
             100% { background-position: 400px 0; }
@@ -401,7 +399,6 @@
             max-width: 700px;
         }
         .modal.show .modal-content {
-             /* BARU: Terapkan animasi saat modal muncul */
             animation: modalFadeInScale 0.4s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
         }
         #modalImagePreview {
@@ -432,7 +429,7 @@
             background-color: var(--light-accent);
         }
         
-        /* --- BARU: Desain Ulang Modal QR Code --- */
+        /* --- Desain Ulang Modal QR Code --- */
         .qr-modal-content {
             background: var(--light-bg);
             border-radius: 24px;
@@ -501,11 +498,34 @@
             background: linear-gradient(100deg, rgba(255,255,255,0) 20%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 80%);
             animation: shimmer 2.5s infinite linear;
         }
-        #copyLinkBtn {
-            margin-top: 25px;
-            padding: 10px 20px;
+
+        /* --- BARU: Styling tambahan untuk Modal QR Code --- */
+        #qrTimer {
+            margin-top: 20px;
+            font-size: 1.4rem;
+            color: var(--light-text);
+            opacity: 0.8;
+            font-weight: 500;
+            transition: opacity 0.3s;
+        }
+
+        .qr-actions-container {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .qr-actions-container .neumorphic-btn {
+            flex: 1;
+            padding: 10px 15px;
             border-radius: 15px;
             font-size: 1.4rem;
+        }
+
+        #copyLinkBtn {
+            margin-top: 0; /* Hapus margin atas karena sudah diatur oleh container */
             background: transparent;
             border: 2px solid var(--light-shadow-dark);
             color: var(--light-text);
@@ -513,6 +533,18 @@
         #copyLinkBtn:hover {
             border-color: var(--light-accent);
             color: var(--light-accent);
+        }
+
+        #downloadDirectBtn {
+            background-color: var(--light-accent);
+            color: white;
+            border: 2px solid var(--light-accent);
+        }
+
+        #downloadDirectBtn:hover {
+            background-color: #c46767;
+            border-color: #c46767;
+            color: white; /* Pastikan warna teks tetap putih saat hover */
         }
 
         /* --- Logo Grid & Color Picker --- */
@@ -736,11 +768,20 @@
             <p class="qr-subtitle">Buka kamera ponsel Anda dan pindai kode di bawah ini.</p>
             <div id="qrCodePopupContainer">
                 </div>
-            <button id="copyLinkBtn" class="neumorphic-btn">
-                <i class="fas fa-copy"></i> Copy Link
-            </button>
+
+            <div id="qrTimer" class="qr-timer-text"></div>
+            
+            <div class="qr-actions-container">
+                <button id="downloadDirectBtn" class="neumorphic-btn">
+                    <i class="fas fa-download"></i> Download
+                </button>
+                <button id="copyLinkBtn" class="neumorphic-btn">
+                    <i class="fas fa-copy"></i> Copy Link
+                </button>
+            </div>
         </div>
     </div>
+
 
     <script src="https://cdn.jsdelivr.net/npm/vanilla-picker@2.12.1/dist/vanilla-picker.min.js"></script>
     
@@ -770,7 +811,10 @@
 
 
         document.addEventListener('DOMContentLoaded', () => {
-            let currentQrLink = ''; // BARU: Variabel untuk menyimpan link QR saat ini
+            // --- Variabel untuk state modal QR ---
+            let currentQrLink = ''; 
+            let currentImageData = null; 
+            let qrTimerInterval = null;
             
             // --- 1. Theme Manager & Active Button States ---
             const themeToggle = document.getElementById('theme-toggle');
@@ -819,15 +863,50 @@
             const downloadBtn = document.getElementById('downloadCopyBtn');
             const qrCodePopupContainer = document.getElementById('qrCodePopupContainer');
             const copyLinkBtn = document.getElementById('copyLinkBtn');
+            const downloadDirectBtn = document.getElementById('downloadDirectBtn');
+            const qrTimerElement = document.getElementById('qrTimer');
+
+            // --- Fungsi untuk memulai dan menghentikan timer ---
+            function startQrTimer(durationInSeconds) {
+                let timer = durationInSeconds;
+                qrTimerElement.style.display = 'block';
+
+                const updateTimer = () => {
+                    if (timer < 0) {
+                        clearInterval(qrTimerInterval);
+                        qrTimerElement.textContent = "Link telah kadaluarsa.";
+                        // Nonaktifkan tombol jika link sudah tidak valid
+                        copyLinkBtn.disabled = true;
+                        downloadDirectBtn.disabled = true;
+                        return;
+                    }
+
+                    const minutes = Math.floor(timer / 60);
+                    let seconds = timer % 60;
+                    seconds = seconds < 10 ? '0' + seconds : seconds;
+                    
+                    qrTimerElement.innerHTML = `Link kamu kadaluarsa dalam <strong>${minutes}:${seconds}</strong>`;
+                    timer--;
+                };
+
+                updateTimer(); // Panggil sekali agar langsung tampil
+                qrTimerInterval = setInterval(updateTimer, 1000);
+            }
 
             // Fungsi untuk membuka/menutup modal
             function showModal(modal) {
                 modal.style.display = 'block';
-                setTimeout(() => modal.classList.add('show'), 10); // Tambah class untuk animasi
+                setTimeout(() => modal.classList.add('show'), 10);
             }
+
             function hideModal(modal) {
                 modal.classList.remove('show');
                 modal.style.display = 'none';
+                // Hentikan timer saat modal ditutup
+                if (modal.id === 'qrModal' && qrTimerInterval) {
+                    clearInterval(qrTimerInterval);
+                    qrTimerElement.style.display = 'none'; // Sembunyikan elemen timer
+                }
             }
             
             // Event Listeners untuk modal
@@ -859,7 +938,7 @@
             }
 
             async function generateTemporaryLink(base64ImageData) {
-                const expirationTime = Date.now() + (5 * 60 * 1000);
+                const expirationTime = Date.now() + (5 * 60 * 1000); // 5 menit
                 const dataToStore = { imageData: base64ImageData, expiresAt: expirationTime };
                 const shortId = generateShortId(5);
                 await database.ref('images/' + shortId).set(dataToStore);
@@ -876,20 +955,31 @@
                     
                     showModal(qrModal);
                     qrCodePopupContainer.innerHTML = '<i class="fas fa-spinner fa-spin spinner"></i>';
-                    copyLinkBtn.disabled = true; // Nonaktifkan tombol copy saat loading
+                    
+                    // Nonaktifkan tombol saat loading & reset state
+                    copyLinkBtn.disabled = true;
+                    downloadDirectBtn.disabled = true;
+                    if (qrTimerInterval) clearInterval(qrTimerInterval); // Hapus timer lama jika ada
 
                     try {
                         const imageData = finalCanvas.toDataURL('image/png', 1.0);
+                        currentImageData = imageData; // Simpan data gambar untuk tombol download langsung
+                        
+                        // Download langsung di browser pengguna
                         const link = document.createElement('a');
                         link.download = `pictlord-${Date.now()}.png`;
                         link.href = imageData;
                         link.click();
                         
-                        currentQrLink = await generateTemporaryLink(imageData); // Simpan link ke variabel
+                        currentQrLink = await generateTemporaryLink(imageData);
                         const qrApiUrl = `https://quickchart.io/qr?text=${encodeURIComponent(currentQrLink)}&ecLevel=H&margin=1&size=180&format=png&qzone=2&color=1c1c1c`;
 
                         qrCodePopupContainer.innerHTML = `<img src="${qrApiUrl}" alt="Scan to download">`;
-                        copyLinkBtn.disabled = false; // Aktifkan lagi tombol copy
+                        
+                        // Aktifkan lagi tombol dan mulai timer
+                        copyLinkBtn.disabled = false;
+                        downloadDirectBtn.disabled = false;
+                        startQrTimer(299); // Mulai timer 5 menit (299 detik)
 
                     } catch (error) {
                         console.error('Gagal membuat link Firebase atau QR Code:', error);
@@ -898,10 +988,24 @@
                 });
             }
 
-            // BARU: Logika untuk tombol "Copy Link"
+            // Logika untuk tombol "Download" di dalam modal
+            if(downloadDirectBtn) {
+                downloadDirectBtn.addEventListener('click', () => {
+                    if (currentImageData) {
+                        const link = document.createElement('a');
+                        link.download = `pictlord-direct-${Date.now()}.png`;
+                        link.href = currentImageData;
+                        link.click();
+                    } else {
+                        alert('Data gambar tidak ditemukan. Coba lagi.');
+                    }
+                });
+            }
+
+            // Logika untuk tombol "Copy Link"
             if(copyLinkBtn) {
                 copyLinkBtn.addEventListener('click', () => {
-                    if (currentQrLink) {
+                    if (currentQrLink && !copyLinkBtn.disabled) {
                         navigator.clipboard.writeText(currentQrLink).then(() => {
                             const originalText = copyLinkBtn.innerHTML;
                             copyLinkBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
