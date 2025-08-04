@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download Foto Anda - Pictlord</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --light-bg: #e0e5ec;
+            --light-text: #555;
+            --light-shadow-dark: #a3b1c6;
+            --light-shadow-light: #ffffff;
+            --light-accent: #E28585;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light-bg);
+            color: var(--light-text);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            text-align: center;
+        }
+        .container {
+            background-color: var(--light-bg);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 10px 10px 20px var(--light-shadow-dark), -10px -10px 20px var(--light-shadow-light);
+            max-width: 90vw;
+            width: 450px;
+        }
+        h1 {
+            font-size: 2.4rem;
+            margin-bottom: 20px;
+        }
+        p {
+            font-size: 1.6rem;
+            margin-bottom: 25px;
+        }
+        #image-container img {
+            max-width: 100%;
+            border-radius: 15px;
+            box-shadow: 5px 5px 10px var(--light-shadow-dark), -5px -5px 10px var(--light-shadow-light);
+            margin-bottom: 25px;
+        }
+        .download-btn {
+            border: none;
+            background: var(--light-accent);
+            color: white;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            box-shadow: 5px 5px 10px var(--light-shadow-dark), -5px -5px 10px var(--light-shadow-light);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-size: 1.6rem;
+            padding: 15px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+        }
+        .download-btn:hover {
+            transform: translateY(-2px);
+        }
+        .download-btn.hidden {
+            display: none;
+        }
+        .error-message {
+            color: #c46767;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1 id="page-title">Foto Anda Siap!</h1>
+        <p id="page-description">Tekan tombol di bawah untuk menyimpan gambar ke perangkat Anda.</p>
+        
+        <div id="image-container">
+            </div>
+
+        <a href="#" id="finalDownloadBtn" class="download-btn hidden" download>
+            <i class="fas fa-download"></i> Download Gambar
+        </a>
+    </div>
+
+    <script>
+        window.addEventListener('load', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const imageId = urlParams.get('id');
+
+            const titleEl = document.getElementById('page-title');
+            const descEl = document.getElementById('page-description');
+            const imageContainer = document.getElementById('image-container');
+            const downloadBtn = document.getElementById('finalDownloadBtn');
+
+            if (!imageId) {
+                displayError("Link tidak valid atau tidak lengkap.");
+                return;
+            }
+
+            try {
+                const storedDataJSON = localStorage.getItem(imageId);
+                if (!storedDataJSON) {
+                    displayError("Foto tidak ditemukan. Mungkin link sudah kedaluwarsa atau salah.");
+                    return;
+                }
+
+                const storedData = JSON.parse(storedDataJSON);
+
+                // Periksa apakah sudah kedaluwarsa
+                if (Date.now() > storedData.expiresAt) {
+                    displayError("Link ini telah kedaluwarsa setelah 5 menit.");
+                    localStorage.removeItem(imageId); // Hapus data yang sudah basi
+                    return;
+                }
+
+                // Jika semuanya valid, tampilkan gambar
+                const img = document.createElement('img');
+                img.src = storedData.imageData;
+                img.alt = "Hasil Photobooth";
+                imageContainer.appendChild(img);
+
+                // Siapkan tombol download
+                downloadBtn.href = storedData.imageData;
+                downloadBtn.setAttribute('download', `pictlord-${Date.now()}.png`);
+                downloadBtn.classList.remove('hidden');
+
+            } catch (error) {
+                console.error("Error:", error);
+                displayError("Terjadi kesalahan saat memuat gambar.");
+            }
+
+            function displayError(message) {
+                titleEl.textContent = "Oops!";
+                descEl.innerHTML = `<span class="error-message">${message}</span>`;
+                downloadBtn.classList.add('hidden');
+            }
+        });
+    </script>
+
+</body>
+</html>
