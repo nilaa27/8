@@ -6,6 +6,10 @@
     <title>Download Foto Anda - Pictlord</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
     <style>
         :root {
             --light-bg: #e0e5ec;
@@ -67,33 +71,40 @@
             border-radius: 30px;
             text-decoration: none;
         }
-        .download-btn:hover {
-            transform: translateY(-2px);
-        }
-        .download-btn.hidden {
-            display: none;
-        }
-        .error-message {
-            color: #c46767;
-            font-weight: 600;
-        }
+        .download-btn:hover { transform: translateY(-2px); }
+        .download-btn.hidden { display: none; }
+        .error-message { color: #c46767; font-weight: 600; }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h1 id="page-title">Foto Anda Siap!</h1>
-        <p id="page-description">Tekan tombol di bawah untuk menyimpan gambar ke perangkat Anda.</p>
-        
-        <div id="image-container">
-            </div>
-
+        <h1 id="page-title">Memuat Foto...</h1>
+        <p id="page-description">Harap tunggu sebentar.</p>
+        <div id="image-container"></div>
         <a href="#" id="finalDownloadBtn" class="download-btn hidden" download>
             <i class="fas fa-download"></i> Download Gambar
         </a>
     </div>
 
     <script>
+        // --- Inisialisasi Firebase ---
+        // !!! PENTING: GANTI DENGAN KONFIGURASI PROYEK FIREBASE ANDA SENDIRI !!!
+        // (Harus sama dengan yang ada di customize.html)
+        const firebaseConfig = {
+    apiKey: "AIzaSyCCaLXoaHFOuXRnHAvQzg9R0c1tfsTsTBU",
+    authDomain: "project-xlord.firebaseapp.com",
+    databaseURL: "https://project-xlord-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "project-xlord",
+    storageBucket: "project-xlord.appspot.com",
+    messagingSenderId: "847461816867",
+    appId: "1:847461816867:web:17071ba14ffe6a6099ef96",
+    measurementId: "G-344KX3B197"
+};
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
         window.addEventListener('load', () => {
             const urlParams = new URLSearchParams(window.location.search);
             const imageId = urlParams.get('id');
@@ -108,23 +119,31 @@
                 return;
             }
 
-            try {
-                const storedDataJSON = localStorage.getItem(imageId);
-                if (!storedDataJSON) {
+            // Referensi ke data spesifik di Firebase berdasarkan ID dari URL
+            const imageRef = database.ref('images/' + imageId);
+
+            // Ambil data dari Firebase satu kali
+            imageRef.once('value', (snapshot) => {
+                // Cek apakah data dengan ID tersebut ada
+                if (!snapshot.exists()) {
                     displayError("Foto tidak ditemukan. Mungkin link sudah kedaluwarsa atau salah.");
                     return;
                 }
 
-                const storedData = JSON.parse(storedDataJSON);
-
+                const storedData = snapshot.val();
+                
                 // Periksa apakah sudah kedaluwarsa
                 if (Date.now() > storedData.expiresAt) {
                     displayError("Link ini telah kedaluwarsa setelah 5 menit.");
-                    localStorage.removeItem(imageId); // Hapus data yang sudah basi
+                    // Hapus data yang sudah basi dari Firebase untuk menjaga kebersihan database
+                    imageRef.remove();
                     return;
                 }
 
                 // Jika semuanya valid, tampilkan gambar
+                titleEl.textContent = "Foto Anda Siap!";
+                descEl.textContent = "Tekan tombol di bawah untuk menyimpan gambar ke perangkat Anda.";
+
                 const img = document.createElement('img');
                 img.src = storedData.imageData;
                 img.alt = "Hasil Photobooth";
@@ -135,10 +154,10 @@
                 downloadBtn.setAttribute('download', `pictlord-${Date.now()}.png`);
                 downloadBtn.classList.remove('hidden');
 
-            } catch (error) {
-                console.error("Error:", error);
-                displayError("Terjadi kesalahan saat memuat gambar.");
-            }
+            }).catch(error => {
+                console.error("Error mengambil data dari Firebase:", error);
+                displayError("Gagal terhubung ke server. Periksa koneksi internet Anda.");
+            });
 
             function displayError(message) {
                 titleEl.textContent = "Oops!";
@@ -147,6 +166,5 @@
             }
         });
     </script>
-
 </body>
 </html>
