@@ -1133,8 +1133,8 @@
                         const shareData = {
                             title: 'Pictlord Photobooth',
                             text: 'bingung nyari? photobooth online free dimana dan kapan aja tenang pictlord 📸solusinya 😎',
-                            url: shareUrl
-                        };
+                            url: window.location.origin // Menggunakan URL domain utama situs
+};
 
                         if (navigator.share) {
                              await navigator.share(shareData);
