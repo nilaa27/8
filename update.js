@@ -98,7 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
         shareBtn.addEventListener('click', async () => {
             const shareData = {
                 title: 'Pictlord Photobooth',
-                text: 'Coba deh photobooth online keren ini! Aku baru aja bikin foto ciamik di sini. ✨',
+                text: 'bingung nyari? photobooth online free dimana dan kapan aja tenang pictlord 📸solusinya 😎',
                 url: window.location.origin // Menggunakan URL domain utama situs
             };
     
