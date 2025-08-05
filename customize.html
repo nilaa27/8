@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Kreasikan foto photobooth online Anda. Pilih dari puluhan bingkai, warna, dan stiker untuk menciptakan strip foto unik milikmu.">
-    <meta name="keywords" content="photobooth, customize foto, edit foto, online photobooth, tiktok photobooth, picapica, digibooth, pictlord, firebase, qr code">
+    <meta name="keywords" content="photobooth, customize foto, edit foto, online photobooth, tiktok photobooth, picapica, digibooth, pictlord, firebase, qr code, web share">
     <title>Pictlord | Customize Foto Kamu</title>
 
     <meta property="og:title" content="Pictlord | Photobooth Online Gratis">
@@ -234,6 +234,8 @@
         .neumorphic-btn[disabled] {
             cursor: not-allowed;
             opacity: 0.7;
+            transform: none;
+            box-shadow: 5px 5px 10px var(--light-shadow-dark), -5px -5px 10px var(--light-shadow-light);
         }
 
         .custom-buttons-container {
@@ -855,7 +857,9 @@
         };
 
         // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
         const database = firebase.database();
 
 
@@ -915,7 +919,8 @@
             const controlsPanel = document.querySelector('.controls-panel');
             controlsPanel.addEventListener('click', (e) => {
                 const target = e.target;
-                if (target.closest('.neumorphic-btn') || target.type === 'checkbox') {
+                // Cek jika yang diklik adalah tombol atau checkbox, tapi BUKAN tombol Share
+                if ((target.closest('.neumorphic-btn') && !target.closest('#shareBtn')) || target.type === 'checkbox') {
                     const button = target.closest('button');
                     if(button) {
                         const container = button.parentElement;
@@ -951,19 +956,18 @@
             // =========================================================================
             function showModal(modal) {
                 modal.style.display = 'block';
-                setTimeout(() => modal.classList.add('show'), 10); // beri waktu untuk display block sebelum transisi
+                setTimeout(() => modal.classList.add('show'), 10);
             }
 
             function hideModal(modal) {
                 modal.classList.remove('show');
-                // Tunggu transisi selesai sebelum menyembunyikan
                 setTimeout(() => {
                     modal.style.display = 'none';
                     if (modal.id === 'qrModal' && qrTimerInterval) {
                         clearInterval(qrTimerInterval);
                         qrTimerElement.style.display = 'none';
                     }
-                }, 400); // 400ms sesuai durasi transisi opacity
+                }, 400);
             }
             
             // --- Tombol & Event untuk Modal Preview ---
@@ -1107,7 +1111,52 @@
                 window.history.back();
             });
 
-            // =========================================================================
+            // const shareBtn = document.getElementById('shareBtn');
+            if (shareBtn) {
+                shareBtn.addEventListener('click', async () => {
+                    const finalCanvas = finalCanvasContainer.querySelector('canvas');
+                    if (!finalCanvas) {
+                        alert('Gambar belum siap untuk dibagikan. Mohon tunggu sebentar.');
+                        return;
+                    }
+                    
+                    // Tambahkan loading state pada tombol
+                    const originalBtnHTML = shareBtn.innerHTML;
+                    shareBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memuat...';
+                    shareBtn.disabled = true;
+
+                    try {
+                        const imageData = finalCanvas.toDataURL('image/png', 1.0);
+                        // Gunakan fungsi yang sudah ada untuk membuat link sementara
+                        const shareUrl = await generateTemporaryLink(imageData);
+
+                        const shareData = {
+                            title: 'Pictlord Photobooth',
+                            text: 'bingung nyari? photobooth online free dimana dan kapan aja tenang pictlord 📸solusinya 😎',
+                            url: shareUrl
+                        };
+
+                        if (navigator.share) {
+                             await navigator.share(shareData);
+                             console.log('Link berhasil dibagikan!');
+                        } else {
+                            alert('Browser Anda tidak mendukung fitur berbagi. Silakan gunakan tombol "Get QR / Download".');
+                        }
+
+                    } catch (err) {
+                        console.error('Error saat berbagi:', err);
+                        // Cek jika error karena pengguna membatalkan dialog share
+                        if (err.name !== 'AbortError') {
+                            alert(`Gagal membuat link untuk dibagikan. Silakan coba lagi.`);
+                        }
+                    } finally {
+                        // Kembalikan tombol ke state semula
+                        shareBtn.innerHTML = originalBtnHTML;
+                        shareBtn.disabled = false;
+                    }
+                });
+            }
+            // // =========================================================================
             // RENDER AWAL
             // =========================================================================
             setTimeout(updateCanvasPreview, 100);
