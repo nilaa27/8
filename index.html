@@ -83,7 +83,12 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; scroll-behavior: smooth; }
-        html { font-size: 62.5%; }
+        
+        html { 
+            font-size: 62.5%; 
+            scroll-padding-top: 12rem;
+        }
+
         body {
             font-size: 1.6rem; background: var(--bg-color); color: var(--text-color);
             line-height: 1.7; transition: background-color 0.5s ease, color 0.5s ease;
@@ -118,7 +123,18 @@
         .page-section { padding: 8rem 0; overflow-x: hidden; }
         .section-title { font-size: 4rem; font-weight: 800; text-align: center; margin-bottom: 1.5rem; color: var(--text-color); }
         .section-subtitle { font-size: 1.8rem; color: var(--text-light); text-align: center; max-width: 700px; margin: 0 auto 5rem auto; }
-        #hero { display: flex; align-items: center; justify-content: center; text-align: center; min-height: 100vh; padding: 4rem 0; position: relative; overflow: hidden; }
+
+        #hero { 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            text-align: center; 
+            min-height: 100vh; 
+            padding: 12rem 0 6rem 0;
+            position: relative; 
+            overflow: hidden; 
+        }
+
         .hero-glow-bg { position: absolute; top: 50%; left: 50%; width: 40vw; height: 40vw; max-width: 500px; max-height: 500px; background: radial-gradient(circle, rgba(13, 148, 136, 0.4), transparent 70%); border-radius: 50%; filter: blur(100px); transform: translate(-50%, -50%); z-index: 0; animation: pulsate-glow 7s ease-in-out infinite; }
         @keyframes pulsate-glow { 0%, 100% { transform: translate(-50%, -50%) scale(1); } 50% { transform: translate(-50%, -50%) scale(1.2); } }
         .hero-content { max-width: 800px; position: relative; z-index: 2; }
@@ -147,7 +163,6 @@
         .step-card h3, .feature-card h4 { font-size: 1.8rem; font-weight: 600; margin-bottom: 1rem; color: var(--text-color); }
         .step-card p, .feature-card p { font-size: 1.5rem; color: var(--text-light); }
 
-        /* [PERUBAHAN 2]: CSS untuk seksi Aksi Cepat ditambahkan di sini */
         .actions-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -246,7 +261,7 @@
             .hero-header { font-size: 4.8rem; }
             .section-title { font-size: 3.6rem; }
             .preview-2, .preview-3 { display: none; }
-            .actions-grid { grid-template-columns: 1fr; } /* Responsive untuk Aksi Cepat */
+            .actions-grid { grid-template-columns: 1fr; } 
             .main-header { width: 90%; }
             .navbar { padding: 0.8rem 1rem; }
         }
@@ -363,7 +378,6 @@
                     <div class="feature-card" data-aos="flip-left" data-aos-delay="100"><div class="feature-icon"><i class="fas fa-palette"></i></div><h4>Ratusan Warna Bingkai</h4><p>Sesuaikan warna bingkai strip fotomu agar cocok dengan gayamu. Pilihan tak terbatas!</p></div>
                     <div class="feature-card" data-aos="flip-right" data-aos-delay="200"><div class="feature-icon"><i class="fas fa-icons"></i></div><h4>Filter & Stiker Lucu</h4><p>Tambahkan sentuhan personal dengan koleksi filter aesthetic dan stiker yang terus kami perbarui.</p></div>
                     <div class="feature-card" data-aos="flip-left" data-aos-delay="300"><div class="feature-icon"><i class="fas fa-bolt"></i></div><h4>Instan & Tanpa Login</h4><p>Tidak perlu mendaftar atau login. Langsung gunakan dan dapatkan hasilnya dalam sekejap.</p></div>
-                    <div class="feature-card" data-aos="flip-right" data-aos-delay="400"><div class="feature-icon"><i class="fas fa-gem"></i></div><h4>Kualitas Tinggi</h4><p>Unduh fotomu dalam resolusi tinggi yang siap dicetak atau dipajang di media sosial.</p></div>
                 </div>
             </div>
         </section>
@@ -452,13 +466,13 @@
 document.addEventListener('DOMContentLoaded', () => {
     AOS.init({
         duration: 800,
-        once: false, // Animasi akan berulang setiap kali di-scroll
+        once: false, 
         offset: 120,
         easing: 'ease-out-sine'
     });
     
     // =================================================================
-    // START: Konfigurasi Firebase (Sudah diisi dengan data Anda)
+    // START: Konfigurasi Firebase
     // =================================================================
     const firebaseConfig = {
       apiKey: "AIzaSyCCaLXoaHFOuXRnHAvQzg9R0c1tfsTsTBU",
@@ -650,7 +664,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const createTestimonialCard = (data, delay = 0) => {
             const card = document.createElement('div');
             card.className = 'testimonial-card';
-            card.setAttribute('data-aos', 'fade-up'); // Menggunakan fade-up untuk testimoni agar tetap rapi
+            card.setAttribute('data-aos', 'fade-up');
             card.setAttribute('data-aos-delay', delay);
             const ratingHTML = Array.from({length: 5}, (_, i) => `<i class="fas fa-star" style="color: ${i < data.rating ? 'var(--star-color)' : 'var(--text-light)'}; opacity: ${i < data.rating ? 1 : 0.3};"></i>`).join('');
             card.innerHTML = `<div class="testimonial-rating">${ratingHTML}</div><p class="testimonial-text">"${data.text}"</p><div class="author-details"><div class="author-name">${data.name}</div><div class="author-position">${data.position}</div></div>`;
@@ -668,12 +682,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 testimonials.reverse(); 
                 
                 testimonials.forEach((testimonial, index) => {
-                    const delay = index * 100; // Delay lebih singkat
+                    const delay = index * 100;
                     const newCard = createTestimonialCard(testimonial, delay);
                     testimonialGrid.appendChild(newCard);
                 });
 
-                // AOS tidak perlu di-refresh secara manual di sini karena sudah otomatis mendeteksi elemen baru saat scroll
             });
         };
         loadTestimonials();
