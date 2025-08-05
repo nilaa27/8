@@ -85,9 +85,9 @@
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        @keyframes modalFadeInScale {
-            from { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
-            to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+        @keyframes modalFadeInUp { /* Animasi Modal Baru */
+            from { opacity: 0; transform: translate(-50%, -45%); }
+            to { opacity: 1; transform: translate(-50%, -50%); }
         }
         @keyframes shimmer {
             0% { background-position: -400px 0; }
@@ -211,20 +211,25 @@
             display: block;
         }
 
-        /* --- Neumorphic Buttons & Controls --- */
+        /* --- Neumorphic Buttons & Controls (MODERNIZED) --- */
         .neumorphic-btn {
             border: none; background: var(--light-bg); color: var(--light-text);
             font-family: 'Poppins', sans-serif; font-weight: 500; cursor: pointer;
-            transition: all 0.2s ease-in-out;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1); /* Transisi lebih halus */
             box-shadow: 5px 5px 10px var(--light-shadow-dark), -5px -5px 10px var(--light-shadow-light);
             display: flex; align-items: center; justify-content: center;
             gap: 8px;
+            position: relative; /* Diperlukan untuk Tooltip */
         }
-        .neumorphic-btn:hover { color: var(--light-accent); }
+        .neumorphic-btn:hover {
+            color: var(--light-accent);
+            transform: translateY(-2px); /* Efek tombol terangkat */
+            box-shadow: 8px 8px 15px var(--light-shadow-dark), -8px -8px 15px var(--light-shadow-light); /* Shadow lebih menonjol */
+        }
         .neumorphic-btn:active, .neumorphic-btn.active {
             box-shadow: inset 5px 5px 10px var(--light-inset-shadow-dark), inset -5px -5px 10px var(--light-inset-shadow-light);
             color: var(--light-accent);
-            transform: scale(0.98);
+            transform: scale(0.98) translateY(0); /* Kembali ke posisi semula saat ditekan */
         }
         .neumorphic-btn[disabled] {
             cursor: not-allowed;
@@ -242,6 +247,36 @@
         }
         .buttonBgFrames { background-size: cover; background-position: center; }
         .btnShapeSize, .stickerIconSize { width: 22px; height: 22px; }
+        
+        /* --- Tooltip Styling --- */
+        .neumorphic-btn .tooltip-text {
+            visibility: hidden;
+            width: max-content;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px 10px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%; /* Posisikan di atas tombol */
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s, transform 0.3s;
+            font-size: 1.2rem;
+            pointer-events: none; /* Agar tidak mengganggu klik */
+        }
+
+        .neumorphic-btn:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+            transform: translateX(-50%) translateY(-5px); /* Efek muncul dari bawah */
+        }
+        .dark-mode .neumorphic-btn .tooltip-text {
+            background-color: #f1f1f1;
+            color: #333;
+        }
 
         /* --- Specific Controls Styling --- */
         #colorPickerBtn { background: conic-gradient(red, orange, yellow, green, cyan, blue, violet, red); }
@@ -351,13 +386,6 @@
             padding: 12px;
             font-size: 1.5rem;
             border-radius: 25px;
-            transition: all 0.3s ease;
-        }
-        .final-actions-container button:hover, .download-action-container button:hover {
-            transform: translateY(-2px);
-        }
-        .final-actions-container button:active, .download-action-container button:active {
-            transform: scale(0.95);
         }
         .final-actions-container button .fas, .download-action-container button .fas {
             margin-right: 8px;
@@ -368,15 +396,11 @@
              background: var(--light-accent); color: white;
              box-shadow: 5px 5px 10px var(--light-shadow-dark), -5px -5px 10px var(--light-shadow-light);
         }
-        #downloadCopyBtn:active {
-            box-shadow: inset 5px 5px 10px var(--light-inset-shadow-dark), inset -5px -5px 10px var(--light-inset-shadow-light);
-        }
         #downloadCopyBtn:hover {
              background-color: #c46767;
-             box-shadow: 5px 5px 10px var(--light-shadow-dark), -5px -5px 10px var(--light-shadow-light);
         }
 
-        /* --- Styling untuk Fitur Modal --- */
+        /* --- MODAL STYLING (MODERNIZED) --- */
         .modal {
             display: none;
             position: fixed;
@@ -386,9 +410,17 @@
             width: 100%;
             height: 100%;
             overflow: auto;
-            background-color: rgba(0,0,0,0.6);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
+            /* Efek baru */
+            background-color: rgba(0, 0, 0, 0.3); /* Gelapnya sedikit dikurangi */
+            backdrop-filter: blur(10px) saturate(120%); /* Blur lebih kuat & saturasi warna latar */
+            -webkit-backdrop-filter: blur(10px) saturate(120%);
+            opacity: 0; /* Mulai dari transparan untuk animasi fade-in */
+            transition: opacity 0.4s ease; /* Transisi untuk fade-in */
+            pointer-events: none; /* Cegah interaksi saat hidden */
+        }
+        .modal.show {
+            opacity: 1;
+            pointer-events: auto; /* Izinkan interaksi saat tampil */
         }
         .modal-content {
             position: absolute;
@@ -399,12 +431,18 @@
             max-width: 700px;
         }
         .modal.show .modal-content {
-            animation: modalFadeInScale 0.4s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+            animation: modalFadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
         #modalImagePreview {
-            width: 100%;
+            max-width: 100%;
+            max-height: 85vh;
+            width: auto;
+            height: auto;
+            display: block;
+            margin: auto;
             border-radius: 15px;
             border: 5px solid white;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3); /* Tambah shadow agar lebih menonjol */
         }
         .modal-close-btn {
             position: absolute;
@@ -423,13 +461,14 @@
             transition: 0.3s;
             cursor: pointer;
             z-index: 10;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.4);
         }
         .modal-close-btn:hover, .modal-close-btn:focus { 
             transform: scale(1.1);
             background-color: var(--light-accent);
         }
         
-        /* --- Desain Ulang Modal QR Code --- */
+        /* --- QR Code Modal Styling --- */
         .qr-modal-content {
             background: var(--light-bg);
             border-radius: 24px;
@@ -481,13 +520,12 @@
             align-items: center;
             box-shadow: inset 0 2px 10px rgba(0,0,0,0.05);
             position: relative;
-            overflow: hidden; /* Penting untuk efek shimmer */
+            overflow: hidden;
         }
         #qrCodePopupContainer .spinner {
             font-size: 40px;
             color: var(--light-accent);
         }
-        /* Efek Shimmer */
         #qrCodePopupContainer::after {
             content: '';
             position: absolute;
@@ -499,7 +537,6 @@
             animation: shimmer 2.5s infinite linear;
         }
 
-        /* --- BARU: Styling tambahan untuk Modal QR Code --- */
         #qrTimer {
             margin-top: 20px;
             font-size: 1.4rem;
@@ -525,7 +562,7 @@
         }
 
         #copyLinkBtn {
-            margin-top: 0; /* Hapus margin atas karena sudah diatur oleh container */
+            margin-top: 0;
             background: transparent;
             border: 2px solid var(--light-shadow-dark);
             color: var(--light-text);
@@ -544,7 +581,7 @@
         #downloadDirectBtn:hover {
             background-color: #c46767;
             border-color: #c46767;
-            color: white; /* Pastikan warna teks tetap putih saat hover */
+            color: white;
         }
 
         /* --- Logo Grid & Color Picker --- */
@@ -586,7 +623,7 @@
     <header id="main-header">
         <a href="#" class="side-logo">pict<span>lord</span></a>
         <div class="header-buttons">
-            <button id="theme-toggle">
+            <button id="theme-toggle" class="neumorphic-btn">
                 <svg id="sun-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
                 <svg id="moon-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
             </button>
@@ -665,17 +702,29 @@
                 <div class="control-group">
                     <h3 class="options-label">Photo Shape</h3>
                     <div class="custom-buttons-container">
-                        <button id="noneFrameShape" class="neumorphic-btn buttonShapes"><img src="assets/frame-shapes/noneShape.png" alt="None" class="btnShapeSize"></button>
-                        <button id="softFrameShape" class="neumorphic-btn buttonShapes"><img src="assets/frame-shapes/squareShape.png" alt="Soft Edge Frame" class="btnShapeSize"></button>
-                        <button id="circleFrameShape" class="neumorphic-btn buttonShapes"><img src="assets/frame-shapes/circleShape.png" alt="Circle Frame" class="btnShapeSize"></button>
-                        <button id="heartFrameShape" class="neumorphic-btn buttonShapes"><img src="assets/frame-shapes/heartShape.png" alt="Heart Frame" class="btnShapeSize"></button>
+                        <button id="noneFrameShape" class="neumorphic-btn buttonShapes">
+                            <img src="assets/frame-shapes/noneShape.png" alt="None" class="btnShapeSize">
+                            <span class="tooltip-text">Tanpa Bentuk</span>
+                        </button>
+                        <button id="softFrameShape" class="neumorphic-btn buttonShapes">
+                            <img src="assets/frame-shapes/squareShape.png" alt="Soft Edge Frame" class="btnShapeSize">
+                            <span class="tooltip-text">Kotak</span>
+                        </button>
+                        <button id="circleFrameShape" class="neumorphic-btn buttonShapes">
+                            <img src="assets/frame-shapes/circleShape.png" alt="Circle Frame" class="btnShapeSize">
+                            <span class="tooltip-text">Lingkaran</span>
+                        </button>
+                        <button id="heartFrameShape" class="neumorphic-btn buttonShapes">
+                            <img src="assets/frame-shapes/heartShape.png" alt="Heart Frame" class="btnShapeSize">
+                            <span class="tooltip-text">Hati</span>
+                        </button>
                     </div>
                 </div>
 
                 <div class="control-group">
                     <h3 class="options-label">Stickers</h3>
                     <div class="custom-buttons-container">
-                        <button id="noneSticker" class="neumorphic-btn buttonStickers"><img src="assets/frame-shapes/noneShape.png" alt="None" class="stickerIconSize"></button>
+                        <button id="noneSticker" class="neumorphic-btn buttonStickers"><img src="assets/frame-shapes/noneShape.png" alt="None" class="stickerIconSize"><span class="tooltip-text">Tanpa Stiker</span></button>
                         <button id="bunnySticker" class="neumorphic-btn buttonStickers"><img src="assets/stickers/bunny1.png" alt="Bunny" class="stickerIconSize"/></button>
                         <button id="luckySticker" class="neumorphic-btn buttonStickers new-sticker"><img src="assets/stickers/lucky1.png" alt="Lucky" class="stickerIconSize"/></button>
                         <button id="kissSticker" class="neumorphic-btn buttonStickers"><img src="assets/stickers/kiss1.png" alt="Kiss" class="stickerIconSize"/></button>
@@ -795,15 +844,15 @@
     <script>
         // !!! PENTING: GANTI DENGAN KONFIGURASI PROYEK FIREBASE ANDA SENDIRI !!!
         const firebaseConfig = {
-    apiKey: "AIzaSyCCaLXoaHFOuXRnHAvQzg9R0c1tfsTsTBU",
-    authDomain: "project-xlord.firebaseapp.com",
-    databaseURL: "https://project-xlord-default-rtdb.asia-southeast1.firebasedatabase.app",
-    projectId: "project-xlord",
-    storageBucket: "project-xlord.appspot.com",
-    messagingSenderId: "847461816867",
-    appId: "1:847461816867:web:17071ba14ffe6a6099ef96",
-    measurementId: "G-344KX3B197"
-};
+            apiKey: "AIzaSyCCaLXoaHFOuXRnHAvQzg9R0c1tfsTsTBU",
+            authDomain: "project-xlord.firebaseapp.com",
+            databaseURL: "https://project-xlord-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "project-xlord",
+            storageBucket: "project-xlord.appspot.com",
+            messagingSenderId: "847461816867",
+            appId: "1:847461816867:web:17071ba14ffe6a6099ef96",
+            measurementId: "G-344KX3B197"
+        };
 
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
@@ -811,123 +860,206 @@
 
 
         document.addEventListener('DOMContentLoaded', () => {
-            // --- Variabel untuk state modal QR ---
+            // --- Variabel State ---
             let currentQrLink = ''; 
             let currentImageData = null; 
             let qrTimerInterval = null;
             
-            // --- 1. Theme Manager & Active Button States ---
+            const finalCanvasContainer = document.getElementById('photoPreview');
+            const modalImagePreview = document.getElementById('modalImagePreview');
+            const previewModal = document.getElementById('previewModal');
+            const qrModal = document.getElementById('qrModal');
+
+            // =========================================================================
+            // FUNGSI PEMBARUAN CANVAS TERPUSAT
+            // =========================================================================
+            async function updateCanvasPreview() {
+                // Asumsi fungsi `drawFinalImage` ada di file canvas.js atau customize.js
+                if (typeof drawFinalImage === 'function') {
+                    await drawFinalImage();
+                } else {
+                    console.warn('Fungsi `drawFinalImage()` tidak ditemukan.');
+                    return;
+                }
+
+                const finalCanvas = finalCanvasContainer.querySelector('canvas');
+                if (!finalCanvas) return;
+
+                // Perbarui modal preview jika sedang terbuka
+                if (previewModal.classList.contains('show')) {
+                    modalImagePreview.src = finalCanvas.toDataURL('image/png', 1.0);
+                }
+            }
+
+
+            // =========================================================================
+            // EVENT LISTENERS
+            // =========================================================================
+            
+            // 1. Theme Manager
             const themeToggle = document.getElementById('theme-toggle');
             const applyTheme = (theme) => {
                 document.body.classList.toggle('dark-mode', theme === 'dark');
+                updateCanvasPreview(); 
             };
             themeToggle.addEventListener('click', () => {
-                const isDarkMode = document.body.classList.contains('dark-mode');
-                const newTheme = isDarkMode ? 'light' : 'dark';
+                const newTheme = document.body.classList.contains('dark-mode') ? 'light' : 'dark';
                 localStorage.setItem('theme', newTheme);
                 applyTheme(newTheme);
             });
             const savedTheme = localStorage.getItem('theme') || 'dark';
             applyTheme(savedTheme);
 
-            const buttonContainers = document.querySelectorAll('.custom-buttons-container, .logo-container');
-            buttonContainers.forEach(container => {
-                container.addEventListener('click', (e) => {
-                    const clickedButton = e.target.closest('button');
-                    if (!clickedButton) return;
-                    const parentControlGroup = clickedButton.closest('.control-group');
-                    const isStickerGroup = parentControlGroup && parentControlGroup.querySelector('.options-label').textContent === 'Stickers';
-                    if (isStickerGroup) {
-                         if(clickedButton.id === 'noneSticker') {
-                            const stickerButtons = container.querySelectorAll('button');
-                            stickerButtons.forEach(btn => btn.classList.remove('active'));
-                            clickedButton.classList.add('active');
-                        } else {
-                            document.getElementById('noneSticker')?.classList.remove('active');
-                            clickedButton.classList.toggle('active');
+
+            // 2. Event Listener Terpusat untuk semua tombol kustomisasi
+            const controlsPanel = document.querySelector('.controls-panel');
+            controlsPanel.addEventListener('click', (e) => {
+                const target = e.target;
+                if (target.closest('.neumorphic-btn') || target.type === 'checkbox') {
+                    const button = target.closest('button');
+                    if(button) {
+                        const container = button.parentElement;
+                        const isStickerGroup = container.previousElementSibling?.textContent === 'Stickers';
+
+                        if (isStickerGroup) {
+                            if (button.id === 'noneSticker') {
+                                container.querySelectorAll('button').forEach(btn => btn.classList.remove('active'));
+                                button.classList.add('active');
+                            } else {
+                                document.getElementById('noneSticker')?.classList.remove('active');
+                                button.classList.toggle('active');
+                            }
+                        } else if (container.classList.contains('custom-buttons-container') || container.classList.contains('logo-container')) {
+                            container.querySelectorAll('button').forEach(btn => btn.classList.remove('active'));
+                            button.classList.add('active');
                         }
-                    } else {
-                         const buttonsInGroup = container.querySelectorAll('button');
-                         buttonsInGroup.forEach(btn => btn.classList.remove('active'));
-                         clickedButton.classList.add('active');
                     }
-                });
+                    updateCanvasPreview();
+                }
             });
 
-            // --- 2. Logika Modal (Preview & QR) ---
-            const previewModal = document.getElementById('previewModal');
-            const previewBtn = document.getElementById('previewBtn');
-            const previewModalCloseBtn = previewModal.querySelector('.modal-close-btn');
-            const qrModal = document.getElementById('qrModal');
-            const qrModalCloseBtn = qrModal.querySelector('.qr-close-btn');
-            const downloadBtn = document.getElementById('downloadCopyBtn');
-            const qrCodePopupContainer = document.getElementById('qrCodePopupContainer');
-            const copyLinkBtn = document.getElementById('copyLinkBtn');
-            const downloadDirectBtn = document.getElementById('downloadDirectBtn');
-            const qrTimerElement = document.getElementById('qrTimer');
-
-            // --- Fungsi untuk memulai dan menghentikan timer ---
-            function startQrTimer(durationInSeconds) {
-                let timer = durationInSeconds;
-                qrTimerElement.style.display = 'block';
-
-                const updateTimer = () => {
-                    if (timer < 0) {
-                        clearInterval(qrTimerInterval);
-                        qrTimerElement.textContent = "Link telah kadaluarsa.";
-                        // Nonaktifkan tombol jika link sudah tidak valid
-                        copyLinkBtn.disabled = true;
-                        downloadDirectBtn.disabled = true;
-                        return;
-                    }
-
-                    const minutes = Math.floor(timer / 60);
-                    let seconds = timer % 60;
-                    seconds = seconds < 10 ? '0' + seconds : seconds;
-                    
-                    qrTimerElement.innerHTML = `Link kamu kadaluarsa dalam <strong>${minutes}:${seconds}</strong>`;
-                    timer--;
-                };
-
-                updateTimer(); // Panggil sekali agar langsung tampil
-                qrTimerInterval = setInterval(updateTimer, 1000);
+            // Event listener khusus untuk color picker
+            const logoColorPicker = document.getElementById('logoColorPicker');
+            if (logoColorPicker) {
+                logoColorPicker.addEventListener('input', updateCanvasPreview);
+                logoColorPicker.addEventListener('change', updateCanvasPreview);
             }
+            
 
-            // Fungsi untuk membuka/menutup modal
+            // =========================================================================
+            // LOGIKA MODAL (PREVIEW & QR)
+            // =========================================================================
             function showModal(modal) {
                 modal.style.display = 'block';
-                setTimeout(() => modal.classList.add('show'), 10);
+                setTimeout(() => modal.classList.add('show'), 10); // beri waktu untuk display block sebelum transisi
             }
 
             function hideModal(modal) {
                 modal.classList.remove('show');
-                modal.style.display = 'none';
-                // Hentikan timer saat modal ditutup
-                if (modal.id === 'qrModal' && qrTimerInterval) {
-                    clearInterval(qrTimerInterval);
-                    qrTimerElement.style.display = 'none'; // Sembunyikan elemen timer
-                }
+                // Tunggu transisi selesai sebelum menyembunyikan
+                setTimeout(() => {
+                    modal.style.display = 'none';
+                    if (modal.id === 'qrModal' && qrTimerInterval) {
+                        clearInterval(qrTimerInterval);
+                        qrTimerElement.style.display = 'none';
+                    }
+                }, 400); // 400ms sesuai durasi transisi opacity
             }
             
-            // Event Listeners untuk modal
+            // --- Tombol & Event untuk Modal Preview ---
+            const previewBtn = document.getElementById('previewBtn');
             if(previewBtn) {
                 previewBtn.addEventListener('click', () => {
-                    const finalCanvas = document.querySelector('#photoPreview canvas');
+                    const finalCanvas = finalCanvasContainer.querySelector('canvas');
                     if (finalCanvas) {
                         modalImagePreview.src = finalCanvas.toDataURL('image/png', 1.0);
                         showModal(previewModal);
-                    } else { alert('Silakan buat gambar terlebih dahulu!'); }
+                    } else { 
+                        alert('Gambar belum selesai dibuat. Mohon tunggu sebentar.'); 
+                    }
                 });
             }
-            previewModalCloseBtn.addEventListener('click', () => hideModal(previewModal));
-            qrModalCloseBtn.addEventListener('click', () => hideModal(qrModal));
+            
+            // --- Tombol & Event untuk Modal QR ---
+            const downloadBtn = document.getElementById('downloadCopyBtn');
+            if (downloadBtn) {
+                downloadBtn.addEventListener('click', async () => {
+                    const finalCanvas = finalCanvasContainer.querySelector('canvas');
+                    if (!finalCanvas) {
+                        alert('Silakan buat gambar terlebih dahulu!');
+                        return;
+                    }
+                    
+                    showModal(qrModal);
+                    const qrCodePopupContainer = document.getElementById('qrCodePopupContainer');
+                    const copyLinkBtn = document.getElementById('copyLinkBtn');
+                    const downloadDirectBtn = document.getElementById('downloadDirectBtn');
+                    
+                    qrCodePopupContainer.innerHTML = '<i class="fas fa-spinner fa-spin spinner"></i>';
+                    copyLinkBtn.disabled = true;
+                    downloadDirectBtn.disabled = true;
+                    if (qrTimerInterval) clearInterval(qrTimerInterval);
+
+                    try {
+                        const imageData = finalCanvas.toDataURL('image/png', 1.0);
+                        currentImageData = imageData;
+                        
+                        const link = document.createElement('a');
+                        link.download = `pictlord-${Date.now()}.png`;
+                        link.href = imageData;
+                        link.click();
+                        
+                        currentQrLink = await generateTemporaryLink(imageData);
+                        const qrApiUrl = `https://quickchart.io/qr?text=${encodeURIComponent(currentQrLink)}&ecLevel=H&margin=1&size=180&format=png&qzone=2&color=1c1c1c`;
+                        qrCodePopupContainer.innerHTML = `<img src="${qrApiUrl}" alt="Scan to download">`;
+                        
+                        copyLinkBtn.disabled = false;
+                        downloadDirectBtn.disabled = false;
+                        startQrTimer(299);
+                    } catch (error) {
+                        console.error('Gagal membuat link Firebase atau QR Code:', error);
+                        qrCodePopupContainer.innerHTML = '<strong>Gagal membuat QR Code.</strong>';
+                    }
+                });
+            }
+
+            // --- Event penutup modal ---
+            document.querySelectorAll('.modal-close-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    hideModal(btn.closest('.modal'));
+                });
+            });
             
             window.addEventListener('click', (event) => {
-                if (event.target == previewModal) { hideModal(previewModal); }
-                if (event.target == qrModal) { hideModal(qrModal); }
+                if (event.target.classList.contains('modal')) {
+                     hideModal(event.target);
+                }
             });
 
-            // --- 3. LOGIKA UTAMA: Download & QR Code ---
+
+            // --- Fungsi & Event untuk QR Code ---
+            const qrTimerElement = document.getElementById('qrTimer');
+            function startQrTimer(durationInSeconds) {
+                let timer = durationInSeconds;
+                qrTimerElement.style.display = 'block';
+                const updateTimer = () => {
+                    if (timer < 0) {
+                        clearInterval(qrTimerInterval);
+                        qrTimerElement.textContent = "Link telah kadaluarsa.";
+                        document.getElementById('copyLinkBtn').disabled = true;
+                        document.getElementById('downloadDirectBtn').disabled = true;
+                        return;
+                    }
+                    const minutes = Math.floor(timer / 60);
+                    let seconds = timer % 60;
+                    seconds = seconds < 10 ? '0' + seconds : seconds;
+                    qrTimerElement.innerHTML = `Link kamu kadaluarsa dalam <strong>${minutes}:${seconds}</strong>`;
+                    timer--;
+                };
+                updateTimer();
+                qrTimerInterval = setInterval(updateTimer, 1000);
+            }
+
             function generateShortId(length) {
                 const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
                 let result = '';
@@ -938,93 +1070,47 @@
             }
 
             async function generateTemporaryLink(base64ImageData) {
-                const expirationTime = Date.now() + (5 * 60 * 1000); // 5 menit
+                const expirationTime = Date.now() + (5 * 60 * 1000);
                 const dataToStore = { imageData: base64ImageData, expiresAt: expirationTime };
                 const shortId = generateShortId(5);
                 await database.ref('images/' + shortId).set(dataToStore);
                 return `${window.location.origin}/hasil?id=${shortId}`;
             }
 
-            if (downloadBtn) {
-                downloadBtn.addEventListener('click', async () => {
-                    const finalCanvas = document.querySelector('#photoPreview canvas');
-                    if (!finalCanvas) {
-                        alert('Silakan buat gambar terlebih dahulu!');
-                        return;
-                    }
-                    
-                    showModal(qrModal);
-                    qrCodePopupContainer.innerHTML = '<i class="fas fa-spinner fa-spin spinner"></i>';
-                    
-                    // Nonaktifkan tombol saat loading & reset state
-                    copyLinkBtn.disabled = true;
-                    downloadDirectBtn.disabled = true;
-                    if (qrTimerInterval) clearInterval(qrTimerInterval); // Hapus timer lama jika ada
+            document.getElementById('downloadDirectBtn')?.addEventListener('click', () => {
+                if (currentImageData) {
+                    const link = document.createElement('a');
+                    link.download = `pictlord-direct-${Date.now()}.png`;
+                    link.href = currentImageData;
+                    link.click();
+                } else {
+                    alert('Data gambar tidak ditemukan. Coba lagi.');
+                }
+            });
 
-                    try {
-                        const imageData = finalCanvas.toDataURL('image/png', 1.0);
-                        currentImageData = imageData; // Simpan data gambar untuk tombol download langsung
-                        
-                        // Download langsung di browser pengguna
-                        const link = document.createElement('a');
-                        link.download = `pictlord-${Date.now()}.png`;
-                        link.href = imageData;
-                        link.click();
-                        
-                        currentQrLink = await generateTemporaryLink(imageData);
-                        const qrApiUrl = `https://quickchart.io/qr?text=${encodeURIComponent(currentQrLink)}&ecLevel=H&margin=1&size=180&format=png&qzone=2&color=1c1c1c`;
+            document.getElementById('copyLinkBtn')?.addEventListener('click', () => {
+                const copyBtn = document.getElementById('copyLinkBtn');
+                if (currentQrLink && !copyBtn.disabled) {
+                    navigator.clipboard.writeText(currentQrLink).then(() => {
+                        const originalText = copyBtn.innerHTML;
+                        copyBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                        setTimeout(() => { copyBtn.innerHTML = originalText; }, 2000);
+                    }).catch(err => {
+                        console.error('Gagal menyalin link: ', err);
+                        alert('Gagal menyalin link.');
+                    });
+                }
+            });
+            
+            // --- Tombol Retake ---
+            document.getElementById('customBack')?.addEventListener('click', () => {
+                window.history.back();
+            });
 
-                        qrCodePopupContainer.innerHTML = `<img src="${qrApiUrl}" alt="Scan to download">`;
-                        
-                        // Aktifkan lagi tombol dan mulai timer
-                        copyLinkBtn.disabled = false;
-                        downloadDirectBtn.disabled = false;
-                        startQrTimer(299); // Mulai timer 5 menit (299 detik)
-
-                    } catch (error) {
-                        console.error('Gagal membuat link Firebase atau QR Code:', error);
-                        qrCodePopupContainer.innerHTML = '<strong>Gagal membuat QR Code.</strong><br>Pastikan konfigurasi Firebase sudah benar & cek console (F12) untuk error.';
-                    }
-                });
-            }
-
-            // Logika untuk tombol "Download" di dalam modal
-            if(downloadDirectBtn) {
-                downloadDirectBtn.addEventListener('click', () => {
-                    if (currentImageData) {
-                        const link = document.createElement('a');
-                        link.download = `pictlord-direct-${Date.now()}.png`;
-                        link.href = currentImageData;
-                        link.click();
-                    } else {
-                        alert('Data gambar tidak ditemukan. Coba lagi.');
-                    }
-                });
-            }
-
-            // Logika untuk tombol "Copy Link"
-            if(copyLinkBtn) {
-                copyLinkBtn.addEventListener('click', () => {
-                    if (currentQrLink && !copyLinkBtn.disabled) {
-                        navigator.clipboard.writeText(currentQrLink).then(() => {
-                            const originalText = copyLinkBtn.innerHTML;
-                            copyLinkBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
-                            setTimeout(() => {
-                                copyLinkBtn.innerHTML = originalText;
-                            }, 2000);
-                        }).catch(err => {
-                            console.error('Gagal menyalin link: ', err);
-                            alert('Gagal menyalin link.');
-                        });
-                    }
-                });
-            }
-
-            // --- 4. Logika Tombol Share & Warna Logo ---
-            const shareBtn = document.getElementById('shareBtn');
-            if (shareBtn) { /* ... kode share ... */ }
-            const logoColorPicker = document.getElementById('logoColorPicker');
-            if (logoColorPicker) { /* ... kode color picker ... */ }
+            // =========================================================================
+            // RENDER AWAL
+            // =========================================================================
+            setTimeout(updateCanvasPreview, 100);
         });
     </script>
 </body>
