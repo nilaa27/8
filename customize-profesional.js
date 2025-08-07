@@ -101,12 +101,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     function loadFrameOptions() {
-        const frameDir = `bingkai/pose${state.poseCount}/`;
         state.poseCount = parseInt(sessionStorage.getItem('poseCount'), 10) || 4;
+        const frameDir = `bingkai/pose${state.poseCount}/`;
 
-        // Assuming 3 frames per pose folder
+        // There are 3 frames for each pose count, named poseX-1.png, poseX-2.png, etc.
         for (let i = 1; i <= 3; i++) {
-            const frameSrc = `${frameDir}pose-${i}.png`;
+            const frameSrc = `${frameDir}pose${state.poseCount}-${i}.png`;
             state.frames.push(frameSrc);
 
             const thumb = document.createElement('div');
@@ -130,6 +130,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     state.activeFrameSrc = frameSrc;
                     drawFrame(frameSrc);
                 };
+                firstFrameImg.onerror = () => {
+                    console.error(`Failed to load the primary frame: ${frameSrc}`);
+                    // Fallback to a default size if frame fails to load
+                    setupCanvasDimensions(800, 1200);
+                    loadDataFromSession();
+                }
             }
 
             thumb.addEventListener('click', () => {
@@ -366,7 +372,20 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     downloadBtn.addEventListener('click', showQrCode);
-    shareBtn.addEventListener('click', showQrCode); // Both buttons trigger the same QR modal
+
+    shareBtn.addEventListener('click', () => {
+        if (navigator.share) {
+            navigator.share({
+                title: 'Pictlord Photobooth',
+                text: 'bingung nyari? photobooth online free dimana dan kapan aja tenang pictlord 📸solusinya 😎',
+                url: window.location.origin,
+            })
+            .then(() => console.log('Successful share'))
+            .catch((error) => console.log('Error sharing', error));
+        } else {
+            alert('Fitur Share tidak didukung di browser ini. Coba salin link dari Tombol QR.');
+        }
+    });
 
     initialize();
 });
