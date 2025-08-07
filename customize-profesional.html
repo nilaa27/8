@@ -21,7 +21,7 @@
         @keyframes modalFadeInUp { from { opacity: 0; transform: translate(-50%, -45%); } to { opacity: 1; transform: translate(-50%, -50%); } }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        html { font-size: 62.5%; }
+        html { font-size: 62.5%; scroll-behavior: smooth; }
         body {
             font-family: 'Poppins', sans-serif; background-color: var(--light-bg); color: var(--light-text);
             transition: background-color 0.3s ease, color 0.3s ease; min-height: 100vh;
@@ -82,6 +82,14 @@
         }
         .options-label {
             font-size: 1.8rem; font-weight: 600; text-align: center; margin-bottom: 2rem;
+        }
+        #scrollToCanvasBtn {
+            display: none; /* Hanya tampil di mobile */
+            width: 100%;
+            margin-bottom: 2.5rem;
+            padding: 10px;
+            font-size: 1.4rem;
+            border-radius: 15px;
         }
         .frame-selection-container {
             display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; margin-bottom: 2.5rem;
@@ -162,19 +170,18 @@
                 align-items: center;
             }
             .canvas-area {
-                position: sticky;
-                top: 85px; /* Jarak dari atas, di bawah navbar sticky */
-                z-index: 10;
-                width: 100%; /* Memastikan lebar penuh */
-                margin-bottom: 2rem; /* Jarak dengan panel kontrol di bawah */
+                width: 100%;
+                padding-top: 0;
+                margin-bottom: 3rem;
             }
-            #canvas-wrapper { max-width: 85vw; margin: 0 auto; }
+            #scrollToCanvasBtn {
+                display: flex; /* Tampilkan tombol di mobile */
+            }
             .controls-panel {
                 flex-basis: auto;
                 width: 100%;
                 max-width: 550px;
                 max-height: none;
-                z-index: 5; /* Pastikan di bawah canvas sticky */
             }
         }
         @media only screen and (max-width: 540px) {
@@ -182,7 +189,6 @@
             body { padding: 10px; }
             #main-header { top: 10px; width: 98%; }
             .controls-panel { padding: 20px 15px; }
-            #canvas-wrapper { max-width: 95vw; }
         }
     </style>
 </head>
@@ -198,7 +204,7 @@
     </header>
 
 <main class="page-container">
-    <div class="canvas-area">
+    <div class="canvas-area" id="canvas-area-target">
         <div id="canvas-wrapper">
             <canvas id="photo-canvas"></canvas>
             <canvas id="frame-canvas"></canvas>
@@ -206,6 +212,9 @@
     </div>
 
     <aside class="controls-panel">
+        <button id="scrollToCanvasBtn" class="neumorphic-btn">
+            <i class="fas fa-arrow-up"></i> Lihat Kanvas
+        </button>
         <h2 class="options-label">Pilih Bingkai & Atur Foto Anda</h2>
         <div id="frame-selection" class="frame-selection-container">
             </div>
@@ -245,7 +254,6 @@
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-    // --- Theme Manager ---
     const themeToggle = document.getElementById('theme-toggle');
     const applyTheme = (theme) => {
         document.body.classList.toggle('dark-mode', theme === 'dark');
@@ -258,26 +266,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const savedTheme = localStorage.getItem('theme') || 'dark';
     applyTheme(savedTheme);
 
-
-    // --- CANVAS & CONTEXT SETUP ---
     const photoCanvas = document.getElementById('photo-canvas');
     const frameCanvas = document.getElementById('frame-canvas');
     const pCtx = photoCanvas.getContext('2d');
     const fCtx = frameCanvas.getContext('2d');
     const canvasWrapper = document.getElementById('canvas-wrapper');
-
-    // --- DOM ELEMENT SELECTION ---
     const frameSelectionContainer = document.getElementById('frame-selection');
     const downloadBtn = document.getElementById('downloadCopyBtn');
+    const scrollToCanvasBtn = document.getElementById('scrollToCanvasBtn');
+    const canvasAreaTarget = document.getElementById('canvas-area-target');
 
-    // --- STATE MANAGEMENT ---
     const state = {
         images: [], frames: [], poseCount: 4, activeFrameSrc: null,
         activeImageIndex: -1, isDragging: false, isResizing: false,
         activeHandle: null, dragStart: { x: 0, y: 0 },
     };
 
-    // --- INITIALIZATION ---
     function initialize() {
         loadFrameOptions();
         addEventListeners();
@@ -378,7 +382,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- DRAWING FUNCTIONS ---
     function redrawPhotos() {
         pCtx.clearRect(0, 0, photoCanvas.width, photoCanvas.height);
         state.images.forEach((imgObj, index) => {
@@ -430,8 +433,11 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     }
 
-    // --- EVENT LISTENERS & INTERACTIVITY ---
     function addEventListeners() {
+        // ... (event listeners lainnya tetap sama) ...
+        scrollToCanvasBtn.addEventListener('click', () => {
+            canvasAreaTarget.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        });
         photoCanvas.addEventListener('mousedown', onMouseDown);
         photoCanvas.addEventListener('mousemove', onMouseMove);
         photoCanvas.addEventListener('mouseup', onMouseUp);
@@ -552,7 +558,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- FINAL ACTIONS & MODAL LOGIC ---
     const previewModal = document.getElementById('previewModal');
     const qrModal = document.getElementById('qrModal');
     const previewBtn = document.getElementById('previewBtn');
