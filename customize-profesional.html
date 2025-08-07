@@ -9,85 +9,39 @@
     <link rel="icon" type="image/png" href="images/pictlord logo.png" />
     <link rel="apple-touch-icon" href="images/pictlord logo.png">
     <style>
-        /* --- Variabel Root & Tema --- */
         :root {
-            --light-bg: #e0e5ec;
-            --light-text: #555;
-            --light-shadow-dark: #a3b1c6;
-            --light-shadow-light: #ffffff;
-            --light-accent: #0D9488;
-            --light-inset-shadow-dark: rgba(163, 177, 198, 0.6);
-            --light-inset-shadow-light: rgba(255, 255, 255, 1);
+            --light-bg: #e0e5ec; --light-text: #555; --light-shadow-dark: #a3b1c6; --light-shadow-light: #ffffff;
+            --light-accent: #0D9488; --light-inset-shadow-dark: rgba(163, 177, 198, 0.6); --light-inset-shadow-light: rgba(255, 255, 255, 1);
         }
-
         .dark-mode {
-            --light-bg: #2d343c;
-            --light-text: #e0e5ec;
-            --light-shadow-dark: #242a30;
-            --light-shadow-light: #363e48;
-            --light-accent: #20c997;
-            --light-inset-shadow-dark: rgba(36, 42, 48, 0.6);
-            --light-inset-shadow-light: rgba(54, 62, 72, 1);
+            --light-bg: #2d343c; --light-text: #e0e5ec; --light-shadow-dark: #242a30; --light-shadow-light: #363e48;
+            --light-accent: #20c997; --light-inset-shadow-dark: rgba(36, 42, 48, 0.6); --light-inset-shadow-light: rgba(54, 62, 72, 1);
         }
-        
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes modalFadeInUp {
-            from { opacity: 0; transform: translate(-50%, -45%); }
-            to { opacity: 1; transform: translate(-50%, -50%); }
-        }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes modalFadeInUp { from { opacity: 0; transform: translate(-50%, -45%); } to { opacity: 1; transform: translate(-50%, -50%); } }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
         html { font-size: 62.5%; }
-
         body {
-            font-family: 'Poppins', sans-serif;
-            background-color: var(--light-bg);
-            color: var(--light-text);
-            transition: background-color 0.3s ease, color 0.3s ease;
-            min-height: 100vh;
-            padding: 20px;
-            overflow-y: auto; /* Memastikan scrolling selalu aktif jika konten meluap */
+            font-family: 'Poppins', sans-serif; background-color: var(--light-bg); color: var(--light-text);
+            transition: background-color 0.3s ease, color 0.3s ease; min-height: 100vh;
+            padding: 20px; overflow-y: auto;
         }
-        
-        /* --- Header / Navbar --- */
+
         #main-header {
-            width: 95%;
-            max-width: 1100px;
-            margin: 0 auto 2rem;
-            padding: 8px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: rgba(56, 64, 72, 0.7);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-radius: 50px;
-            animation: fadeInUp 0.5s ease-out;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            position: sticky;
-            top: 20px;
-            z-index: 1000;
+            width: 95%; max-width: 1100px; margin: 0 auto 2rem; padding: 8px; display: flex;
+            justify-content: space-between; align-items: center; background-color: rgba(56, 64, 72, 0.7);
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-radius: 50px;
+            animation: fadeInUp 0.5s ease-out; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1); position: sticky; top: 20px; z-index: 1000;
         }
-
         .side-logo {
-            font-size: 2.3rem;
-            font-weight: 600;
-            color: #e0e5ec;
-            text-decoration: none;
-            padding-left: 15px;
+            font-size: 2.3rem; font-weight: 600; color: #e0e5ec; text-decoration: none; padding-left: 15px;
         }
-
         .side-logo span { color: #20c997; }
-
         #theme-toggle {
-            width: 40px; height: 40px; border-radius: 50%;
-            border: none; cursor: pointer; display: flex;
-            justify-content: center; align-items: center;
-            background-color: #2d343c; color: #e0e5ec;
+            width: 40px; height: 40px; border-radius: 50%; border: none; cursor: pointer; display: flex;
+            justify-content: center; align-items: center; background-color: #2d343c; color: #e0e5ec;
             transition: background-color 0.2s ease, transform 0.2s ease;
         }
         #theme-toggle:active { transform: scale(0.95); }
@@ -96,104 +50,54 @@
         #moon-icon { display: none; }
         .dark-mode #sun-icon { display: none; }
         .dark-mode #moon-icon { display: block; }
-
         body:not(.dark-mode) #main-header {
-            background-color: rgba(240, 242, 245, 0.75);
-            border: 1px solid rgba(0, 0, 0, 0.1);
+            background-color: rgba(240, 242, 245, 0.75); border: 1px solid rgba(0, 0, 0, 0.1);
         }
         body:not(.dark-mode) .side-logo { color: #333; }
         body:not(.dark-mode) #theme-toggle { background-color: #e4e6eb; color: #333; }
-        
-        /* --- Layout Utama --- */
-        .page-container {
-            display: flex;
-            gap: 3rem;
-            width: 100%;
-            max-width: 1200px;
-            margin: auto;
-        }
 
+        .page-container {
+            display: flex; gap: 3rem; width: 100%; max-width: 1200px; margin: auto;
+        }
         .canvas-area {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            padding-top: 2rem;
-            animation: fadeInUp 0.5s ease-out 0.1s;
-            animation-fill-mode: both;
+            flex: 1; display: flex; justify-content: center; align-items: flex-start;
+            padding-top: 2rem; animation: fadeInUp 0.5s ease-out 0.1s; animation-fill-mode: both;
+            min-height: 1px;
         }
         #canvas-wrapper {
-            position: relative;
-            width: 100%;
-            max-width: 480px;
-            aspect-ratio: 2/3;
+            position: relative; width: 100%; max-width: 480px; aspect-ratio: 2/3;
             box-shadow: 10px 10px 20px var(--light-shadow-dark), -10px -10px 20px var(--light-shadow-light);
-            border-radius: 15px;
-            background-color: var(--light-shadow-dark);
+            border-radius: 15px; background-color: var(--light-shadow-dark); overflow: hidden;
         }
         #photo-canvas, #frame-canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border-radius: 15px;
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 15px;
         }
-        #frame-canvas {
-            z-index: 10;
-            pointer-events: none;
-        }
-        
-        /* --- Panel Kontrol Sidebar --- */
+        #frame-canvas { z-index: 10; pointer-events: none; }
+
         .controls-panel {
-            flex-basis: 380px;
-            background-color: var(--light-bg);
-            padding: 2.5rem;
-            border-radius: 20px;
+            flex-basis: 380px; background-color: var(--light-bg); padding: 2.5rem; border-radius: 20px;
             box-shadow: 10px 10px 20px var(--light-shadow-dark), -10px -10px 20px var(--light-shadow-light);
-            animation: fadeInUp 0.5s ease-out 0.2s;
-            animation-fill-mode: both;
-            max-height: calc(100vh - 140px); /* Batas tinggi agar bisa scroll */
-            overflow-y: auto; /* Scroll jika konten melebihi batas */
+            animation: fadeInUp 0.5s ease-out 0.2s; animation-fill-mode: both;
+            max-height: calc(100vh - 140px); overflow-y: auto;
         }
         .options-label {
-            font-size: 1.8rem;
-            font-weight: 600;
-            text-align: center;
-            margin-bottom: 2rem;
+            font-size: 1.8rem; font-weight: 600; text-align: center; margin-bottom: 2rem;
         }
         .frame-selection-container {
-            display: flex;
-            justify-content: center;
-            gap: 1.5rem;
-            flex-wrap: wrap;
-            margin-bottom: 2.5rem;
+            display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; margin-bottom: 2.5rem;
         }
         .frame-thumbnail {
-            width: 80px;
-            height: 120px;
-            border: 3px solid transparent;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s ease-in-out;
-            background-color: var(--light-shadow-dark);
-            background-size: cover;
-            background-position: center;
+            width: 70px; height: 105px; border: 3px solid transparent; border-radius: 8px; cursor: pointer;
+            transition: all 0.2s ease-in-out; background-color: var(--light-shadow-dark);
+            background-size: cover; background-position: center;
             box-shadow: 3px 3px 6px var(--light-shadow-dark), -3px -3px 6px var(--light-shadow-light);
         }
         .frame-thumbnail.active {
-            border-color: var(--light-accent);
-            transform: scale(1.08);
-            box-shadow: 0 0 10px var(--light-accent);
+            border-color: var(--light-accent); transform: scale(1.08); box-shadow: 0 0 10px var(--light-accent);
         }
-        
-        /* --- Tombol Neumorphic Modern --- */
+
         .final-actions-container {
-            display: flex;
-            justify-content: center;
-            gap: 1.5rem;
-            flex-wrap: wrap;
-            padding-top: 2rem;
+            display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; padding-top: 2rem;
             border-top: 1px solid var(--light-shadow-dark);
         }
         .neumorphic-btn {
@@ -201,24 +105,18 @@
             font-weight: 500; cursor: pointer; transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
             box-shadow: 5px 5px 10px var(--light-shadow-dark), -5px -5px 10px var(--light-shadow-light);
             display: flex; align-items: center; justify-content: center; gap: 10px;
-            padding: 12px 25px;
-            border-radius: 30px;
-            font-size: 1.5rem;
+            padding: 12px 25px; border-radius: 30px; font-size: 1.5rem;
         }
         .neumorphic-btn:hover {
-            color: var(--light-accent);
-            transform: translateY(-2px);
+            color: var(--light-accent); transform: translateY(-2px);
             box-shadow: 8px 8px 15px var(--light-shadow-dark), -8px -8px 15px var(--light-shadow-light);
         }
         .neumorphic-btn:active {
             box-shadow: inset 5px 5px 10px var(--light-inset-shadow-dark), inset -5px -5px 10px var(--light-inset-shadow-light);
             color: var(--light-accent); transform: scale(0.98);
         }
-        #downloadCopyBtn {
-             background: var(--light-accent); color: white;
-        }
-        
-        /* --- Modal Modern --- */
+        #downloadCopyBtn { background: var(--light-accent); color: white; }
+
         .modal {
             display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto;
             background-color: rgba(0, 0, 0, 0.3); backdrop-filter: blur(10px) saturate(120%);
@@ -227,37 +125,28 @@
         }
         .modal.show { opacity: 1; pointer-events: auto; }
         .modal-content {
-            position: absolute; top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            width: 90%;
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 90%;
         }
         .modal.show .modal-content { animation: modalFadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-        
-        /* Preview Modal */
         #modalImagePreview {
-            max-width: 100%; max-height: 85vh; width: auto; height: auto;
-            display: block; margin: auto; border-radius: 15px; border: 5px solid white;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            max-width: 100%; max-height: 85vh; width: auto; height: auto; display: block; margin: auto;
+            border-radius: 15px; border: 5px solid white; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
         .modal-close-btn {
             position: absolute; top: -10px; right: -10px; color: white; background-color: #333;
-            width: 35px; height: 35px; border-radius: 50%; display: flex;
-            justify-content: center; align-items: center; font-size: 22px;
-            font-weight: bold; transition: 0.3s; cursor: pointer; z-index: 10;
+            width: 35px; height: 35px; border-radius: 50%; display: flex; justify-content: center; align-items: center;
+            font-size: 22px; font-weight: bold; transition: 0.3s; cursor: pointer; z-index: 10;
             box-shadow: 0 2px 10px rgba(0,0,0,0.4);
         }
         .modal-close-btn:hover { transform: scale(1.1); background-color: var(--light-accent); }
-        
-        /* QR Code Modal */
+
         .qr-modal-content {
-            background: var(--light-bg); border-radius: 24px; max-width: 380px;
-            padding: 30px; text-align: center; display: flex; flex-direction: column;
-            align-items: center; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            background: var(--light-bg); border-radius: 24px; max-width: 380px; padding: 30px; text-align: center;
+            display: flex; flex-direction: column; align-items: center; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
         .qr-icon {
-            width: 60px; height: 60px; border-radius: 50%; background: var(--light-accent);
-            color: white; display: flex; justify-content: center; align-items: center;
-            font-size: 30px; margin-bottom: 20px;
+            width: 60px; height: 60px; border-radius: 50%; background: var(--light-accent); color: white;
+            display: flex; justify-content: center; align-items: center; font-size: 30px; margin-bottom: 20px;
         }
         .qr-title { font-size: 2.4rem; font-weight: 700; margin-bottom: 8px; }
         .qr-subtitle { font-size: 1.5rem; max-width: 280px; line-height: 1.5; margin-bottom: 25px; opacity: 0.8; }
@@ -267,20 +156,17 @@
         }
         .qr-actions { display: flex; gap: 15px; margin-top: 25px; width: 100%; }
 
-        /* --- Desain Responsif --- */
         @media only screen and (max-width: 900px) {
             .page-container { flex-direction: column; align-items: center; }
             .controls-panel { flex-basis: auto; width: 100%; max-width: 550px; max-height: none; }
             #canvas-wrapper { max-width: 80vw; }
         }
         @media only screen and (max-width: 540px) {
-            html { font-size: 58%; }
-            body { padding: 10px; }
+            html { font-size: 58%; } body { padding: 10px; }
             #main-header { top: 10px; width: 98%; }
             .controls-panel { padding: 20px 15px; }
             #canvas-wrapper { max-width: 95vw; }
         }
-
     </style>
 </head>
 <body>
@@ -359,8 +245,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- CANVAS & CONTEXT SETUP ---
     const photoCanvas = document.getElementById('photo-canvas');
     const frameCanvas = document.getElementById('frame-canvas');
-    const pCtx = photoCanvas.getContext('2d'); // Photo Context
-    const fCtx = frameCanvas.getContext('2d'); // Frame Context
+    const pCtx = photoCanvas.getContext('2d');
+    const fCtx = frameCanvas.getContext('2d');
     const canvasWrapper = document.getElementById('canvas-wrapper');
 
     // --- DOM ELEMENT SELECTION ---
@@ -460,6 +346,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     drawFrame(frameSrc);
                 };
                 firstFrameImg.onerror = () => {
+                    console.error(`Gagal memuat bingkai utama: ${frameSrc}`);
                     setupCanvasDimensions(800, 1200);
                     loadDataFromSession();
                 }
@@ -502,10 +389,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function drawHandles(imgObj) {
         const handles = getHandlePositions(imgObj);
-        pCtx.fillStyle = 'var(--light-accent)'; // Menggunakan variabel CSS untuk warna
+        const accentColor = getComputedStyle(document.documentElement).getPropertyValue('--light-accent');
+        pCtx.fillStyle = accentColor.trim();
         pCtx.strokeStyle = 'white';
-        pCtx.lineWidth = 3; // Garis pinggir lebih tebal
-        const handleSize = 16; // UKURAN HANDLE DIPERBESAR SESUAI PERMINTAAN
+        pCtx.lineWidth = 3;
+        const handleSize = 16; 
 
         for (const key in handles) {
             const pos = handles[key];
@@ -555,7 +443,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (state.activeImageIndex !== -1) {
             const activeImg = state.images[state.activeImageIndex];
             const handles = getHandlePositions(activeImg);
-            const handleSize = 16; // Area sentuh lebih besar
+            const handleSize = 16;
             for (const key in handles) {
                 const handlePos = handles[key];
                 if (pos.x >= handlePos.x - handleSize && pos.x <= handlePos.x + handleSize &&
@@ -711,7 +599,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     customBackBtn.addEventListener('click', () => {
-        window.location.href = 'profesional-mode.html';
+        window.history.back();
     });
 
     function generateShortId(length) {
@@ -751,25 +639,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 link.click();
             };
         } catch (error) {
+            console.error(error);
             qrCodeContainer.innerHTML = '<strong>Gagal membuat QR Code.</strong>';
         }
     }
 
-    shareBtn.addEventListener('click', async () => {
-        if (!navigator.share) {
+    shareBtn.addEventListener('click', () => {
+        if (navigator.share) {
+            navigator.share({
+                title: 'Pictlord Photobooth',
+                text: 'bingung nyari? photobooth online free dimana dan kapan aja tenang pictlord 📸solusinya 😎',
+                url: window.location.origin,
+            })
+            .then(() => console.log('Berhasil berbagi'))
+            .catch((error) => console.log('Gagal berbagi:', error));
+        } else {
             alert('Fitur Share tidak didukung di browser ini. Coba salin link dari Tombol QR.');
-            return;
-        }
-        try {
-            const shareImageData = getFinalImageB64();
-            const shareLink = await generateTemporaryLink(shareImageData);
-            await navigator.share({
-                title: 'Cek hasil fotoku dari Pictlord!',
-                text: 'Dibuat dengan Pictlord, photobooth online gratis! 📸',
-                url: shareLink,
-            });
-        } catch (error) {
-            console.error('Gagal berbagi:', error);
         }
     });
     
