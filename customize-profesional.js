@@ -18,6 +18,8 @@ document.addEventListener('DOMContentLoaded', () => {
         activeFrameSrc: null,
         activeImageIndex: -1, // -1 means no image is selected/active
         isDragging: false,
+        isResizing: false,
+        activeHandle: null, // e.g., 'topLeft', 'bottomRight'
         dragStart: { x: 0, y: 0 }, // To calculate drag offset
     };
 
@@ -151,13 +153,44 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- DRAWING FUNCTIONS ---
     function redrawPhotos() {
         pCtx.clearRect(0, 0, photoCanvas.width, photoCanvas.height);
-        state.images.forEach(imgObj => {
+        state.images.forEach((imgObj, index) => {
             pCtx.save();
             pCtx.translate(imgObj.x, imgObj.y);
+            // pCtx.rotate(imgObj.rotation || 0); // Future-proofing for rotation
             pCtx.scale(imgObj.scale, imgObj.scale);
             pCtx.drawImage(imgObj.element, -imgObj.width / 2, -imgObj.height / 2);
             pCtx.restore();
+
+            // Draw handles if this is the active image
+            if (index === state.activeImageIndex) {
+                drawHandles(imgObj);
+            }
         });
+    }
+
+    function getHandlePositions(imgObj) {
+        const halfW = (imgObj.width * imgObj.scale) / 2;
+        const halfH = (imgObj.height * imgObj.scale) / 2;
+        return {
+            topLeft: { x: imgObj.x - halfW, y: imgObj.y - halfH },
+            topRight: { x: imgObj.x + halfW, y: imgObj.y - halfH },
+            bottomLeft: { x: imgObj.x - halfW, y: imgObj.y + halfH },
+            bottomRight: { x: imgObj.x + halfW, y: imgObj.y + halfH },
+        };
+    }
+
+    function drawHandles(imgObj) {
+        const handles = getHandlePositions(imgObj);
+        pCtx.fillStyle = '#0D9488'; // Teal color for handles
+        pCtx.strokeStyle = 'white';
+        pCtx.lineWidth = 2;
+        const handleSize = 10;
+
+        for (const key in handles) {
+            const pos = handles[key];
+            pCtx.fillRect(pos.x - handleSize / 2, pos.y - handleSize / 2, handleSize, handleSize);
+            pCtx.strokeRect(pos.x - handleSize / 2, pos.y - handleSize / 2, handleSize, handleSize);
+        }
     }
 
     function drawFrame(src) {
@@ -189,49 +222,86 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function onMouseDown(e) {
         const pos = getMousePos(photoCanvas, e);
-        state.activeImageIndex = -1; // Deselect all first
+        state.isDragging = false;
+        state.isResizing = false;
 
-        // Iterate in reverse to select the top-most image
+        // Check if a handle on the active image was clicked
+        if (state.activeImageIndex !== -1) {
+            const activeImg = state.images[state.activeImageIndex];
+            const handles = getHandlePositions(activeImg);
+            const handleSize = 10;
+            for (const key in handles) {
+                const handlePos = handles[key];
+                if (pos.x >= handlePos.x - handleSize && pos.x <= handlePos.x + handleSize &&
+                    pos.y >= handlePos.y - handleSize && pos.y <= handlePos.y + handleSize) {
+                    state.isResizing = true;
+                    state.activeHandle = key;
+                    redrawPhotos();
+                    return;
+                }
+            }
+        }
+
+        // If not resizing, check for dragging
         for (let i = state.images.length - 1; i >= 0; i--) {
             const img = state.images[i];
             const halfW = (img.width * img.scale) / 2;
             const halfH = (img.height * img.scale) / 2;
 
-            // Check if the click is within the image's bounding box
             if (pos.x >= img.x - halfW && pos.x <= img.x + halfW &&
                 pos.y >= img.y - halfH && pos.y <= img.y + halfH) {
 
-                state.activeImageIndex = i;
+                // Move the clicked image to the end of the array to draw it on top
+                const clickedImage = state.images.splice(i, 1)[0];
+                state.images.push(clickedImage);
+
+                // The active image is now the last one
+                state.activeImageIndex = state.images.length - 1;
                 state.isDragging = true;
-                // Bring selected image to the front of the drawing stack
-                state.images.push(state.images.splice(i, 1)[0]);
+                state.dragStart.x = pos.x - clickedImage.x;
+                state.dragStart.y = pos.y - clickedImage.y;
 
-                state.dragStart.x = pos.x - img.x;
-                state.dragStart.y = pos.y - img.y;
-
-                redrawPhotos(); // Redraw to show selection (if any visual feedback is added)
-                return; // Stop after finding the first image
+                redrawPhotos();
+                return;
             }
         }
+
+        // If clicked outside, deselect
+        state.activeImageIndex = -1;
+        redrawPhotos();
     }
 
     function onMouseMove(e) {
-        if (!state.isDragging || state.activeImageIndex === -1) return;
-
-        // The active image is now always the last one in the array
-        const activeImg = state.images[state.images.length - 1];
         const pos = getMousePos(photoCanvas, e);
+        if (state.isDragging && state.activeImageIndex !== -1) {
+            const activeImg = state.images[state.activeImageIndex];
+            activeImg.x = pos.x - state.dragStart.x;
+            activeImg.y = pos.y - state.dragStart.y;
+            redrawPhotos();
+        } else if (state.isResizing && state.activeImageIndex !== -1) {
+            const activeImg = state.images[state.activeImageIndex];
 
-        activeImg.x = pos.x - state.dragStart.x;
-        activeImg.y = pos.y - state.dragStart.y;
+            // Simplified scaling based on distance from center
+            const dx = pos.x - activeImg.x;
+            const dy = pos.y - activeImg.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
 
-        redrawPhotos();
+            // Assuming original corner was at a certain distance
+            const originalDistance = Math.sqrt(Math.pow(activeImg.width / 2, 2) + Math.pow(activeImg.height / 2, 2));
+            const newScale = distance / originalDistance;
+
+            if (newScale > 0.05 && newScale < 5) { // Clamp scale
+                 activeImg.scale = newScale;
+            }
+
+            redrawPhotos();
+        }
     }
 
     function onMouseUp() {
         state.isDragging = false;
-        // Keep the image selected until another is clicked
-        // state.activeImageIndex = -1;
+        state.isResizing = false;
+        state.activeHandle = null;
     }
 
     function onWheelScroll(e) {
