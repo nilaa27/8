@@ -35,10 +35,10 @@
         }
         #canvas-wrapper {
             position: relative;
-            width: 90vw; /* Use viewport width for responsiveness */
-            max-width: 450px; /* A more reasonable max-width */
-            aspect-ratio: 2/3; /* Maintain aspect ratio */
-            margin: 0 auto; /* Center it */
+            width: 90vw;
+            max-width: 450px;
+            aspect-ratio: 2/3;
+            margin: 0 auto;
             box-shadow: 10px 10px 20px var(--light-shadow-dark), -10px -10px 20px var(--light-shadow-light);
             border-radius: 15px;
             background-color: var(--light-shadow-dark);
@@ -49,6 +49,7 @@
             left: 0;
             width: 100%;
             height: 100%;
+            border-radius: 15px; /* Pastikan kanvas juga memiliki border-radius */
         }
         #frame-canvas {
             z-index: 10;
@@ -115,6 +116,15 @@
         #downloadCopyBtn {
              background: var(--light-accent); color: white;
         }
+        /* Modal Styles */
+        .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.6); backdrop-filter: blur(8px); }
+        .modal.show { display: block; }
+        .modal-content { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 90%; max-width: 400px; }
+        .qr-modal-content { background: var(--light-bg); border-radius: 24px; max-width: 380px; padding: 30px; text-align: center; display: flex; flex-direction: column; align-items: center; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .modal-close-btn { position: absolute; top: 10px; right: 15px; color: var(--light-text); font-size: 28px; font-weight: bold; cursor: pointer; }
+        .qr-icon { width: 60px; height: 60px; border-radius: 50%; background: var(--light-accent); color: white; display: flex; justify-content: center; align-items: center; font-size: 30px; margin-bottom: 20px; }
+        .qr-title { font-size: 2.4rem; font-weight: 700; margin-bottom: 8px; }
+        .qr-subtitle { font-size: 1.5rem; max-width: 280px; line-height: 1.5; margin-bottom: 25px; opacity: 0.8; }
     </style>
 </head>
 <body>
@@ -126,10 +136,9 @@
     </div>
 
     <div class="controls-panel">
-        <h2 class="options-label">Pilih Bingkai</h2>
+        <h2 class="options-label">Pilih Bingkai & Atur Foto Anda</h2>
         <div id="frame-selection" class="frame-selection-container">
-            <!-- Thumbnails bingkai akan diisi oleh JavaScript -->
-        </div>
+            </div>
 
         <div class="final-actions-container">
             <button class="neumorphic-btn" id="customBack"> <i class="fas fa-undo"></i> Retake </button>
@@ -164,16 +173,476 @@
 
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
-<script src="customize-profesional.js"></script>
-<style>
-    .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.6); backdrop-filter: blur(8px); }
-    .modal.show { display: block; }
-    .modal-content { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 90%; max-width: 400px; }
-    .qr-modal-content { background: var(--light-bg); border-radius: 24px; max-width: 380px; padding: 30px; text-align: center; display: flex; flex-direction: column; align-items: center; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
-    .modal-close-btn { position: absolute; top: 10px; right: 15px; color: var(--light-text); font-size: 28px; font-weight: bold; cursor: pointer; }
-    .qr-icon { width: 60px; height: 60px; border-radius: 50%; background: var(--light-accent); color: white; display: flex; justify-content: center; align-items: center; font-size: 30px; margin-bottom: 20px; }
-    .qr-title { font-size: 2.4rem; font-weight: 700; margin-bottom: 8px; }
-    .qr-subtitle { font-size: 1.5rem; max-width: 280px; line-height: 1.5; margin-bottom: 25px; opacity: 0.8; }
-</style>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // --- CANVAS & CONTEXT SETUP ---
+    const photoCanvas = document.getElementById('photo-canvas');
+    const frameCanvas = document.getElementById('frame-canvas');
+    const pCtx = photoCanvas.getContext('2d'); // Photo Context
+    const fCtx = frameCanvas.getContext('2d'); // Frame Context
+    const canvasWrapper = document.getElementById('canvas-wrapper');
+
+    // --- DOM ELEMENT SELECTION ---
+    const frameSelectionContainer = document.getElementById('frame-selection');
+    const downloadBtn = document.getElementById('downloadCopyBtn');
+
+    // --- STATE MANAGEMENT ---
+    const state = {
+        images: [],
+        frames: [],
+        poseCount: 4,
+        activeFrameSrc: null,
+        activeImageIndex: -1,
+        isDragging: false,
+        isResizing: false,
+        activeHandle: null,
+        dragStart: { x: 0, y: 0 },
+    };
+
+    // --- INITIALIZATION ---
+    function initialize() {
+        loadFrameOptions();
+        addEventListeners();
+    }
+
+    function setupCanvasDimensions(width, height) {
+        photoCanvas.width = frameCanvas.width = width;
+        photoCanvas.height = frameCanvas.height = height;
+        canvasWrapper.style.aspectRatio = width / height;
+    }
+
+    function loadDataFromSession() {
+        const storedImages = JSON.parse(sessionStorage.getItem('photoArray'));
+        const storedPoseCount = parseInt(sessionStorage.getItem('poseCount'), 10);
+
+        if (!storedImages || !storedPoseCount) {
+            canvasWrapper.innerHTML = '<p style="color:red; text-align:center; padding: 20px;">Error: Data sesi tidak ditemukan. Silakan kembali dan coba lagi.</p>';
+            return;
+        }
+
+        state.poseCount = storedPoseCount;
+        const imagePromises = storedImages.map(src => {
+            return new Promise((resolve, reject) => {
+                const img = new Image();
+                img.src = src;
+                img.onload = () => resolve(img);
+                img.onerror = reject;
+            });
+        });
+
+        Promise.all(imagePromises).then(loadedImages => {
+            // REFACTORED: Distribute photos after they are loaded to calculate scale correctly.
+            state.images = distributePhotos(loadedImages, photoCanvas.width, photoCanvas.height);
+            redrawPhotos();
+        });
+    }
+
+    // REFACTORED: This function now calculates initial scale for a better fit.
+    function distributePhotos(loadedImages, canvasWidth, canvasHeight) {
+        const imageObjects = [];
+        const count = loadedImages.length;
+        const cols = (count === 6 || count === 4) ? 2 : 1;
+        const rows = Math.ceil(count / cols);
+        const boxWidth = canvasWidth / cols;
+        const boxHeight = canvasHeight / rows;
+        const padding = 20; // Padding inside each box
+
+        for (let i = 0; i < count; i++) {
+            const img = loadedImages[i];
+            const row = Math.floor(i / cols);
+            const col = i % cols;
+
+            // Calculate initial scale to fit the image within its box
+            const scaleX = (boxWidth - padding * 2) / img.width;
+            const scaleY = (boxHeight - padding * 2) / img.height;
+            const initialScale = Math.min(scaleX, scaleY);
+
+            imageObjects.push({
+                element: img,
+                x: col * boxWidth + boxWidth / 2, // Center of the box
+                y: row * boxHeight + boxHeight / 2, // Center of the box
+                scale: initialScale,
+                width: img.width,
+                height: img.height
+            });
+        }
+        return imageObjects;
+    }
+
+    function loadFrameOptions() {
+        state.poseCount = parseInt(sessionStorage.getItem('poseCount'), 10) || 4;
+        const frameDir = `bingkai/pose${state.poseCount}/`;
+
+        // Assuming 3 frames per pose count
+        for (let i = 1; i <= 3; i++) {
+            const frameSrc = `${frameDir}pose${state.poseCount}-${i}.png`;
+            state.frames.push(frameSrc);
+
+            const thumb = document.createElement('div');
+            thumb.classList.add('frame-thumbnail');
+            thumb.style.backgroundImage = `url(${frameSrc})`;
+            thumb.dataset.src = frameSrc;
+
+            if (i === 1) {
+                const firstFrameImg = new Image();
+                firstFrameImg.src = frameSrc;
+                firstFrameImg.onload = () => {
+                    setupCanvasDimensions(firstFrameImg.naturalWidth, firstFrameImg.naturalHeight);
+                    loadDataFromSession();
+                    thumb.classList.add('active');
+                    state.activeFrameSrc = frameSrc;
+                    drawFrame(frameSrc);
+                };
+                firstFrameImg.onerror = () => {
+                    console.error(`Failed to load the primary frame: ${frameSrc}`);
+                    setupCanvasDimensions(800, 1200);
+                    loadDataFromSession();
+                }
+            }
+
+            thumb.addEventListener('click', () => {
+                document.querySelectorAll('.frame-thumbnail').forEach(t => t.classList.remove('active'));
+                thumb.classList.add('active');
+                state.activeFrameSrc = frameSrc;
+                drawFrame(frameSrc);
+            });
+            frameSelectionContainer.appendChild(thumb);
+        }
+    }
+
+    // --- DRAWING FUNCTIONS ---
+    function redrawPhotos() {
+        pCtx.clearRect(0, 0, photoCanvas.width, photoCanvas.height);
+        state.images.forEach((imgObj, index) => {
+            pCtx.save();
+            pCtx.translate(imgObj.x, imgObj.y);
+            pCtx.scale(imgObj.scale, imgObj.scale);
+            pCtx.drawImage(imgObj.element, -imgObj.width / 2, -imgObj.height / 2);
+            pCtx.restore();
+
+            if (index === state.activeImageIndex) {
+                drawHandles(imgObj);
+            }
+        });
+    }
+
+    function getHandlePositions(imgObj) {
+        const halfW = (imgObj.width * imgObj.scale) / 2;
+        const halfH = (imgObj.height * imgObj.scale) / 2;
+        return {
+            topLeft: { x: imgObj.x - halfW, y: imgObj.y - halfH },
+            topRight: { x: imgObj.x + halfW, y: imgObj.y - halfH },
+            bottomLeft: { x: imgObj.x - halfW, y: imgObj.y + halfH },
+            bottomRight: { x: imgObj.x + halfW, y: imgObj.y + halfH },
+        };
+    }
+
+    function drawHandles(imgObj) {
+        const handles = getHandlePositions(imgObj);
+        pCtx.fillStyle = '#0D9488';
+        pCtx.strokeStyle = 'white';
+        pCtx.lineWidth = 2;
+        const handleSize = 10;
+
+        for (const key in handles) {
+            const pos = handles[key];
+            pCtx.beginPath();
+            pCtx.rect(pos.x - handleSize / 2, pos.y - handleSize / 2, handleSize, handleSize);
+            pCtx.fill();
+            pCtx.stroke();
+        }
+    }
+
+    function drawFrame(src) {
+        const frameImg = new Image();
+        frameImg.src = src;
+        frameImg.onload = () => {
+            fCtx.clearRect(0, 0, frameCanvas.width, frameCanvas.height);
+            fCtx.drawImage(frameImg, 0, 0, frameCanvas.width, frameCanvas.height);
+        };
+    }
+
+    // --- EVENT LISTENERS & INTERACTIVITY ---
+    function addEventListeners() {
+        photoCanvas.addEventListener('mousedown', onMouseDown);
+        photoCanvas.addEventListener('mousemove', onMouseMove);
+        photoCanvas.addEventListener('mouseup', onMouseUp);
+        photoCanvas.addEventListener('mouseleave', onMouseUp);
+        photoCanvas.addEventListener('wheel', onWheelScroll, { passive: false });
+
+        // Touch events for mobile
+        photoCanvas.addEventListener('touchstart', onMouseDown);
+        photoCanvas.addEventListener('touchmove', onMouseMove);
+        photoCanvas.addEventListener('touchend', onMouseUp);
+
+        downloadBtn.addEventListener('click', showQrCode);
+    }
+
+    // CRITICAL FIX: This function now correctly scales mouse coordinates
+    // to match the canvas's internal resolution, making interactions accurate.
+    function getMousePos(canvas, evt) {
+        const rect = canvas.getBoundingClientRect();
+        
+        // Handle touch events
+        const clientX = evt.clientX || evt.touches[0].clientX;
+        const clientY = evt.clientY || evt.touches[0].clientY;
+
+        const scaleX = canvas.width / rect.width;
+        const scaleY = canvas.height / rect.height;
+        return {
+            x: (clientX - rect.left) * scaleX,
+            y: (clientY - rect.top) * scaleY
+        };
+    }
+
+    function onMouseDown(e) {
+        e.preventDefault();
+        const pos = getMousePos(photoCanvas, e);
+        state.isDragging = false;
+        state.isResizing = false;
+
+        if (state.activeImageIndex !== -1) {
+            const activeImg = state.images[state.activeImageIndex];
+            const handles = getHandlePositions(activeImg);
+            const handleSize = 12; // Slightly larger hit area
+            for (const key in handles) {
+                const handlePos = handles[key];
+                if (pos.x >= handlePos.x - handleSize && pos.x <= handlePos.x + handleSize &&
+                    pos.y >= handlePos.y - handleSize && pos.y <= handlePos.y + handleSize) {
+                    state.isResizing = true;
+                    state.activeHandle = key;
+                    redrawPhotos();
+                    return;
+                }
+            }
+        }
+
+        for (let i = state.images.length - 1; i >= 0; i--) {
+            const img = state.images[i];
+            const halfW = (img.width * img.scale) / 2;
+            const halfH = (img.height * img.scale) / 2;
+
+            if (pos.x >= img.x - halfW && pos.x <= img.x + halfW &&
+                pos.y >= img.y - halfH && pos.y <= img.y + halfH) {
+                const clickedImage = state.images.splice(i, 1)[0];
+                state.images.push(clickedImage);
+                state.activeImageIndex = state.images.length - 1;
+                state.isDragging = true;
+                state.dragStart.x = pos.x - clickedImage.x;
+                state.dragStart.y = pos.y - clickedImage.y;
+                redrawPhotos();
+                return;
+            }
+        }
+
+        state.activeImageIndex = -1;
+        redrawPhotos();
+    }
+
+    function onMouseMove(e) {
+        if (!state.isDragging && !state.isResizing) return;
+        e.preventDefault();
+        const pos = getMousePos(photoCanvas, e);
+
+        if (state.isDragging && state.activeImageIndex !== -1) {
+            const activeImg = state.images[state.activeImageIndex];
+            activeImg.x = pos.x - state.dragStart.x;
+            activeImg.y = pos.y - state.dragStart.y;
+            redrawPhotos();
+        } else if (state.isResizing && state.activeImageIndex !== -1) {
+            const img = state.images[state.activeImageIndex];
+            const handle = state.activeHandle;
+            const aspect = img.width / img.height;
+            let newWidth, newHeight, newScale;
+            const handles = getHandlePositions(img);
+            let anchorX, anchorY;
+
+            if (handle.includes('bottom')) { anchorY = handles.topLeft.y; } else { anchorY = handles.bottomLeft.y; }
+            if (handle.includes('Right')) { anchorX = handles.topLeft.x; } else { anchorX = handles.topRight.x; }
+
+            newWidth = Math.abs(pos.x - anchorX);
+            newHeight = Math.abs(pos.y - anchorY);
+
+            if (newWidth / newHeight > aspect) {
+                newWidth = newHeight * aspect;
+            } else {
+                newHeight = newWidth / aspect;
+            }
+
+            newScale = newWidth / img.width;
+
+            if (newScale > 0.05 && newScale < 5) {
+                img.scale = newScale;
+                const newHalfW = newWidth / 2;
+                const newHalfH = newHeight / 2;
+                if (handle.includes('bottom')) { img.y = anchorY + newHalfH; } else { img.y = anchorY - newHalfH; }
+                if (handle.includes('Right')) { img.x = anchorX + newHalfW; } else { img.x = anchorX - newHalfW; }
+            }
+            redrawPhotos();
+        }
+    }
+
+    function onMouseUp() {
+        state.isDragging = false;
+        state.isResizing = false;
+        state.activeHandle = null;
+    }
+
+    function onWheelScroll(e) {
+        e.preventDefault();
+        const pos = getMousePos(photoCanvas, e);
+
+        let targetImageIndex = -1;
+        for (let i = state.images.length - 1; i >= 0; i--) {
+            const img = state.images[i];
+            const halfW = (img.width * img.scale) / 2;
+            const halfH = (img.height * img.scale) / 2;
+            if (pos.x >= img.x - halfW && pos.x <= img.x + halfW &&
+                pos.y >= img.y - halfH && pos.y <= img.y + halfH) {
+                targetImageIndex = i;
+                break;
+            }
+        }
+
+        if (targetImageIndex !== -1) {
+            const img = state.images[targetImageIndex];
+            const zoomIntensity = 0.05;
+            const wheel = e.deltaY < 0 ? 1 : -1;
+            const zoom = 1 + wheel * zoomIntensity;
+            const newScale = img.scale * zoom;
+
+            img.scale = Math.max(0.05, Math.min(newScale, 4.0));
+            redrawPhotos();
+        }
+    }
+
+    // --- FINAL ACTIONS & MODAL LOGIC ---
+    const previewModal = document.getElementById('previewModal');
+    const qrModal = document.getElementById('qrModal');
+    const previewBtn = document.getElementById('previewBtn');
+    const shareBtn = document.getElementById('shareBtn');
+    const customBackBtn = document.getElementById('customBack');
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyCCaLXoaHFOuXRnHAvQzg9R0c1tfsTsTBU",
+        authDomain: "project-xlord.firebaseapp.com",
+        databaseURL: "https://project-xlord-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "project-xlord",
+        storageBucket: "project-xlord.appspot.com",
+        messagingSenderId: "847461816867",
+        appId: "1:847461816867:web:17071ba14ffe6a6099ef96",
+        measurementId: "G-344KX3B197"
+    };
+
+    if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
+    const database = firebase.database();
+
+    let currentQrLink = '';
+    let currentImageData = '';
+
+    function getFinalImageB64() {
+        // Deselect any active image before rendering the final image
+        if (state.activeImageIndex !== -1) {
+            state.activeImageIndex = -1;
+            redrawPhotos();
+        }
+        const finalCanvas = document.createElement('canvas');
+        finalCanvas.width = photoCanvas.width;
+        finalCanvas.height = photoCanvas.height;
+        const finalCtx = finalCanvas.getContext('2d');
+        finalCtx.drawImage(photoCanvas, 0, 0);
+        finalCtx.drawImage(frameCanvas, 0, 0);
+        return finalCanvas.toDataURL('image/png', 1.0);
+    }
+
+    function showModal(modal) { modal.style.display = 'block'; }
+    function hideModal(modal) { modal.style.display = 'none'; }
+
+    previewBtn.addEventListener('click', () => {
+        document.getElementById('modalImagePreview').src = getFinalImageB64();
+        showModal(previewModal);
+    });
+
+    document.querySelectorAll('.modal-close-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            hideModal(previewModal);
+            hideModal(qrModal);
+        });
+    });
+
+    customBackBtn.addEventListener('click', () => {
+        window.location.href = 'profesional-mode.html';
+    });
+
+    function generateShortId(length) {
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        let result = '';
+        for (let i = 0; i < length; i++) { result += chars.charAt(Math.floor(Math.random() * chars.length)); }
+        return result;
+    }
+
+    async function generateTemporaryLink(base64ImageData) {
+        const expirationTime = Date.now() + (5 * 60 * 1000); // 5 minutes
+        const dataToStore = { imageData: base64ImageData, expiresAt: expirationTime };
+        const shortId = generateShortId(6);
+        await database.ref('images/' + shortId).set(dataToStore);
+        return `${window.location.origin}/hasil.html?id=${shortId}`;
+    }
+
+    async function showQrCode() {
+        showModal(qrModal);
+        const qrCodePopupContainer = document.getElementById('qrCodePopupContainer');
+        qrCodePopupContainer.innerHTML = '<i class="fas fa-spinner fa-spin" style="font-size: 4rem;"></i>';
+
+        try {
+            currentImageData = getFinalImageB64();
+            currentQrLink = await generateTemporaryLink(currentImageData);
+
+            const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(currentQrLink)}`;
+            qrCodePopupContainer.innerHTML = `<img src="${qrApiUrl}" alt="Scan to download">`;
+
+            document.getElementById('copyLinkBtn').onclick = () => {
+                navigator.clipboard.writeText(currentQrLink).then(() => alert('Link disalin!'));
+            };
+            document.getElementById('downloadFromModalBtn').onclick = () => {
+                const link = document.createElement('a');
+                link.download = `pictlord-profesional-${Date.now()}.png`;
+                link.href = currentImageData;
+                link.click();
+            };
+
+        } catch (error) {
+            console.error('Firebase/QR Error:', error);
+            qrCodePopupContainer.innerHTML = '<strong>Gagal membuat QR Code.</strong> Coba lagi.';
+        }
+    }
+
+    shareBtn.addEventListener('click', async () => {
+        // Generate QR code and link first, then share
+        if (navigator.share) {
+             try {
+                // To share a link, we need to generate it first.
+                const shareImageData = getFinalImageB64();
+                const shareLink = await generateTemporaryLink(shareImageData);
+
+                navigator.share({
+                    title: 'Cek hasil fotoku dari Pictlord!',
+                    text: 'Dibuat dengan Pictlord, photobooth online gratis! 📸',
+                    url: shareLink,
+                })
+                .then(() => console.log('Successful share'))
+                .catch((error) => console.log('Error sharing', error));
+            } catch (error) {
+                console.error('Error preparing share data:', error);
+                alert('Gagal menyiapkan data untuk dibagikan.');
+            }
+        } else {
+            alert('Fitur Share tidak didukung di browser ini. Coba salin link dari Tombol QR.');
+        }
+    });
+
+    initialize();
+});
+</script>
 </body>
 </html>
