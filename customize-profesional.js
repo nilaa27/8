@@ -23,16 +23,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- INITIALIZATION ---
     function initialize() {
-        setupCanvasDimensions();
-        loadDataFromSession();
+        // The initialization flow is now driven by loading frames first
+        // to get the correct canvas dimensions.
         loadFrameOptions();
         addEventListeners();
     }
 
-    function setupCanvasDimensions() {
-        const rect = canvasWrapper.getBoundingClientRect();
-        photoCanvas.width = frameCanvas.width = rect.width;
-        photoCanvas.height = frameCanvas.height = rect.height;
+    function setupCanvasDimensions(width, height) {
+        photoCanvas.width = frameCanvas.width = width;
+        photoCanvas.height = frameCanvas.height = height;
+
+        // Make the on-screen wrapper adapt to the canvas aspect ratio
+        canvasWrapper.style.aspectRatio = width / height;
     }
 
     function loadDataFromSession() {
@@ -100,7 +102,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function loadFrameOptions() {
         const frameDir = `bingkai/pose${state.poseCount}/`;
-        // Assuming 3 frames per pose folder, as per plan
+        state.poseCount = parseInt(sessionStorage.getItem('poseCount'), 10) || 4;
+
+        // Assuming 3 frames per pose folder
         for (let i = 1; i <= 3; i++) {
             const frameSrc = `${frameDir}pose-${i}.png`;
             state.frames.push(frameSrc);
@@ -110,10 +114,22 @@ document.addEventListener('DOMContentLoaded', () => {
             thumb.style.backgroundImage = `url(${frameSrc})`;
             thumb.dataset.src = frameSrc;
 
+            // Load the first frame to determine canvas size
             if (i === 1) {
-                thumb.classList.add('active');
-                state.activeFrameSrc = frameSrc;
-                drawFrame(frameSrc);
+                const firstFrameImg = new Image();
+                firstFrameImg.src = frameSrc;
+                firstFrameImg.onload = () => {
+                    // Set canvas dimensions based on the frame's original size
+                    setupCanvasDimensions(firstFrameImg.naturalWidth, firstFrameImg.naturalHeight);
+
+                    // Now that canvas is sized, load user photos
+                    loadDataFromSession();
+
+                    // And draw the first frame
+                    thumb.classList.add('active');
+                    state.activeFrameSrc = frameSrc;
+                    drawFrame(frameSrc);
+                };
             }
 
             thumb.addEventListener('click', () => {
