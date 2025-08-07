@@ -177,6 +177,24 @@
         .layout-card img { width: 100%; max-width: 150px; display: block; border-radius: 5px; }
         .layout-label { font-size: 2rem; font-weight: 700; color: var(--text-color); margin-bottom: 0.5rem; }
         .layout-description { font-size: 1.5rem; color: var(--text-light); }
+
+        .layout-card.profesional {
+            border: 2px solid var(--primary);
+            position: relative;
+            overflow: hidden;
+        }
+        .new-badge {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background-color: var(--primary);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
         
         /* --- Footer --- */
         .main-footer { padding: 4rem 2rem 2rem; background: var(--shadow-dark); text-align: center; margin-top: auto;}
@@ -274,6 +292,11 @@
                     <a href="canvas7" class="layout-card" data-aos="zoom-in-up" data-aos-delay="500">
                         <div class="image-frame"><img src="assets/layouts/thinBorders5.1.png" alt="Layout E: 4 Pose" loading="eager"></div>
                         <h2 class="layout-label">Layout E</h2><p class="layout-description">Strip 6x4 (4 Pose)</p>
+                    </a>
+                    <a href="profesional-mode.html" class="layout-card profesional" data-aos="zoom-in-up" data-aos-delay="600">
+                        <div class="new-badge">[new]</div>
+                        <div class="image-frame"><img src="assets/new-icon.png" alt="Profesional Mode" loading="eager"></div>
+                        <h2 class="layout-label">Profesional Mode</h2><p class="layout-description">Bingkai & Kustomisasi (Beta)</p>
                     </a>
                 </div>
             </div>

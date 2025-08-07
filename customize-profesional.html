@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Pictlord | Kustomisasi Profesional</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/png" href="images/pictlord logo.png" />
+    <link rel="apple-touch-icon" href="images/pictlord logo.png">
+    <style>
+        :root {
+            --light-bg: #e0e5ec; --light-text: #555; --light-shadow-dark: #a3b1c6; --light-shadow-light: #ffffff;
+            --light-accent: #0D9488; --light-inset-shadow-dark: rgba(163, 177, 198, 0.6); --light-inset-shadow-light: rgba(255, 255, 255, 1);
+        }
+        .dark-mode {
+            --light-bg: #2d343c; --light-text: #e0e5ec; --light-shadow-dark: #242a30; --light-shadow-light: #363e48;
+            --light-accent: #20c997; --light-inset-shadow-dark: rgba(36, 42, 48, 0.6); --light-inset-shadow-light: rgba(54, 62, 72, 1);
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { font-size: 62.5%; }
+        body {
+            font-family: 'Poppins', sans-serif; background-color: var(--light-bg); color: var(--light-text);
+            transition: background-color 0.3s ease, color 0.3s ease; display: flex; flex-direction: column;
+            align-items: center; min-height: 100vh; padding: 20px; overflow-x: hidden;
+        }
+        .main-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 1200px;
+            gap: 2rem;
+        }
+        #canvas-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 500px; /* Lebar bingkai */
+            aspect-ratio: 2 / 3; /* Sesuaikan dengan rasio bingkai Anda */
+            margin: auto;
+            box-shadow: 10px 10px 20px var(--light-shadow-dark), -10px -10px 20px var(--light-shadow-light);
+            border-radius: 15px;
+            background-color: var(--light-shadow-dark);
+        }
+        #photo-canvas, #frame-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        #frame-canvas {
+            z-index: 10;
+            pointer-events: none; /* Biarkan klik menembus ke kanvas foto */
+        }
+        .controls-panel {
+            width: 100%;
+            max-width: 800px;
+            background-color: var(--light-bg);
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 10px 10px 20px var(--light-shadow-dark), -10px -10px 20px var(--light-shadow-light);
+        }
+        .options-label {
+            font-size: 1.8rem;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .frame-selection-container {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 2.5rem;
+        }
+        .frame-thumbnail {
+            width: 80px;
+            height: 120px;
+            border: 3px solid transparent;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            background-color: var(--light-shadow-dark);
+            background-size: cover;
+            background-position: center;
+        }
+        .frame-thumbnail.active {
+            border-color: var(--light-accent);
+            transform: scale(1.05);
+        }
+        .final-actions-container {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            padding-top: 2rem;
+            border-top: 1px solid var(--light-shadow-dark);
+        }
+        .neumorphic-btn {
+            border: none; background: var(--light-bg); color: var(--light-text); font-family: 'Poppins', sans-serif;
+            font-weight: 500; cursor: pointer; transition: all 0.2s ease-in-out;
+            box-shadow: 5px 5px 10px var(--light-shadow-dark), -5px -5px 10px var(--light-shadow-light);
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            padding: 12px 25px;
+            border-radius: 30px;
+            font-size: 1.5rem;
+        }
+        .neumorphic-btn:hover { color: var(--light-accent); }
+        .neumorphic-btn:active {
+            box-shadow: inset 5px 5px 10px var(--light-inset-shadow-dark), inset -5px -5px 10px var(--light-inset-shadow-light);
+            color: var(--light-accent); transform: scale(0.98);
+        }
+        #downloadCopyBtn {
+             background: var(--light-accent); color: white;
+        }
+    </style>
+</head>
+<body>
+
+<div class="main-container">
+    <div id="canvas-wrapper">
+        <canvas id="photo-canvas"></canvas>
+        <canvas id="frame-canvas"></canvas>
+    </div>
+
+    <div class="controls-panel">
+        <h2 class="options-label">Pilih Bingkai</h2>
+        <div id="frame-selection" class="frame-selection-container">
+            <!-- Thumbnails bingkai akan diisi oleh JavaScript -->
+        </div>
+
+        <div class="final-actions-container">
+            <button class="neumorphic-btn" id="customBack"> <i class="fas fa-undo"></i> Retake </button>
+            <button class="neumorphic-btn" id="previewBtn"> <i class="fas fa-eye"></i> Preview </button>
+            <button class="neumorphic-btn" id="shareBtn"> <i class="fas fa-share-alt"></i> Share </button>
+            <button class="neumorphic-btn" id="downloadCopyBtn"> <i class="fas fa-qrcode"></i> Get QR & Download </button>
+        </div>
+    </div>
+</div>
+
+<script src="customize-profesional.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Theme toggle logic
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        document.body.classList.toggle('dark-mode', savedTheme === 'dark');
+
+        document.getElementById('customBack').addEventListener('click', () => {
+            window.location.href = 'profesional-mode.html';
+        });
+
+        // The rest of the logic will be in customize-profesional.js
+    });
+</script>
+
+</body>
+</html>
