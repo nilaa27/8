@@ -408,7 +408,7 @@
                 const photoCount = images.filter(img => img !== null).length;
                 if (photoCount === TOTAL_PHOTOS) {
                     sessionStorage.setItem('photoArray', JSON.stringify(images));
-                    window.location.href = 'customize7.html';
+                    window.location.href = 'customize7';
                 } else {
                     alert(`Silakan ambil atau unggah ${TOTAL_PHOTOS} foto terlebih dahulu.`);
                 }
