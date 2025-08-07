@@ -33,7 +33,7 @@
             justify-content: space-between; align-items: center; background-color: rgba(56, 64, 72, 0.7);
             backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-radius: 50px;
             animation: fadeInUp 0.5s ease-out; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.1); position: sticky; top: 20px; z-index: 1000;
+            border: 1px solid rgba(255, 255, 255, 0.1); position: sticky; top: 15px; z-index: 1000;
         }
         .side-logo {
             font-size: 2.3rem; font-weight: 600; color: #e0e5ec; text-decoration: none; padding-left: 15px;
@@ -84,10 +84,10 @@
             font-size: 1.8rem; font-weight: 600; text-align: center; margin-bottom: 2rem;
         }
         .frame-selection-container {
-            display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; margin-bottom: 2.5rem;
+            display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; margin-bottom: 2.5rem;
         }
         .frame-thumbnail {
-            width: 70px; height: 105px; border: 3px solid transparent; border-radius: 8px; cursor: pointer;
+            width: 60px; height: 90px; border: 3px solid transparent; border-radius: 6px; cursor: pointer;
             transition: all 0.2s ease-in-out; background-color: var(--light-shadow-dark);
             background-size: cover; background-position: center;
             box-shadow: 3px 3px 6px var(--light-shadow-dark), -3px -3px 6px var(--light-shadow-light);
@@ -157,12 +157,29 @@
         .qr-actions { display: flex; gap: 15px; margin-top: 25px; width: 100%; }
 
         @media only screen and (max-width: 900px) {
-            .page-container { flex-direction: column; align-items: center; }
-            .controls-panel { flex-basis: auto; width: 100%; max-width: 550px; max-height: none; }
-            #canvas-wrapper { max-width: 80vw; }
+            .page-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            .canvas-area {
+                position: sticky;
+                top: 85px; /* Jarak dari atas, di bawah navbar sticky */
+                z-index: 10;
+                width: 100%; /* Memastikan lebar penuh */
+                margin-bottom: 2rem; /* Jarak dengan panel kontrol di bawah */
+            }
+            #canvas-wrapper { max-width: 85vw; margin: 0 auto; }
+            .controls-panel {
+                flex-basis: auto;
+                width: 100%;
+                max-width: 550px;
+                max-height: none;
+                z-index: 5; /* Pastikan di bawah canvas sticky */
+            }
         }
         @media only screen and (max-width: 540px) {
-            html { font-size: 58%; } body { padding: 10px; }
+            html { font-size: 58%; }
+            body { padding: 10px; }
             #main-header { top: 10px; width: 98%; }
             .controls-panel { padding: 20px 15px; }
             #canvas-wrapper { max-width: 95vw; }
@@ -187,7 +204,7 @@
             <canvas id="frame-canvas"></canvas>
         </div>
     </div>
-    
+
     <aside class="controls-panel">
         <h2 class="options-label">Pilih Bingkai & Atur Foto Anda</h2>
         <div id="frame-selection" class="frame-selection-container">
@@ -238,7 +255,7 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('theme', newTheme);
         applyTheme(newTheme);
     });
-    const savedTheme = localStorage.getItem('theme') || 'dark'; // Default to dark
+    const savedTheme = localStorage.getItem('theme') || 'dark';
     applyTheme(savedTheme);
 
 
@@ -654,7 +671,7 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(() => console.log('Berhasil berbagi'))
             .catch((error) => console.log('Gagal berbagi:', error));
         } else {
-            alert('Fitur Share tidak didukung di browser ini. Coba salin link dari Tombol QR.');
+            alert('Fitur Share tidak didukung di browser ini.');
         }
     });
     
