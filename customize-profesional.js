@@ -279,19 +279,41 @@ document.addEventListener('DOMContentLoaded', () => {
             activeImg.y = pos.y - state.dragStart.y;
             redrawPhotos();
         } else if (state.isResizing && state.activeImageIndex !== -1) {
-            const activeImg = state.images[state.activeImageIndex];
+            const img = state.images[state.activeImageIndex];
+            const handle = state.activeHandle;
 
-            // Simplified scaling based on distance from center
-            const dx = pos.x - activeImg.x;
-            const dy = pos.y - activeImg.y;
-            const distance = Math.sqrt(dx * dx + dy * dy);
+            const aspect = img.width / img.height;
+            let newWidth, newHeight, newScale;
 
-            // Assuming original corner was at a certain distance
-            const originalDistance = Math.sqrt(Math.pow(activeImg.width / 2, 2) + Math.pow(activeImg.height / 2, 2));
-            const newScale = distance / originalDistance;
+            // Determine the stationary anchor point (opposite corner)
+            const handles = getHandlePositions(img);
+            let anchorX, anchorY;
+
+            if (handle.includes('bottom')) { anchorY = handles.topLeft.y; } else { anchorY = handles.bottomLeft.y; }
+            if (handle.includes('Right')) { anchorX = handles.topLeft.x; } else { anchorX = handles.topRight.x; }
+
+            // Calculate new width and height based on mouse distance from anchor
+            newWidth = Math.abs(pos.x - anchorX);
+            newHeight = Math.abs(pos.y - anchorY);
+
+            // Maintain aspect ratio
+            if (newWidth / newHeight > aspect) {
+                newWidth = newHeight * aspect;
+            } else {
+                newHeight = newWidth / aspect;
+            }
+
+            newScale = newWidth / img.width;
 
             if (newScale > 0.05 && newScale < 5) { // Clamp scale
-                 activeImg.scale = newScale;
+                img.scale = newScale;
+
+                // Recalculate center position (x, y) based on the new scale and fixed anchor
+                const newHalfW = newWidth / 2;
+                const newHalfH = newHeight / 2;
+
+                if (handle.includes('bottom')) { img.y = anchorY + newHalfH; } else { img.y = anchorY - newHalfH; }
+                if (handle.includes('Right')) { img.x = anchorX + newHalfW; } else { img.x = anchorX - newHalfW; }
             }
 
             redrawPhotos();
